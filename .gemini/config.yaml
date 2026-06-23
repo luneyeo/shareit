@@ -1,15 +1,16 @@
-ignored-files:
-
-- "node_modules/\*\*"
-- "dist/\*\*"
-- ".git/\*\*"
-- "\*.md"
-- ".next/\*\*"
-- "package-lock.json"
-- "pnpm-lock.yaml"
-- "yarn.lock"
-- "\*_/_.svg"
-- "\*_/_.png"
-- "\*_/_.jpg"
-- "\*_/_.jpeg"
-- "\*_/_.gif"
+# .gemini/config.yaml
+version: "1"
+review:
+  # 리뷰에서 제외할 파일 패턴 (글롭 패턴 사용)
+  rules:
+    - exclude:
+        paths:
+          - "package-lock.json"
+          - "yarn.lock"
+          - "pnpm-lock.yaml"
+          - "dist/**"
+          - ".next/**"
+          - "node_modules/**"
+          - "**/*.png"
+          - "**/*.jpg"
+          - "**/*.svg"
