@@ -1,15 +1,19 @@
-ignored-files:
+code_review:
+  disable: false
+  pull_request_opened:
+    summary: true
+    code_review: true
+ignore_patterns:
+  # 빌드 결과물 및 시스템 폴더
+  - "node_modules/**"
+  - ".next/**"
+  - "dist/**"
+  - ".git/**"
 
-- "node_modules/\*\*"
-- "dist/\*\*"
-- ".git/\*\*"
-- "\*.md"
-- ".next/\*\*"
-- "package-lock.json"
-- "pnpm-lock.yaml"
-- "yarn.lock"
-- "\*_/_.svg"
-- "\*_/_.png"
-- "\*_/_.jpg"
-- "\*_/_.jpeg"
-- "\*_/_.gif"
+  # 패키지 잠금 파일
+  - "package-lock.json"
+  - "yarn.lock"
+  - "pnpm-lock.yaml"
+
+  # 문서 파일
+  - "*.md"
