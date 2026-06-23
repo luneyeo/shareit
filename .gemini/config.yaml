@@ -1,16 +1,19 @@
-# .gemini/config.yaml
-version: "1"
-review:
-  # 리뷰에서 제외할 파일 패턴 (글롭 패턴 사용)
-  rules:
-    - exclude:
-        paths:
-          - "package-lock.json"
-          - "yarn.lock"
-          - "pnpm-lock.yaml"
-          - "dist/**"
-          - ".next/**"
-          - "node_modules/**"
-          - "**/*.png"
-          - "**/*.jpg"
-          - "**/*.svg"
+code_review:
+  disable: false
+  pull_request_opened:
+    summary: true
+    code_review: true
+ignore_patterns:
+  # 빌드 결과물 및 시스템 폴더
+  - "node_modules/**"
+  - ".next/**"
+  - "dist/**"
+  - ".git/**"
+
+  # 패키지 잠금 파일
+  - "package-lock.json"
+  - "yarn.lock"
+  - "pnpm-lock.yaml"
+
+  # 문서 파일
+  - "*.md"
