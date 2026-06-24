@@ -14,121 +14,97 @@
 }
 
 @utility typo-12-medium {
-  font-size: var(--text-12);
-  font-weight: var(--font-weight-medium);
+  @apply text-12 font-medium;
 }
 
 @utility typo-12-semibold {
-  font-size: var(--text-12);
-  font-weight: var(--font-weight-semibold);
+  @apply text-12 font-semibold;
 }
 
 @utility typo-12-bold {
-  font-size: var(--text-12);
-  font-weight: var(--font-weight-bold);
+  @apply text-12 font-bold;
 }
 
 @utility typo-13-medium {
-  font-size: var(--text-13);
-  font-weight: var(--font-weight-medium);
+  @apply text-13 font-medium;
 }
 
 @utility typo-13-semibold {
-  font-size: var(--text-13);
-  font-weight: var(--font-weight-semibold);
+  @apply text-13 font-semibold;
 }
 
 @utility typo-13-bold {
-  font-size: var(--text-13);
-  font-weight: var(--font-weight-bold);
+  @apply text-13 font-bold;
 }
 
 @utility typo-14-medium {
-  font-size: var(--text-14);
-  font-weight: var(--font-weight-medium);
+  @apply text-14 font-medium;
 }
 
 @utility typo-14-semibold {
-  font-size: var(--text-14);
-  font-weight: var(--font-weight-semibold);
+  @apply text-14 font-semibold;
 }
 
 @utility typo-14-bold {
-  font-size: var(--text-14);
-  font-weight: var(--font-weight-bold);
+  @apply text-14 font-bold;
 }
 
 @utility typo-16-medium {
-  font-size: var(--text-16);
-  font-weight: var(--font-weight-medium);
+  @apply text-16 font-medium;
 }
 
 @utility typo-16-semibold {
-  font-size: var(--text-16);
-  font-weight: var(--font-weight-semibold);
+  @apply text-16 font-semibold;
 }
 
 @utility typo-16-bold {
-  font-size: var(--text-16);
-  font-weight: var(--font-weight-bold);
+  @apply text-16 font-bold;
 }
 
 @utility typo-18-medium {
-  font-size: var(--text-18);
-  font-weight: var(--font-weight-medium);
+  @apply text-18 font-medium;
 }
 
 @utility typo-18-semibold {
-  font-size: var(--text-18);
-  font-weight: var(--font-weight-semibold);
+  @apply text-18 font-semibold;
 }
 
 @utility typo-18-bold {
-  font-size: var(--text-18);
-  font-weight: var(--font-weight-bold);
+  @apply text-18 font-bold;
 }
 
 @utility typo-20-medium {
-  font-size: var(--text-20);
-  font-weight: var(--font-weight-medium);
+  @apply text-20 font-medium;
 }
 
 @utility typo-20-semibold {
-  font-size: var(--text-20);
-  font-weight: var(--font-weight-semibold);
+  @apply text-20 font-semibold;
 }
 
 @utility typo-20-bold {
-  font-size: var(--text-20);
-  font-weight: var(--font-weight-bold);
+  @apply text-20 font-bold;
 }
 
 @utility typo-24-medium {
-  font-size: var(--text-24);
-  font-weight: var(--font-weight-medium);
+  @apply text-24 font-medium;
 }
 
 @utility typo-24-semibold {
-  font-size: var(--text-24);
-  font-weight: var(--font-weight-semibold);
+  @apply text-24 font-semibold;
 }
 
 @utility typo-24-bold {
-  font-size: var(--text-24);
-  font-weight: var(--font-weight-bold);
+  @apply text-24 font-bold;
 }
 
 @utility typo-32-medium {
-  font-size: var(--text-32);
-  font-weight: var(--font-weight-medium);
+  @apply text-32 font-medium;
 }
 
 @utility typo-32-semibold {
-  font-size: var(--text-32);
-  font-weight: var(--font-weight-semibold);
+  @apply text-32 font-semibold;
 }
 
 @utility typo-32-bold {
-  font-size: var(--text-32);
-  font-weight: var(--font-weight-bold);
+  @apply text-32 font-bold;
 }
