@@ -1,3 +1,3 @@
-import { SignupPage } from '@/views/auth'
+import { SignupPage } from "@/views/auth/signup";
 
-export default SignupPage
+export default SignupPage;
