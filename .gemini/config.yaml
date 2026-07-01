@@ -1,5 +1,6 @@
 code_review:
   disable: false
+  comment_severity_threshold: "LOW" # 기본 HIGH에서 LOW로 변경하여 더 많은 피드백 받기
   pull_request_opened:
     summary: true
     code_review: true
