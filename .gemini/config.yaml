@@ -1,20 +1,24 @@
 code_review:
   disable: false
-  comment_severity_threshold: "LOW" # 기본 HIGH에서 LOW로 변경하여 더 많은 피드백 받기
   pull_request_opened:
     summary: true
     code_review: true
 ignore_patterns:
-  # 빌드 결과물 및 시스템 폴더
+  # 1. 패키지 매니저 및 락 파일
+  - "package-lock.json"
+  - "yarn.lock"
+  - "pnpm-lock.yaml"
+  - "node_modules/**"
+
+  # 2. 빌드 결과물 및 프레임워크 캐시
   - "node_modules/**"
   - ".next/**"
   - "dist/**"
   - ".git/**"
 
-  # 패키지 잠금 파일
-  - "package-lock.json"
-  - "yarn.lock"
-  - "pnpm-lock.yaml"
+  # 3. 개발 도구 및 AI 설정 폴덜
+  - ".claude/**"
+  - ".husky/**"
 
-  # 문서 파일
+  # 4. 문서 파일
   - "*.md"
