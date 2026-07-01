@@ -1,5 +1,6 @@
 "use client";
 import { cva } from "class-variance-authority";
+import { cn } from "@/shared/utils/cn";
 import type { ButtonProps } from "./types";
 
 const buttonVariants = cva(
@@ -47,7 +48,7 @@ const buttonVariants = cva(
  */
 export default function Button({ icon, children, theme, size, className, ...props }: ButtonProps) {
   return (
-    <button className={buttonVariants({ theme, size, className })} {...props}>
+    <button className={cn(buttonVariants({ theme, size }), className)} {...props}>
       {icon && <span>{icon}</span>}
       {children}
     </button>
