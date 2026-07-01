@@ -1,4 +1,6 @@
-import type { TagChipProps } from "./types";
+type TagChipProps = {
+  label: string;
+};
 
 /**
  * 태그 칩 컴포넌트입니다. `#` prefix가 자동으로 붙습니다.
