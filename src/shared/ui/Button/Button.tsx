@@ -3,7 +3,7 @@ import { cva } from "class-variance-authority";
 import type { ButtonProps } from "./types";
 
 const buttonVariants = cva(
-  "relative inline-flex gap-1 items-center justify-center whitespace-nowrap rounded-full border transition-colors px-3 disabled:bg-gray-200 disabled:text-gray-500",
+  "relative inline-flex gap-1 items-center justify-center whitespace-nowrap rounded-full border transition-colors px-3 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-transparent disabled:pointer-events-none",
   {
     variants: {
       theme: {
