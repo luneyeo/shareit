@@ -1,21 +1,58 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
-const Button = ({ label }: { label: string }) => (
-  <button className="px-4 py-2 bg-primary text-white rounded-md typo-14-medium">
-    {label}
-  </button>
-);
+import type { Meta, StoryObj } from "@storybook/react";
+import Button from "./Button";
 
 const meta: Meta<typeof Button> = {
-  title: 'Shared/Button',
+  title: "Shared/Button",
   component: Button,
+  tags: ["autodocs"],
+  argTypes: {
+    theme: {
+      control: "select",
+      options: ["primary", "secondary"],
+    },
+    size: {
+      control: "select",
+      options: ["lg", "md", "sm"],
+    },
+    disabled: {
+      control: "boolean",
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-export const Default: Story = {
+export const Primary: Story = {
   args: {
-    label: 'Button',
+    theme: "primary",
+    size: "md",
+    children: "버튼",
+  },
+};
+
+export const Secondary: Story = {
+  args: {
+    theme: "secondary",
+    size: "md",
+    children: "버튼",
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    theme: "primary",
+    size: "md",
+    icon: "⬆",
+    children: "공유하기",
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    theme: "primary",
+    size: "md",
+    children: "버튼",
+    disabled: true,
   },
 };
