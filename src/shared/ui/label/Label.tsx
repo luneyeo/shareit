@@ -28,7 +28,11 @@ export default function Label({ required, children, className, ...props }: Label
       {...props}
     >
       {children}
-      {required && <span className="text-primary-600">*</span>}
+      {required && (
+        <span className="text-primary-600" aria-hidden="true">
+          *
+        </span>
+      )}
     </label>
   );
 }
