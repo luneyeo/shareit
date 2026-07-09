@@ -34,7 +34,7 @@ export default function Input({ suffix, className, ...props }: InputProps) {
         className={cn(
           "w-full h-12 px-4 rounded-xl border border-gray-400 bg-white outline-none transition-colors",
           "text-gray-900 placeholder:text-gray-400 typo-16-medium",
-          "focus:border-primary-300",
+          "focus:border-primary-600",
           "disabled:bg-gray-200 disabled:border-transparent disabled:pointer-events-none disabled:text-gray-500",
           suffix && "pr-10",
           className
