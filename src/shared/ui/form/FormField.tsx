@@ -31,7 +31,7 @@ export default function FormField({ label, required, id, ...inputProps }: FormFi
       <Label htmlFor={inputId} required={required}>
         {label}
       </Label>
-      <Input id={inputId} {...inputProps} />
+      <Input id={inputId} required={required} {...inputProps} />
     </div>
   );
 }
