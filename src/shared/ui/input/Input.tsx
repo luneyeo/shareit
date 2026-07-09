@@ -3,6 +3,7 @@
 import { cn } from "@/shared/utils/cn";
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  ref?: React.Ref<HTMLInputElement>;
   suffix?: React.ReactNode;
   containerClassName?: string;
 };
@@ -29,10 +30,19 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
  * <Input placeholder="입력해주세요" disabled />
  * ```
  */
-export default function Input({ suffix, containerClassName, className, ...props }: InputProps) {
+export default function Input({
+  ref,
+  suffix,
+  containerClassName,
+  className,
+  disabled,
+  ...props
+}: InputProps) {
   return (
     <div className={cn("relative", containerClassName)}>
       <input
+        ref={ref}
+        disabled={disabled}
         className={cn(
           "w-full h-12 px-4 rounded-xl border border-gray-400 bg-white outline-none transition-colors",
           "text-gray-900 placeholder:text-gray-400 typo-16-medium",
@@ -47,7 +57,7 @@ export default function Input({ suffix, containerClassName, className, ...props 
         <span
           className={cn(
             "absolute right-4 top-1/2 -translate-y-1/2 flex items-center",
-            props.disabled && "pointer-events-none opacity-50"
+            disabled && "pointer-events-none opacity-50"
           )}
         >
           {suffix}
