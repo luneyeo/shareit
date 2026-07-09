@@ -44,7 +44,12 @@ export default function Input({ suffix, containerClassName, className, ...props 
         {...props}
       />
       {suffix && (
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center">
+        <span
+          className={cn(
+            "absolute right-4 top-1/2 -translate-y-1/2 flex items-center",
+            props.disabled && "pointer-events-none opacity-50"
+          )}
+        >
           {suffix}
         </span>
       )}
