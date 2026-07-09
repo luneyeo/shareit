@@ -4,12 +4,14 @@ import { cn } from "@/shared/utils/cn";
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   suffix?: React.ReactNode;
+  containerClassName?: string;
 };
 
 /**
  * 공통 인풋 컴포넌트입니다.
  *
  * - `suffix`: 인풋 오른쪽에 표시할 아이콘, 버튼 등 (ReactNode)
+ * - `containerClassName`: 외부 컨테이너 div에 적용됩니다. 너비·레이아웃 클래스는 여기에 전달해야 suffix 위치가 올바릅니다.
  * - `className`: 인풋 요소에 직접 적용됩니다.
  *
  * @example
@@ -27,9 +29,9 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
  * <Input placeholder="입력해주세요" disabled />
  * ```
  */
-export default function Input({ suffix, className, ...props }: InputProps) {
+export default function Input({ suffix, containerClassName, className, ...props }: InputProps) {
   return (
-    <div className="relative">
+    <div className={cn("relative", containerClassName)}>
       <input
         className={cn(
           "w-full h-12 px-4 rounded-xl border border-gray-400 bg-white outline-none transition-colors",
