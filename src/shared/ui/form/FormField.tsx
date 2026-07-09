@@ -22,7 +22,7 @@ type FormFieldProps = React.ComponentProps<typeof Input> & {
  * <FormField label="이메일" required placeholder="이메일을 입력해주세요" />
  * ```
  */
-export default function FormField({ label, required, id, ...inputProps }: FormFieldProps) {
+export default function FormField({ ref, label, required, id, ...inputProps }: FormFieldProps) {
   const autoId = useId();
   const inputId = id ?? autoId;
 
@@ -31,7 +31,7 @@ export default function FormField({ label, required, id, ...inputProps }: FormFi
       <Label htmlFor={inputId} required={required}>
         {label}
       </Label>
-      <Input id={inputId} required={required} {...inputProps} />
+      <Input ref={ref} id={inputId} required={required} {...inputProps} />
     </div>
   );
 }
