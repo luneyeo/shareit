@@ -10,11 +10,11 @@ interface AvatarProps {
 }
 
 const COLORS = [
-  "#6B79FA", // 보라
-  "#2A8C6A", // 초록
-  "#D58D49", // 갈색
-  "#FA6B6B", // 다홍
-  "#71DFF3", // 민트
+  "bg-[#6B79FA]", // 보라
+  "bg-[#2A8C6A]", // 초록
+  "bg-[#D58D49]", // 갈색
+  "bg-[#FA6B6B]", // 다홍
+  "bg-[#71DFF3]", // 민트
 ];
 
 const SIZE = {
@@ -47,10 +47,7 @@ export default function Avatar({ seed = "", size = "md" }: AvatarProps) {
   const { container, icon } = SIZE[size];
 
   return (
-    <div
-      className={`${container} rounded-full overflow-hidden relative`}
-      style={{ backgroundColor: bg }}
-    >
+    <div className={`${container} ${bg} rounded-full overflow-hidden relative`}>
       <IcProfile className={`absolute -bottom-1 left-1/2 -translate-x-1/2 ${icon} opacity-75`} />
     </div>
   );
