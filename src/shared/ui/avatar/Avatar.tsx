@@ -17,7 +17,7 @@ const COLORS = [
   "bg-[#71DFF3]", // 민트
 ];
 
-const SIZE = {
+const SIZE: Record<AvatarSize, { container: string; icon: string }> = {
   sm: { container: "w-7 h-7", icon: "w-6 h-6" },
   md: { container: "w-9 h-9", icon: "w-7 h-7" },
   lg: { container: "w-12 h-12", icon: "w-10 h-10" },
@@ -48,7 +48,10 @@ export default function Avatar({ seed = "", size = "md" }: AvatarProps) {
 
   return (
     <div className={`${container} ${bg} rounded-full overflow-hidden relative`}>
-      <IcProfile className={`absolute -bottom-1 left-1/2 -translate-x-1/2 ${icon} opacity-75`} />
+      <IcProfile
+        aria-hidden="true"
+        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 ${icon} opacity-75`}
+      />
     </div>
   );
 }
