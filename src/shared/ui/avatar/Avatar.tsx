@@ -23,18 +23,18 @@ const SIZE = {
   lg: { container: "w-12 h-12", icon: "w-10 h-10" },
 };
 
-function getColorIndex(seed: string): number {
+const getColorIndex = (seed: string): number => {
   let hash = 0;
   for (let i = 0; i < seed.length; i++) {
     hash = (hash * 31 + seed.charCodeAt(i)) % COLORS.length;
   }
   return hash;
-}
+};
 
 /**
  * 유저 아바타 컴포넌트입니다.
  *
- * - `name`: 색상 결정에 사용되는 값 (이름, id 등). 동일한 seed은 항상 같은 색상을 반환합니다.
+ * - `seed`: 색상 결정에 사용되는 값 (이름, id 등). 동일한 seed은 항상 같은 색상을 반환합니다.
  * - `size`: 아바타 크기 (`sm` | `md` | `lg`)
  *
  * @example
