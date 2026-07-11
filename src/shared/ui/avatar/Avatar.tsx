@@ -1,8 +1,7 @@
 "use client";
 
 import { IcProfile } from "@/shared/assets/icons";
-
-type AvatarSize = "sm" | "md" | "lg";
+import type { AvatarSize } from "../profile/Profile";
 
 type AvatarProps = {
   seed?: string;
