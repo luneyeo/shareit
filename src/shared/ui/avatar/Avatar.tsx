@@ -4,7 +4,7 @@ import { IcProfile } from "@/shared/assets/icons";
 
 export type AvatarSize = "sm" | "md" | "lg";
 
-interface AvatarProps {
+interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   seed?: string;
   size?: AvatarSize;
 }
@@ -42,12 +42,18 @@ const getColorIndex = (seed: string): number => {
  * <Avatar seed="홍길동" size="md" />
  * ```
  */
-export default function Avatar({ seed = "", size = "md" }: AvatarProps) {
+export default function Avatar({ seed = "", size = "md", ...props }: AvatarProps) {
   const bg = COLORS[getColorIndex(seed)];
   const { container, icon } = SIZE[size];
 
+  const isDecorative = !!props["aria-hidden"];
+
   return (
-    <div className={`${container} ${bg} rounded-full overflow-hidden relative`}>
+    <div
+      className={`${container} ${bg} rounded-full overflow-hidden relative`}
+      aria-label={isDecorative ? undefined : seed ? `${seed}의 프로필 아바타` : "프로필 아바타"}
+      {...props}
+    >
       <IcProfile
         aria-hidden="true"
         className={`absolute -bottom-1 left-1/2 -translate-x-1/2 ${icon} opacity-75`}

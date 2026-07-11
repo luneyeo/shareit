@@ -28,7 +28,7 @@ export default function Profile({ name, size = "md" }: ProfileProps) {
   const fontClasses = TEXT_SIZE[size];
   return (
     <div className="flex items-center gap-2">
-      <Avatar seed={name} size={size} />
+      <Avatar seed={name} size={size} aria-hidden="true" />
       <span className={` text-gray-900 ${fontClasses}`}>{name}</span>
     </div>
   );
