@@ -2,10 +2,10 @@
 
 import Avatar, { type AvatarSize } from "@/shared/ui/avatar/Avatar";
 
-type ProfileProps = {
+interface ProfileProps {
   name: string;
   size?: AvatarSize;
-};
+}
 
 const TEXT_SIZE: Record<AvatarSize, string> = {
   sm: "typo-14-medium",
