@@ -67,7 +67,13 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ---
 
-## 5. PR 메시지 작성
+## 5. 코드 스타일 가이드
+
+코드 작성 시 `.gemini/styleguide.md`를 참고한다.
+
+---
+
+## 6. PR 메시지 작성
 
 PR 메시지 작성 요청 시 `.github/PULL_REQUEST_TEMPLATE.md`를 읽고 해당 템플릿 형식에 맞춰 작성한다.
 

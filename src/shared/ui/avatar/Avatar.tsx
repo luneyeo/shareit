@@ -1,0 +1,63 @@
+"use client";
+
+import { IcProfile } from "@/shared/assets/icons";
+
+export type AvatarSize = "sm" | "md" | "lg";
+
+interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
+  seed?: string;
+  size?: AvatarSize;
+}
+
+const COLORS = [
+  "bg-[#6B79FA]", // 보라
+  "bg-[#2A8C6A]", // 초록
+  "bg-[#D58D49]", // 갈색
+  "bg-[#FA6B6B]", // 다홍
+  "bg-[#71DFF3]", // 민트
+];
+
+const SIZE: Record<AvatarSize, { container: string; icon: string }> = {
+  sm: { container: "w-7 h-7", icon: "w-6 h-6" },
+  md: { container: "w-9 h-9", icon: "w-7 h-7" },
+  lg: { container: "w-12 h-12", icon: "w-10 h-10" },
+};
+
+const getColorIndex = (seed: string): number => {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = (hash * 31 + seed.charCodeAt(i)) % COLORS.length;
+  }
+  return hash;
+};
+
+/**
+ * 유저 아바타 컴포넌트입니다.
+ *
+ * - `seed`: 색상 결정에 사용되는 값 (이름, id 등). 동일한 seed은 항상 같은 색상을 반환합니다.
+ * - `size`: 아바타 크기 (`sm` | `md` | `lg`)
+ *
+ * @example
+ * ```tsx
+ * <Avatar seed="홍길동" size="md" />
+ * ```
+ */
+export default function Avatar({ seed = "", size = "md", ...props }: AvatarProps) {
+  const bg = COLORS[getColorIndex(seed)];
+  const { container, icon } = SIZE[size];
+
+  const isDecorative = !!props["aria-hidden"];
+
+  return (
+    <div
+      className={`${container} ${bg} rounded-full overflow-hidden relative`}
+      aria-label={isDecorative ? undefined : seed ? `${seed}의 프로필 아바타` : "프로필 아바타"}
+      {...props}
+    >
+      <IcProfile
+        aria-hidden="true"
+        className={`absolute -bottom-1 left-1/2 -translate-x-1/2 ${icon} opacity-75`}
+      />
+    </div>
+  );
+}
