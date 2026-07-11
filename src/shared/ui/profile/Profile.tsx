@@ -1,8 +1,6 @@
 "use client";
 
-import Avatar from "@/shared/ui/avatar/Avatar";
-
-export type AvatarSize = "sm" | "md" | "lg";
+import Avatar, { type AvatarSize } from "@/shared/ui/avatar/Avatar";
 
 type ProfileProps = {
   name: string;
