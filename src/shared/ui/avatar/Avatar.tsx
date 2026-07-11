@@ -4,10 +4,10 @@ import { IcProfile } from "@/shared/assets/icons";
 
 export type AvatarSize = "sm" | "md" | "lg";
 
-type AvatarProps = {
+interface AvatarProps {
   seed?: string;
   size?: AvatarSize;
-};
+}
 
 const COLORS = [
   "#6B79FA", // 보라
