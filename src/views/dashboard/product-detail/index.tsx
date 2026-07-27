@@ -6,5 +6,5 @@
  * export default ProductPage
  */
 export function ProductPage() {
-  return <div>ProductPage</div>
+  return <div>ProductPage</div>;
 }

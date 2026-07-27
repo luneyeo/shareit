@@ -1,3 +1,3 @@
-import { ProductPage } from '@/views/dashboard/products'
+import { ProductPage } from "@/views/dashboard/product-detail";
 
-export default ProductPage
+export default ProductPage;
