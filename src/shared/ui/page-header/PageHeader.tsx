@@ -32,7 +32,11 @@ export default function PageHeader({ title, showSearch, onSearchClick, bottom }:
   return (
     <header className="flex flex-col bg-white">
       <div className="flex items-center justify-between px-4 py-3">
-        <h1 className="typo-20-bold text-gray-900">{title}</h1>
+        {typeof title === "string" ? (
+          <h1 className="typo-20-bold text-gray-900">{title}</h1>
+        ) : (
+          title
+        )}
         {showSearch && (
           <button type="button" aria-label="검색" onClick={onSearchClick} className="p-1">
             <IcSearch className="h-6 w-6" />

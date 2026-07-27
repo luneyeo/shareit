@@ -46,7 +46,7 @@ export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownP
   return (
     <div ref={containerRef} className="relative">
       <button {...triggerProps} className="flex items-center gap-1">
-        <span className="typo-20-bold text-gray-900">{currentGroup?.name ?? "그룹 선택"}</span>
+        <h1 className="typo-20-bold text-gray-900">{currentGroup?.name ?? "그룹 선택"}</h1>
         <IcChevronDown className={cn("h-5 w-5 transition-transform", isOpen && "rotate-180")} />
       </button>
 
