@@ -26,12 +26,12 @@ export default function ProductCard({ prdName, price, imageUrl, tag, userId }: P
   const tags = tag?.slice(0, 2);
 
   return (
-    <h3 className="flex flex-col gap-3 rounded-2xl bg-white shadow-sm">
+    <article className="flex flex-col gap-3 rounded-2xl bg-white shadow-sm">
       <div className="relative aspect-square w-full overflow-hidden rounded-t-xl bg-gray-200">
         {firstImage && <Image src={firstImage} alt={prdName} fill className="object-cover" />}
       </div>
       <div className="flex flex-col gap-2 p-2.5">
-        {tags && (
+        {tags && tags.length > 0 && (
           <div className="flex gap-1.5">
             {tags.map((t) => (
               <TagChip key={t} label={t} className="text-sm font-medium" />
@@ -39,13 +39,13 @@ export default function ProductCard({ prdName, price, imageUrl, tag, userId }: P
           </div>
         )}
         <div className="flex flex-col justify-center">
-          <span className="font-medium text-gray-800">{prdName}</span>
+          <h3 className="font-medium text-gray-800">{prdName}</h3>
           {price !== null && (
             <span className="font-semibold text-gray-900">{formatPrice(price)}</span>
           )}
         </div>
         <Avatar seed={userId} size="sm" aria-label="등록자 프로필 아바타" />
       </div>
-    </h3>
+    </article>
   );
 }
