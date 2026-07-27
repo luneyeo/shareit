@@ -1,10 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { IcChevronDown } from "@/shared/assets/icons";
-import { useDismiss } from "@/shared/hooks/useDismiss";
+import { useListbox } from "@/shared/hooks/useListbox";
 import { cn } from "@/shared/utils/cn";
 import type { Group } from "@/features/dashboard/types";
 
@@ -16,8 +15,8 @@ interface GroupDropdownProps {
 /**
  * 홈 헤더의 그룹 선택 드롭다운입니다.
  *
- * 현재 그룹명을 제목처럼 노출하고, 클릭하면 내가 속한 그룹 목록을 펼쳐
- * 다른 그룹으로 이동합니다. 열림 상태와 바깥 클릭 닫기를 자체적으로 관리합니다.
+ * 현재 그룹명을 제목처럼 노출하고, 선택하면 해당 대시보드로 이동합니다.
+ * 열림 상태·키보드·포커스 등 listbox 상호작용은 `useListbox`가 담당합니다.
  *
  * - `groups`: 선택 가능한 그룹 목록
  * - `currentGroupId`: 현재 보고 있는 그룹의 id
@@ -29,50 +28,44 @@ interface GroupDropdownProps {
  */
 export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownProps) {
   const router = useRouter();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const currentIndex = groups.findIndex((group) => group.id === currentGroupId);
+  const currentGroup = groups[currentIndex];
 
-  const currentGroup = groups.find((group) => group.id === currentGroupId);
-
-  useDismiss(containerRef, isOpen, () => setIsOpen(false));
-
-  const handleSelect = (groupId: string) => {
-    setIsOpen(false);
-    if (groupId !== currentGroupId) {
-      router.push(`/dashboard/${groupId}`);
-    }
-  };
+  const { isOpen, activeIndex, containerRef, triggerProps, listboxProps, getOptionProps } =
+    useListbox({
+      itemCount: groups.length,
+      selectedIndex: currentIndex,
+      onSelect: (index) => {
+        const group = groups[index];
+        if (group && group.id !== currentGroupId) {
+          router.push(`/dashboard/${group.id}`);
+        }
+      },
+    });
 
   return (
     <div ref={containerRef} className="relative">
-      <button
-        type="button"
-        onClick={() => setIsOpen((prev) => !prev)}
-        aria-haspopup="listbox"
-        aria-expanded={isOpen}
-        className="flex items-center gap-1"
-      >
+      <button {...triggerProps} className="flex items-center gap-1">
         <span className="typo-20-bold text-gray-900">{currentGroup?.name ?? "그룹 선택"}</span>
         <IcChevronDown className={cn("h-5 w-5 transition-transform", isOpen && "rotate-180")} />
       </button>
 
       {isOpen && (
         <ul
-          role="listbox"
-          className="absolute left-0 top-full z-10 mt-2 min-w-40 overflow-hidden rounded-xl bg-white py-1 shadow-lg"
+          {...listboxProps}
+          className="absolute left-0 top-full z-10 mt-2 max-h-72 min-w-40 overflow-auto rounded-xl bg-white py-1 shadow-lg outline-none"
         >
-          {groups.map((group) => (
-            <li key={group.id} role="option" aria-selected={group.id === currentGroupId}>
-              <button
-                type="button"
-                onClick={() => handleSelect(group.id)}
-                className={cn(
-                  "typo-16-medium w-full px-4 py-2.5 text-left text-gray-800 hover:bg-gray-50",
-                  group.id === currentGroupId && "typo-16-semibold text-gray-900"
-                )}
-              >
-                {group.name}
-              </button>
+          {groups.map((group, index) => (
+            <li
+              key={group.id}
+              {...getOptionProps(index, group.id === currentGroupId)}
+              className={cn(
+                "typo-16-medium cursor-pointer px-4 py-2.5 text-gray-800",
+                index === activeIndex && "bg-gray-50",
+                group.id === currentGroupId && "typo-16-semibold text-gray-900"
+              )}
+            >
+              {group.name}
             </li>
           ))}
         </ul>
