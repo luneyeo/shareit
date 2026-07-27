@@ -61,6 +61,7 @@ export function useListbox({ itemCount, selectedIndex, onSelect }: UseListboxPar
   }, [isOpen, activeIndex]);
 
   const open = () => {
+    if (itemCount === 0) return;
     setActiveIndex(selectedIndex === -1 ? 0 : selectedIndex);
     setIsOpen(true);
   };
@@ -135,7 +136,8 @@ export function useListbox({ itemCount, selectedIndex, onSelect }: UseListboxPar
       role: "listbox" as const,
       tabIndex: -1,
       "aria-labelledby": triggerId,
-      "aria-activedescendant": optionId(activeIndex),
+      "aria-activedescendant":
+        activeIndex >= 0 && activeIndex < itemCount ? optionId(activeIndex) : undefined,
       onKeyDown: handleListboxKeyDown,
     },
     getOptionProps: (index: number, selected: boolean) => ({
