@@ -2,12 +2,13 @@
 
 import { IcSearch } from "@/shared/assets/icons";
 
-interface PageHeaderProps {
+type SearchProps =
+  { showSearch: true; onSearchClick: () => void } | { showSearch?: false; onSearchClick?: never };
+
+type PageHeaderProps = {
   title: React.ReactNode;
-  showSearch?: boolean;
-  onSearchClick?: () => void;
   bottom?: React.ReactNode;
-}
+} & SearchProps;
 
 /**
  * 타이틀형 페이지 헤더 컴포넌트입니다.
@@ -17,14 +18,14 @@ interface PageHeaderProps {
  * 갖지 않으며, 필요한 조각만 props로 켜서 사용합니다.
  *
  * - `title`: 좌측에 표시할 제목 (문자열 또는 드롭다운 같은 커스텀 노드)
- * - `showSearch`: 우측 검색 아이콘 노출 여부
+ * - `showSearch`: 우측 검색 아이콘 노출 여부 (`true`면 `onSearchClick` 필수)
  * - `onSearchClick`: 검색 아이콘 클릭 핸들러
  * - `bottom`: 타이틀 줄 아래에 붙는 영역 (예: 카테고리 필터)
  *
  * @example
  * ```tsx
  * <PageHeader title="좋아요 상품" showSearch onSearchClick={openSearch} />
- * <PageHeader title={groupName} showSearch bottom={<CategoryFilter />} />
+ * <PageHeader title="마이페이지" />
  * ```
  */
 export default function PageHeader({ title, showSearch, onSearchClick, bottom }: PageHeaderProps) {

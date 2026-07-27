@@ -1,10 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
+import { fn } from "storybook/test";
 import PageHeader from "./PageHeader";
 
 const meta: Meta<typeof PageHeader> = {
   title: "Shared/PageHeader",
   component: PageHeader,
   tags: ["autodocs"],
+  args: {
+    onSearchClick: fn(),
+  },
   argTypes: {
     showSearch: { control: "boolean" },
   },
