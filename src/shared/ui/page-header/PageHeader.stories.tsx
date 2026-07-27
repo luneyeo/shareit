@@ -1,0 +1,32 @@
+import type { Meta, StoryObj } from "@storybook/nextjs";
+import PageHeader from "./PageHeader";
+
+const meta: Meta<typeof PageHeader> = {
+  title: "Shared/PageHeader",
+  component: PageHeader,
+  tags: ["autodocs"],
+  argTypes: {
+    showSearch: { control: "boolean" },
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof PageHeader>;
+
+export const WithSearch: Story = { args: { title: "좋아요 상품", showSearch: true } };
+
+export const TitleOnly: Story = { args: { title: "마이페이지" } };
+
+export const WithBottom: Story = {
+  args: {
+    title: "우리 동네 모임",
+    showSearch: true,
+    bottom: (
+      <div className="flex gap-2 px-4 pb-3">
+        <span className="typo-14-medium rounded-full bg-gray-100 px-3 py-1">전체</span>
+        <span className="typo-14-medium rounded-full bg-gray-100 px-3 py-1">캠핑</span>
+        <span className="typo-14-medium rounded-full bg-gray-100 px-3 py-1">가전</span>
+      </div>
+    ),
+  },
+};
