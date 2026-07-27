@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+# CodeRabbit 설정. 리뷰 규칙은 docs/styleguide.md 에 정의하고 knowledge_base.code_guidelines 로 학습시킨다.
+language: "ko-KR"
+
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  review_status: true
+  poem: false
+  auto_review:
+    enabled: true
+    drafts: false
+
+  path_filters:
+    # 1. 패키지 매니저 및 락 파일
+    - "!**/package-lock.json"
+    - "!**/yarn.lock"
+    - "!**/pnpm-lock.yaml"
+    - "!**/node_modules/**"
+    # 2. 빌드 결과물 및 프레임워크 캐시
+    - "!**/.next/**"
+    - "!**/dist/**"
+    - "!**/.git/**"
+    # 3. 개발 도구 및 AI 설정 폴더
+    - "!**/.claude/**"
+    - "!**/.husky/**"
+    # 4. 문서 파일
+    - "!**/*.md"
+
+# 저장소 내 가이드라인 문서를 지식 베이스로 학습에 활용
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - "docs/styleguide.md"
+
+chat:
+  auto_reply: true
