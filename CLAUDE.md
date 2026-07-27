@@ -69,7 +69,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ## 5. 코드 스타일 가이드
 
-코드 작성 시 `.gemini/styleguide.md`를 참고한다.
+코드 작성 시 `docs/styleguide.md`를 참고한다.
 
 ---
 
