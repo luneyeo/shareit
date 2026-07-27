@@ -1,3 +1,8 @@
+export interface Group {
+  id: string;
+  name: string;
+}
+
 export interface ProductDetail {
   id: string;
   brandName: string | null;
