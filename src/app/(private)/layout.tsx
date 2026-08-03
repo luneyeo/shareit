@@ -9,7 +9,12 @@ import TabBar from "@/shared/ui/tab-bar/TabBar";
 export default function PrivateLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      {children}
+      {/**
+       * 하단 고정 TabBar(FooterBase, fixed bottom-0)에 마지막 콘텐츠가 가려지지 않도록
+       * 하단 여백을 확보합니다.
+       * 여백 = TabBar 높이(60px: FooterBase pt-2(8) + nav h-11(44) + pb-2(8)) + safe-area
+       */}
+      <div className="pb-[calc(3.75rem+env(safe-area-inset-bottom))]">{children}</div>
       <TabBar />
     </>
   );

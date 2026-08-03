@@ -42,7 +42,7 @@ export default function TabBar() {
 
   return (
     <FooterBase>
-      <nav className="flex items-center justify-around" aria-label="기본 메뉴">
+      <nav className="flex h-11 items-center justify-around" aria-label="기본 메뉴">
         {TAB_ITEMS.map(({ href, label, Icon, ActiveIcon }) => {
           const isActive = pathname === href || pathname.startsWith(`${href}/`);
           const TabIcon = isActive ? ActiveIcon : Icon;
