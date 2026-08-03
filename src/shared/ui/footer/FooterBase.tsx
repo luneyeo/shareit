@@ -1,6 +1,6 @@
 import { cn } from "@/shared/utils/cn";
 
-type FooterProps = {
+type FooterBaseProps = {
   children: React.ReactNode;
   className?: string;
 };
@@ -19,18 +19,18 @@ type FooterProps = {
  * @example
  * ```tsx
  * // 기본 메뉴 탭바
- * <Footer className="flex items-center justify-around">
+ * <FooterBase className="flex items-center justify-around">
  *   <NavItem ... />
- * </Footer>
+ * </FooterBase>
  *
- * // 상품 상세 액션 푸터
- * <Footer className="flex gap-2">
+ * // 액션 버튼 줄은 보통 이 위에 얹은 ActionFooter를 사용합니다.
+ * <FooterBase className="flex gap-2">
  *   <Button theme="secondary" className="flex-1">저장하기</Button>
  *   <Button theme="primary" className="flex-1">좋아요</Button>
- * </Footer>
+ * </FooterBase>
  * ```
  */
-export default function Footer({ children, className }: FooterProps) {
+export default function FooterBase({ children, className }: FooterBaseProps) {
   return (
     <footer
       className={cn(

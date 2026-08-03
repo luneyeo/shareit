@@ -1,6 +1,6 @@
 import { Children } from "react";
 import { cn } from "@/shared/utils/cn";
-import Footer from "./Footer";
+import FooterBase from "./FooterBase";
 
 type ActionFooterProps = {
   /** 하단에 배치할 액션 버튼. 개수에 따라 버튼 사이 간격이 자동으로 설정됩니다. */
@@ -11,7 +11,7 @@ type ActionFooterProps = {
 /**
  * 하단 액션 버튼을 가로로 배치하는 공통 푸터 레이아웃 컴포넌트입니다.
  *
- * `Footer` 껍데기 위에 버튼 줄(가로 flex)만 얹으며, 전달된 버튼 개수에 따라
+ * `FooterBase` 껍데기 위에 버튼 줄(가로 flex)만 얹으며, 전달된 버튼 개수에 따라
  * 사이 간격을 조절합니다. 상품 상세(저장·좋아요)·상품 등록(등록하기)처럼
  * "하단 액션 버튼" 형태를 공유하는 feature 푸터에서 재사용합니다.
  * 버튼의 너비(`flex-1` 등)는 이 컴포넌트가 강제하지 않고 각 버튼의 `className`으로 지정합니다.
@@ -40,8 +40,8 @@ export default function ActionFooter({ children, className }: ActionFooterProps)
   const actionCount = Children.toArray(children).length;
 
   return (
-    <Footer className={cn("flex", actionCount > 1 ? "gap-2" : "gap-0", className)}>
+    <FooterBase className={cn("flex", actionCount > 1 ? "gap-2" : "gap-0", className)}>
       {children}
-    </Footer>
+    </FooterBase>
   );
 }

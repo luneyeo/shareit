@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import Button from "../button/Button";
 import ActionFooter from "./ActionFooter";
-import Footer from "./Footer";
+import FooterBase from "./FooterBase";
 
 /**
  * 하단 고정 푸터 모음.
- * - `Footer`: 하단 고정 바 껍데기 (기본 메뉴 탭바 등)
- * - `ActionFooter`: `Footer` 위에 액션 버튼 줄을 얹은 공통 레이아웃 (상세·등록)
+ * - `FooterBase`: 하단 고정 바 껍데기 (기본 메뉴 탭바 등)
+ * - `ActionFooter`: `FooterBase` 위에 액션 버튼 줄을 얹은 공통 레이아웃 (상세·등록)
  */
 const meta: Meta = {
   title: "Shared/Footer",
@@ -18,17 +18,17 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-/** Footer 껍데기 — 기본 메뉴 탭바: 홈 · 대시보드 · 좋아요 · 마이. (내부 아이템은 예시 placeholder) */
+/** FooterBase 껍데기 — 기본 메뉴 탭바: 홈 · 대시보드 · 좋아요 · 마이. (내부 아이템은 예시 placeholder) */
 export const MenuNav: Story = {
-  name: "Footer / 기본 메뉴 탭바",
+  name: "FooterBase / 기본 메뉴 탭바",
   render: () => (
-    <Footer className="flex items-center justify-around">
+    <FooterBase className="flex items-center justify-around">
       {["홈", "대시보드", "좋아요", "마이"].map((label) => (
         <span key={label} className="text-14-medium text-gray-500">
           {label}
         </span>
       ))}
-    </Footer>
+    </FooterBase>
   ),
 };
 
