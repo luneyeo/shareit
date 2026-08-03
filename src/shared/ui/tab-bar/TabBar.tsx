@@ -3,7 +3,7 @@
 import type { SVGProps } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { IcHeartFilled, IcHeartOutlined, IcTabDashboard, IcTabMy } from "@/shared/assets/icons";
+import { IcTabMy } from "@/shared/assets/icons";
 import { cn } from "@/shared/utils/cn";
 import FooterBase from "../footer/FooterBase";
 
@@ -18,8 +18,8 @@ type TabItem = {
 
 // TODO: 대시보드/좋아요 경로는 실제 라우트가 정해지면 교체 (마이페이지만 실제 경로 /mypage)
 const TAB_ITEMS: TabItem[] = [
-  { href: "/dashboard", label: "대시보드", Icon: IcTabDashboard, ActiveIcon: IcTabDashboard },
-  { href: "/likes", label: "좋아요", Icon: IcHeartOutlined, ActiveIcon: IcHeartFilled },
+  // { href: "/dashboard", label: "대시보드", Icon: IcTabDashboard, ActiveIcon: IcTabDashboard },
+  // { href: "/likes", label: "좋아요", Icon: IcHeartOutlined, ActiveIcon: IcHeartFilled },
   { href: "/mypage", label: "마이페이지", Icon: IcTabMy, ActiveIcon: IcTabMy },
 ];
 
