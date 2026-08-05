@@ -6,6 +6,8 @@
 
 ---
 
+<br>
+
 ## 📌 프로젝트 상태
 
 | 항목          | 상태                   |
@@ -13,6 +15,8 @@
 | 현재 버전     | `v0.1.0` (pre-release) |
 | 진행 단계     | 초기 개발              |
 | 최근 업데이트 | 2026-08-05             |
+
+<br>
 
 ## ✨ 주요 기능
 
@@ -23,6 +27,8 @@
   - [ ] 상품 수정
   - [ ] 상품 삭제
 - [ ] 좋아요 페이지
+
+<br>
 
 ## 🛠️ 기술 스택
 
@@ -49,6 +55,8 @@
 ![pnpm](https://img.shields.io/badge/pnpm-F69220?style=flat-square&logo=pnpm&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
 
+<br>
+
 ## 📂 폴더 구조
 
 큰 틀에서 `app`, `features`, `shared`, `views` 네 영역으로 구분합니다.
@@ -67,6 +75,8 @@ src/
 - **`views`** — 페이지 조합용 영역으로, `features`와 `shared`를 조합해 하나의 페이지를 구성합니다.
 - **`features`** — 도메인별 기능 단위로 UI·API·타입을 관리합니다.
 - **`shared`** — 여러 곳에서 재사용하는 공통 리소스를 모아둡니다.
+
+<br>
 
 ## 🚀 시작하기
 
