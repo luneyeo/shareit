@@ -63,7 +63,7 @@
 src/
 ├── app/       # 라우팅 전용
 │   ├── (public)/   # 비로그인 접근 (랜딩, 인증)
-│   └── (private)/  # 로그인 필요 — (tab) 탭바 레이아웃 / (action) 액션 푸터 레이아웃
+│   └── (private)/  # 로그인 필요
 ├── views/     # 페이지 조합용 (features·shared를 조합해 한 페이지 구성)
 ├── features/  # 도메인별 기능 단위 (UI·API·타입)
 └── shared/    # 공통 리소스 (UI 컴포넌트, 유틸, 훅, 스타일 등)
@@ -98,7 +98,7 @@ pnpm dev
 
 실행 후 `http://localhost:3000` 에서 확인할 수 있습니다.
 
----
+<!-- ---
 
 ## 🗺️ 로드맵
 
@@ -107,6 +107,6 @@ pnpm dev
 - [ ] 문서화 보강
 - [ ] 정식 릴리스 (v1.0.0)
 
-> 자세한 계획은 [Issues](https://github.com/luneyeo/shareit/issues) 를 참고하세요.
+> 자세한 계획은 [Issues](https://github.com/luneyeo/shareit/issues)를 참고하세요.
 
----
+--- -->
