@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 프로젝트 이름
 
-## Getting Started
+> 🚧 **개발 중 (Work in Progress)** — 이 프로젝트는 아직 활발히 개발 중이며, 내용과 API가 변경될 수 있습니다.
 
-First, run the development server:
+사용자가 추천하고 싶은 제품을 그룹 단위로 공유할 수 있는 서비스로, 대시보드 형태로 탐색할 수 있는 커뮤니티 서비스로 사용자 간 정보 공유 UX 개선에 중점을 둔 프로젝트
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+<br>
+
+## 📌 프로젝트 상태
+
+| 항목          | 상태                   |
+| ------------- | ---------------------- |
+| 현재 버전     | `v0.1.0` (pre-release) |
+| 진행 단계     | 초기 개발              |
+| 최근 업데이트 | 2026-08-05             |
+
+<br>
+
+## ✨ 주요 기능
+
+- [ ] 소셜 로그인 (Kakao)
+- [ ] 마이페이지 (그룹 관리)
+- [ ] 상품 관리
+  - [ ] 상품 등록
+  - [ ] 상품 수정
+  - [ ] 상품 삭제
+- [ ] 좋아요 페이지
+
+<br>
+
+## 🛠️ 기술 스택
+
+**언어**
+
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+
+**프레임워크**
+
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+
+**상태 관리 · 데이터 페칭** (도입 예정)
+
+![Zustand](https://img.shields.io/badge/Zustand-planned-764ABC?style=flat-square&logo=react&logoColor=white)
+![TanStack Query](https://img.shields.io/badge/TanStack_Query-planned-FF4154?style=flat-square&logo=reactquery&logoColor=white)
+
+**데이터베이스** (도입 예정)
+
+![Supabase](https://img.shields.io/badge/Supabase-planned-3FCF8E?style=flat-square&logo=supabase&logoColor=white)
+
+**패키지 매니저 · 배포**
+
+![pnpm](https://img.shields.io/badge/pnpm-F69220?style=flat-square&logo=pnpm&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
+
+<br>
+
+## 📂 폴더 구조
+
+큰 틀에서 `app`, `features`, `shared`, `views` 네 영역으로 구분합니다.
+
+```
+src/
+├── app/       # 라우팅 전용
+│   ├── (public)/   # 비로그인 접근 (랜딩, 인증)
+│   └── (private)/  # 로그인 필요
+├── views/     # 페이지 조합용 (features·shared를 조합해 한 페이지 구성)
+├── features/  # 도메인별 기능 단위 (UI·API·타입)
+└── shared/    # 공통 리소스 (UI 컴포넌트, 유틸, 훅, 스타일 등)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **`app`** — 라우팅 전용 영역으로, 경로와 레이아웃만 담당합니다.
+- **`views`** — 페이지 조합용 영역으로, `features`와 `shared`를 조합해 하나의 페이지를 구성합니다.
+- **`features`** — 도메인별 기능 단위로 UI·API·타입을 관리합니다.
+- **`shared`** — 여러 곳에서 재사용하는 공통 리소스를 모아둡니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<br>
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 시작하기
 
-## Learn More
+### 설치
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# 저장소 복제
+git clone https://github.com/luneyeo/shareit.git
+cd project-name
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 의존성 설치
+pnpm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 실행
 
-## Deploy on Vercel
+```bash
+# 개발 서버 실행
+pnpm dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+실행 후 `http://localhost:3000` 에서 확인할 수 있습니다.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<!-- ---
+
+## 🗺️ 로드맵
+
+- [ ] 핵심 기능 완성
+- [ ] 테스트 커버리지 확보
+- [ ] 문서화 보강
+- [ ] 정식 릴리스 (v1.0.0)
+
+> 자세한 계획은 [Issues](https://github.com/luneyeo/shareit/issues)를 참고하세요.
+
+--- -->
