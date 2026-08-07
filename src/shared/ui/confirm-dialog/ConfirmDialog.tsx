@@ -1,11 +1,10 @@
 "use client";
 
-import type { ReactNode } from "react";
 import Button from "@/shared/ui/button/Button";
 
 interface ConfirmDialogProps {
   /** 다이얼로그에 표시할 메시지 */
-  message: ReactNode;
+  message: string;
   /** 확인 버튼 문구 */
   confirmText?: string;
   /** 취소 버튼 문구 */
