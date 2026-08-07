@@ -1,11 +1,7 @@
-import type { ReactNode } from "react";
+import type { ComponentPropsWithRef } from "react";
 import { cn } from "@/shared/utils/cn";
 
-interface OverlaySurfaceProps {
-  children: ReactNode;
-  /** 서피스 컨테이너에 추가할 클래스명 */
-  className?: string;
-}
+type OverlaySurfaceProps = ComponentPropsWithRef<"div">;
 
 /**
  * 오버레이 위에 떠 있는 콘텐츠의 배경(서피스) UI만 담당하는 컴포넌트입니다.
@@ -23,6 +19,6 @@ interface OverlaySurfaceProps {
  * </OverlayPortal>
  * ```
  */
-export default function OverlaySurface({ children, className }: OverlaySurfaceProps) {
-  return <div className={cn("rounded-2xl bg-white", className)}>{children}</div>;
+export default function OverlaySurface({ className, ...props }: OverlaySurfaceProps) {
+  return <div className={cn("rounded-2xl bg-white", className)} {...props} />;
 }

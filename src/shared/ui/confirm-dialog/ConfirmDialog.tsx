@@ -23,7 +23,11 @@ interface ConfirmDialogProps {
  *
  * @example
  * ```tsx
- * <OverlayPortal onClose={handleCancel} surfaceClassName="w-full max-w-xs">
+ * <OverlayPortal
+ *   ariaLabel="삭제 확인"
+ *   onClose={handleCancel}
+ *   surfaceClassName="w-full max-w-xs"
+ * >
  *   <ConfirmDialog
  *     message="정말 삭제하시겠어요?"
  *     confirmText="삭제"
