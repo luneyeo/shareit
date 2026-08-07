@@ -53,7 +53,7 @@ export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownP
       {isOpen && (
         <ul
           {...listboxProps}
-          className="absolute left-0 top-full z-10 mt-2 max-h-72 min-w-40 overflow-auto rounded-xl bg-white py-1 shadow-lg outline-none"
+          className="absolute left-0 top-full z-dropdown mt-2 max-h-72 min-w-40 overflow-auto rounded-xl bg-white py-1 shadow-lg outline-none"
         >
           {groups.map((group, index) => (
             <li
