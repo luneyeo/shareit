@@ -1,0 +1,5 @@
+@theme {
+  --z-index-dropdown: 10; /* 드롭다운, 팝오버 등 인라인 플로팅 요소 */
+  --z-index-footer: 40; /* 하단 고정 푸터/탭바 */
+  --z-index-overlay: 50; /* 모달·다이얼로그 오버레이 배경 */
+}
