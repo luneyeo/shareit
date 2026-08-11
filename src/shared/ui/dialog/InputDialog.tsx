@@ -4,8 +4,8 @@ import FormField from "@/shared/ui/form/FormField";
 interface InputDialogProps {
   /** 다이얼로그 제목 */
   title: string;
-  /** 입력 필드 라벨 */
-  label: string;
+  /** 입력 필드 라벨. 생략 시 라벨 없이 입력 필드만 렌더링하며, 제목을 접근성 이름으로 사용합니다. */
+  label?: string;
   /** 입력값 (제어 컴포넌트) */
   value: string;
   /** 입력값 변경 시 호출됩니다. */
@@ -70,6 +70,7 @@ export default function InputDialog({
     >
       <FormField
         label={label}
+        aria-label={label ? undefined : title}
         placeholder={placeholder}
         value={value}
         onChange={(event) => onChange(event.target.value)}

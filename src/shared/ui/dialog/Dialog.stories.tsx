@@ -14,6 +14,7 @@ import InputDialog from "./InputDialog";
  */
 const meta: Meta = {
   title: "Shared/Dialog",
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -21,7 +22,11 @@ type Story = StoryObj;
 
 /** 스토리 공통 서피스 래퍼. */
 function Surface({ children }: { children: React.ReactNode }) {
-  return <div className="w-full max-w-xs rounded-2xl bg-white shadow-lg">{children}</div>;
+  return (
+    <div className="w-full max-w-xs rounded-2xl bg-white shadow-[0_0_20px_rgba(0,0,0,0.12)]">
+      {children}
+    </div>
+  );
 }
 
 /** ConfirmDialog — 삭제 확인 (커스텀 버튼 문구). */
@@ -71,6 +76,21 @@ export const Input: Story = {
       label="이름"
       placeholder="송파구 공주들"
       confirmText="생성"
+      onConfirm={fn()}
+      onCancel={fn()}
+      onClose={fn()}
+    />
+  ),
+};
+
+/** InputDialog — 라벨 없이 입력 필드만. 제목이 접근성 이름(aria-label)으로 쓰입니다. */
+export const InputNoLabel: Story = {
+  name: "InputDialog / 라벨 없음 (그룹 입장)",
+  render: () => (
+    <InputDialogDemo
+      title="그룹 입장하기"
+      placeholder="입장 코드 입력하기"
+      confirmText="입장"
       onConfirm={fn()}
       onCancel={fn()}
       onClose={fn()}
