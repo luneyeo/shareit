@@ -53,7 +53,7 @@ export default function DialogBase({
           <button
             type="button"
             aria-label="닫기"
-            className="text-gray-400 transition-colors hover:text-gray-600"
+            className="text-gray-400 transition-colors hover:text-gray-800"
             onClick={onClose ?? onCancel}
           >
             <IcClose />
