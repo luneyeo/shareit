@@ -1,6 +1,4 @@
-"use client";
-
-import Button from "@/shared/ui/button/Button";
+import DialogBase from "@/shared/ui/dialog/DialogBase";
 
 interface ConfirmDialogProps {
   /** 다이얼로그에 표시할 메시지 */
@@ -46,16 +44,13 @@ export default function ConfirmDialog({
   onCancel,
 }: ConfirmDialogProps) {
   return (
-    <div className="flex flex-col gap-6 p-6">
+    <DialogBase
+      confirmText={confirmText}
+      cancelText={cancelText}
+      onConfirm={onConfirm}
+      onCancel={onCancel}
+    >
       <p className="typo-16-medium text-center text-gray-900">{message}</p>
-      <div className="flex gap-2">
-        <Button theme="secondary" size="md" className="flex-1" onClick={onCancel}>
-          {cancelText}
-        </Button>
-        <Button theme="primary" size="md" className="flex-1" onClick={onConfirm}>
-          {confirmText}
-        </Button>
-      </div>
-    </div>
+    </DialogBase>
   );
 }
