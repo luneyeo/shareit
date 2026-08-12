@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import DropdownMenuBase from "./DropdownMenuBase";
 import DropdownSelectItem from "../item/DropdownSelectItem";
 
@@ -23,6 +24,8 @@ interface DropdownSelectMenuProps {
   className?: string;
   /** 항목 사이 구분선 표시 여부. 목록형은 기본으로 구분선이 없습니다. */
   divided?: boolean;
+  /** 목록 아래에 표시할 푸터 영역. (예: "새 그룹 만들기" 액션 버튼) */
+  footer?: ReactNode;
 }
 
 /**
@@ -31,6 +34,7 @@ interface DropdownSelectMenuProps {
  * - `options` 배열을 받아 각 요소를 `DropdownSelectItem`으로 렌더링하는 데이터 기반 메뉴입니다.
  * - 단일 선택 목록으로, `selectedValue`와 일치하는 항목에 선택 표시가 붙습니다.
  * - 항목을 탭하면 해당 `value`로 `onSelect`가 호출되고 메뉴가 닫힙니다.
+ * - `footer`로 목록 아래에 "새 그룹 만들기" 같은 별도 액션을 배치할 수 있습니다.
  * - 동작을 실행하는 메뉴가 필요하면 `DropdownActionMenu`를 사용하세요.
  *
  * @example
@@ -53,9 +57,10 @@ export default function DropdownSelectMenu({
   onSelect,
   className,
   divided = false,
+  footer,
 }: DropdownSelectMenuProps) {
   return (
-    <DropdownMenuBase className={className} divided={divided}>
+    <DropdownMenuBase className={className} divided={divided} footer={footer}>
       {options.map((option) => (
         <DropdownSelectItem
           key={option.value}

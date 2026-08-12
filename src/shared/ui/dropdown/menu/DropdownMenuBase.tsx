@@ -13,6 +13,8 @@ interface DropdownMenuBaseProps {
   className?: string;
   /** `DropdownList`로 전달되어 항목 사이 구분선을 그립니다. */
   divided?: boolean;
+  /** 목록 아래(서피스 안·리스트 밖)에 표시할 푸터 영역. (예: "새 그룹 만들기" 액션) */
+  footer?: ReactNode;
 }
 
 const MENUITEM_SELECTOR = '[role="menuitem"]:not(:disabled)';
@@ -27,7 +29,12 @@ const MENUITEM_SELECTOR = '[role="menuitem"]:not(:disabled)';
  * - 항목 렌더링 방식은 `DropdownActionMenu`(children)·`DropdownSelectMenu`(데이터
  *   배열)가 이 위에서 결정합니다. 커스텀 메뉴가 필요하면 직접 사용할 수도 있습니다.
  */
-export default function DropdownMenuBase({ children, className, divided }: DropdownMenuBaseProps) {
+export default function DropdownMenuBase({
+  children,
+  className,
+  divided,
+  footer,
+}: DropdownMenuBaseProps) {
   const { isOpen, close, triggerId, menuId, triggerRef, menuRef } = useDropdownContext();
 
   // 열릴 때 첫 항목으로 포커스를 옮겨 스크린리더가 메뉴 안에서 시작하도록 한다.
@@ -66,6 +73,7 @@ export default function DropdownMenuBase({ children, className, divided }: Dropd
       >
         {children}
       </DropdownList>
+      {footer}
     </DropdownSurface>
   );
 }

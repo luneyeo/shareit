@@ -47,7 +47,9 @@ export const ActionMenu: Story = {
           <IcMenu />
         </DropdownTrigger>
         <DropdownActionMenu className="right-0 top-full mt-2 w-40">
-          <DropdownActionItem onClick={fn()}>상품 등록</DropdownActionItem>
+          <DropdownActionItem emphasis={"primary"} onClick={fn()}>
+            상품 등록
+          </DropdownActionItem>
           <DropdownActionItem onClick={fn()}>그룹 입장</DropdownActionItem>
         </DropdownActionMenu>
       </DropdownProvider>
@@ -76,10 +78,22 @@ export const SelectMenu: Story = {
             <IcChevronDown />
           </DropdownTrigger>
           <DropdownSelectMenu
-            className="left-0 top-full mt-2 w-80"
+            className="left-0 top-full mt-2 w-80 p-3.5"
             options={GROUP_OPTIONS}
             selectedValue={selected}
             onSelect={setSelected}
+            footer={
+              <button
+                type="button"
+                onClick={fn()}
+                className="flex w-full items-center gap-3 border-t border-gray-100 px-5 py-4 text-left typo-16-medium text-primary-600 transition-colors hover:bg-gray-50"
+              >
+                <span className="flex size-7 items-center justify-center rounded-full bg-primary-600">
+                  <IcPlus />
+                </span>
+                새 그룹 만들기
+              </button>
+            }
           />
         </DropdownProvider>
       </DemoStage>
@@ -88,13 +102,13 @@ export const SelectMenu: Story = {
 };
 
 /**
- * 원시 조합 (정적) — 그룹 목록에 하단 "새 그룹 만들기" 액션까지 함께 둔 전체 디자인.
- * `DropdownSelectMenu`는 옵션만 렌더링하므로, 이런 푸터 액션이 필요하면 원시 조합으로 구성합니다.
+ * 원시 조합 (정적) — Provider 없이 `DropdownSurface`/`DropdownList`/항목을 직접 조합한 예시.
+ * 같은 디자인을 상태·데이터와 함께 쓰려면 위 `SelectMenu`처럼 `DropdownSelectMenu`(+`footer`)를 사용합니다.
  */
 export const RawGroupList: Story = {
   name: "원시 조합 / 그룹 목록 + 액션",
   render: () => (
-    <DropdownSurface className="w-80">
+    <DropdownSurface className="w-80 p-3.5">
       <DropdownList>
         <DropdownSelectItem selected description="멤버 26명" onClick={fn()}>
           송파구 공주들
@@ -105,19 +119,17 @@ export const RawGroupList: Story = {
         <DropdownSelectItem description="멤버 26명" onClick={fn()}>
           송파구 공주들
         </DropdownSelectItem>
-        <DropdownActionItem
-          emphasis="primary"
-          className="border-t border-gray-100"
-          startIcon={
-            <span className="flex size-9 items-center justify-center rounded-full bg-primary-600">
-              <IcPlus />
-            </span>
-          }
-          onClick={fn()}
-        >
-          새 그룹 만들기
-        </DropdownActionItem>
       </DropdownList>
+      <button
+        type="button"
+        onClick={fn()}
+        className="flex w-full items-center gap-3 border-t border-gray-100 px-5 py-4 text-left typo-16-medium text-primary-600 transition-colors hover:bg-gray-50"
+      >
+        <span className="flex size-7 items-center justify-center rounded-full bg-primary-600">
+          <IcPlus />
+        </span>
+        새 그룹 만들기
+      </button>
     </DropdownSurface>
   ),
 };
