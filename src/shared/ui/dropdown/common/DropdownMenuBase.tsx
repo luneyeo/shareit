@@ -17,7 +17,7 @@ interface DropdownMenuBaseProps {
   footer?: ReactNode;
 }
 
-const MENUITEM_SELECTOR = '[role="menuitem"]:not(:disabled)';
+const MENUITEM_SELECTOR = '[role="menuitem"]:not(:disabled),[role="menuitemradio"]:not(:disabled)';
 
 /**
  * 드롭다운 메뉴의 공통 껍데기(shell) 컴포넌트입니다.

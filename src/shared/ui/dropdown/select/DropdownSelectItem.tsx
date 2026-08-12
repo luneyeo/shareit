@@ -37,7 +37,8 @@ export default function DropdownSelectItem({
 }: DropdownSelectItemProps) {
   return (
     <DropdownItemBase
-      aria-current={selected || undefined}
+      role="menuitemradio"
+      aria-checked={selected}
       className={cn("rounded-xl", selected && "bg-primary-100", className)}
       {...props}
     >
