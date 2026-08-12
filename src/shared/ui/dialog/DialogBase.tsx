@@ -19,6 +19,8 @@ interface DialogBaseProps {
   onCancel: () => void;
   /** 헤더의 닫기(X) 버튼 클릭 시 호출됩니다. 미전달 시 `onCancel`이 사용됩니다. */
   onClose?: () => void;
+  /** `true`면 콘텐츠를 `<form>`으로 감싸 확인 버튼을 submit으로 동작시킵니다. 입력 필드에서 Enter로도 제출됩니다. */
+  asForm?: boolean;
 }
 
 /**
@@ -44,9 +46,10 @@ export default function DialogBase({
   onConfirm,
   onCancel,
   onClose,
+  asForm = false,
 }: DialogBaseProps) {
-  return (
-    <div className="flex flex-col gap-4 p-6">
+  const content = (
+    <>
       {title && (
         <div className="flex items-center justify-between">
           <h2 className="typo-18-bold text-gray-900">{title}</h2>
@@ -65,10 +68,32 @@ export default function DialogBase({
         <Button theme="secondary" size="md" className="flex-1" onClick={onCancel}>
           {cancelText}
         </Button>
-        <Button theme="primary" size="md" className="flex-1" onClick={onConfirm}>
+        <Button
+          theme="primary"
+          size="md"
+          className="flex-1"
+          type={asForm ? "submit" : "button"}
+          onClick={asForm ? undefined : onConfirm}
+        >
           {confirmText}
         </Button>
       </div>
-    </div>
+    </>
+  );
+
+  const className = "flex flex-col gap-4 p-6";
+
+  return asForm ? (
+    <form
+      className={className}
+      onSubmit={(event) => {
+        event.preventDefault();
+        onConfirm();
+      }}
+    >
+      {content}
+    </form>
+  ) : (
+    <div className={className}>{content}</div>
   );
 }

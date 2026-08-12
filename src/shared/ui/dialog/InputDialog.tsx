@@ -61,6 +61,7 @@ export default function InputDialog({
 }: InputDialogProps) {
   return (
     <DialogBase
+      asForm
       title={title}
       confirmText={confirmText}
       cancelText={cancelText}

@@ -62,23 +62,32 @@ function InputDialogDemo(
   const [value, setValue] = useState("");
   return (
     <Surface>
-      <InputDialog {...args} value={value} onChange={setValue} />
+      <InputDialog
+        {...args}
+        value={value}
+        onChange={setValue}
+        onConfirm={() => alert(value)}
+        onCancel={() => setValue("")}
+      />
     </Surface>
   );
 }
 
 /** InputDialog — 새 그룹 생성. 입력창에 직접 타이핑할 수 있습니다. */
-export const Input: Story = {
+export const Input: StoryObj<typeof InputDialogDemo> = {
   name: "InputDialog / 새 그룹 생성",
-  render: () => (
+  args: {
+    onConfirm: fn(),
+    onCancel: fn(),
+    onClose: fn(),
+  },
+  render: (args) => (
     <InputDialogDemo
+      {...args}
       title="새 그룹 생성"
       label="이름"
       placeholder="송파구 공주들"
       confirmText="생성"
-      onConfirm={fn()}
-      onCancel={fn()}
-      onClose={fn()}
     />
   ),
 };
