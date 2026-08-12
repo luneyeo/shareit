@@ -10,13 +10,12 @@ const buttonVariants = cva(
       theme: {
         primary:
           "bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-700 border-transparent",
-        secondary:
-          "bg-white text-primary-600 border-primary-500 hover:bg-gray-100 hover:border-gray-100",
+        secondary: "bg-white text-primary-600 border-primary-500 hover:bg-gray-100",
       },
       size: {
-        lg: "h-12.5 text-16-bold",
-        md: "h-11 text-14-medium",
-        sm: "h-7 text-14-medium",
+        lg: "h-12.5 typo-16-bold",
+        md: "h-11 typo-14-medium",
+        sm: "h-7 typo-14-medium",
       },
     },
     defaultVariants: {
@@ -46,9 +45,17 @@ const buttonVariants = cva(
  * <Button theme="primary" size="lg" className="w-full" disabled>등록하기</Button>
  * ```
  */
-export default function Button({ icon, children, theme, size, className, ...props }: ButtonProps) {
+export default function Button({
+  icon,
+  children,
+  theme,
+  size,
+  className,
+  type = "button",
+  ...props
+}: ButtonProps) {
   return (
-    <button className={cn(buttonVariants({ theme, size }), className)} {...props}>
+    <button type={type} className={cn(buttonVariants({ theme, size }), className)} {...props}>
       {icon && <span>{icon}</span>}
       {children}
     </button>
