@@ -19,8 +19,17 @@ type DropdownTriggerProps = ComponentPropsWithRef<"button">;
  * </DropdownTrigger>
  * ```
  */
-export default function DropdownTrigger({ onClick, ...props }: DropdownTriggerProps) {
+export default function DropdownTrigger({ onClick, ref, ...props }: DropdownTriggerProps) {
   const { isOpen, toggle, triggerId, menuId, triggerRef } = useDropdownContext();
+
+  const setRef = (node: HTMLButtonElement | null) => {
+    triggerRef.current = node;
+    if (typeof ref === "function") {
+      ref(node);
+    } else if (ref) {
+      ref.current = node;
+    }
+  };
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     onClick?.(event);
@@ -30,7 +39,7 @@ export default function DropdownTrigger({ onClick, ...props }: DropdownTriggerPr
   return (
     <button
       {...props}
-      ref={triggerRef}
+      ref={setRef}
       id={triggerId}
       type="button"
       aria-haspopup="menu"
