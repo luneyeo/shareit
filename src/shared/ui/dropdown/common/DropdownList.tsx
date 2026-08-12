@@ -31,7 +31,11 @@ export default function DropdownList({
   return (
     <ul
       role="menu"
-      className={cn("flex flex-col", divided && "divide-y divide-gray-100", className)}
+      className={cn(
+        "flex flex-col overflow-hidden",
+        divided && "divide-y divide-gray-100",
+        className
+      )}
       {...props}
     >
       {children}
