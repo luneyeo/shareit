@@ -1,4 +1,5 @@
 export { default as IcBookmark } from "./ic-bookmark.svg";
+export { default as IcCheck } from "./ic-check.svg";
 export { default as IcChevronDown } from "./ic-chevron-down.svg";
 export { default as IcChevronLeft } from "./ic-chevron-left.svg";
 export { default as IcClose } from "./ic-x.svg";
