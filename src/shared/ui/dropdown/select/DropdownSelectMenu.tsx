@@ -1,3 +1,5 @@
+"use client";
+
 import type { ReactNode } from "react";
 import DropdownMenuBase from "../common/DropdownMenuBase";
 import DropdownSelectItem from "./DropdownSelectItem";
