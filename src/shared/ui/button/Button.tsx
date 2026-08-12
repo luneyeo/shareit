@@ -45,9 +45,17 @@ const buttonVariants = cva(
  * <Button theme="primary" size="lg" className="w-full" disabled>등록하기</Button>
  * ```
  */
-export default function Button({ icon, children, theme, size, className, ...props }: ButtonProps) {
+export default function Button({
+  icon,
+  children,
+  theme,
+  size,
+  className,
+  type = "button",
+  ...props
+}: ButtonProps) {
   return (
-    <button className={cn(buttonVariants({ theme, size }), className)} {...props}>
+    <button type={type} className={cn(buttonVariants({ theme, size }), className)} {...props}>
       {icon && <span>{icon}</span>}
       {children}
     </button>
