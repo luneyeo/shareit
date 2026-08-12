@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import DropdownMenuBase from "./DropdownMenuBase";
-import DropdownSelectItem from "../item/DropdownSelectItem";
+import DropdownMenuBase from "../common/DropdownMenuBase";
+import DropdownSelectItem from "./DropdownSelectItem";
 
 export interface DropdownSelectOption {
   /** 선택 비교와 React key에 사용하는 고유 값 */

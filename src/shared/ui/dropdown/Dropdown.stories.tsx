@@ -4,12 +4,12 @@ import { fn } from "storybook/test";
 import { IcChevronDown, IcMenu, IcPlus } from "@/shared/assets/icons";
 import DropdownProvider from "./model/DropdownProvider";
 import DropdownTrigger from "./common/DropdownTrigger";
-import DropdownActionMenu from "./menu/DropdownActionMenu";
-import DropdownSelectMenu, { type DropdownSelectOption } from "./menu/DropdownSelectMenu";
+import DropdownActionMenu from "./action/DropdownActionMenu";
+import DropdownSelectMenu, { type DropdownSelectOption } from "./select/DropdownSelectMenu";
 import DropdownSurface from "./common/DropdownSurface";
 import DropdownList from "./common/DropdownList";
-import DropdownActionItem from "./item/DropdownActionItem";
-import DropdownSelectItem from "./item/DropdownSelectItem";
+import DropdownActionItem from "./action/DropdownActionItem";
+import DropdownSelectItem from "./select/DropdownSelectItem";
 
 /**
  * `DropdownProvider`(열림 상태) · `DropdownTrigger`(트리거) 위에 두 성격의 메뉴를

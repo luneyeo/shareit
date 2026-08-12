@@ -3,8 +3,8 @@
 import { useEffect, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 import { cn } from "@/shared/utils/cn";
 import { useDropdownContext } from "../model/DropdownContext";
-import DropdownSurface from "../common/DropdownSurface";
-import DropdownList from "../common/DropdownList";
+import DropdownSurface from "./DropdownSurface";
+import DropdownList from "./DropdownList";
 
 interface DropdownMenuBaseProps {
   /** 메뉴 항목(`DropdownActionItem`·`DropdownSelectItem`)들을 배치합니다. */
@@ -23,7 +23,8 @@ const MENUITEM_SELECTOR = '[role="menuitem"]:not(:disabled)';
  * 드롭다운 메뉴의 공통 껍데기(shell) 컴포넌트입니다.
  *
  * - 열림 상태일 때만 렌더링되며, `DropdownSurface`(배경) + `DropdownList`(메뉴
- *   리스트)를 조합해 `DropdownProvider` 컨테이너(`relative`) 기준으로 띄웁니다.
+ *   리스트) + 선택적 `footer`(리스트 밖 영역)를 조합해 `DropdownProvider`
+ *   컨테이너(`relative`) 기준으로 띄웁니다.
  * - 열고 닫는 공통 동작(열릴 때 첫 항목 포커스, 바깥 탭·`Escape` 닫기, 항목 실행 시
  *   닫기)과 스크린리더용 ARIA를 담당합니다. (모바일 타깃 기준)
  * - 항목 렌더링 방식은 `DropdownActionMenu`(children)·`DropdownSelectMenu`(데이터

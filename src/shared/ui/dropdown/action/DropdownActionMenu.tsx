@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import DropdownMenuBase from "./DropdownMenuBase";
+import DropdownMenuBase from "../common/DropdownMenuBase";
 
 interface DropdownActionMenuProps {
   /** 동작을 실행하는 항목(`DropdownActionItem`)들을 배치합니다. */

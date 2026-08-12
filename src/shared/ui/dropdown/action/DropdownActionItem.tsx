@@ -2,7 +2,7 @@
 
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { cn } from "@/shared/utils/cn";
-import DropdownItemBase from "./DropdownItemBase";
+import DropdownItemBase from "../common/DropdownItemBase";
 
 interface DropdownActionItemProps extends ComponentPropsWithRef<"button"> {
   /** 항목 문구 */

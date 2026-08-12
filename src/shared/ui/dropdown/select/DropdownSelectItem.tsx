@@ -3,7 +3,7 @@
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { cn } from "@/shared/utils/cn";
 import { IcCheck } from "@/shared/assets/icons";
-import DropdownItemBase from "./DropdownItemBase";
+import DropdownItemBase from "../common/DropdownItemBase";
 
 interface DropdownSelectItemProps extends ComponentPropsWithRef<"button"> {
   /** 항목 제목 */
