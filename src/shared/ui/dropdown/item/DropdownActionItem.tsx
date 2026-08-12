@@ -41,7 +41,7 @@ export default function DropdownActionItem({
       {...props}
     >
       {startIcon && <span className="shrink-0">{startIcon}</span>}
-      <span className="typo-16-bold min-w-0 flex-1 truncate">{children}</span>
+      <span className="typo-16-medium text-center min-w-0 flex-1 truncate">{children}</span>
     </DropdownItemBase>
   );
 }

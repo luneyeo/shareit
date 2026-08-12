@@ -38,13 +38,13 @@ export default function DropdownSelectItem({
   return (
     <DropdownItemBase
       aria-current={selected || undefined}
-      className={cn(selected && "bg-primary-100", className)}
+      className={cn("rounded-xl", selected && "bg-primary-100", className)}
       {...props}
     >
-      <span className="flex min-w-0 flex-1 flex-col gap-1">
-        <span className="typo-16-bold truncate">{children}</span>
+      <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span className="typo-16-medium truncate">{children}</span>
         {description && (
-          <span className="typo-14-medium truncate text-gray-400">{description}</span>
+          <span className="typo-14-medium truncate text-gray-600">{description}</span>
         )}
       </span>
       {selected && <IcCheck className="shrink-0 text-primary-600" aria-hidden />}
