@@ -18,7 +18,7 @@ export function useMyGroups(): Group[] {
 
 // TODO: Supabase 연동 후 위 목업 버전을 아래 형태로 교체한다.
 // 조회는 비동기라 반환 타입이 { data, isLoading, error }로 바뀌므로,
-// 소비처(TabBar·views/dashboard)에서 로딩/에러 처리가 필요하다.
+// 소비처(TabBarFooter·views/dashboard)에서 로딩/에러 처리가 필요하다.
 //
 // import { useQuery } from "@tanstack/react-query";
 // import { createClient } from "@/shared/lib/supabase/client";

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMyGroups } from "@/shared/api/group/useMyGroups";
 import { cn } from "@/shared/utils/cn";
-import FooterBase from "../footer/FooterBase";
+import FooterBase from "./FooterBase";
 import { TAB_ITEMS } from "./tabItems";
 
 /**
@@ -18,10 +18,10 @@ import { TAB_ITEMS } from "./tabItems";
  * // app/(private)/layout.tsx
  * <>
  *   {children}
- *   <TabBar />
+ *   <TabBarFooter />
  * </>
  */
-export default function TabBar() {
+export default function TabBarFooter() {
   const pathname = usePathname();
   const groups = useMyGroups();
   const defaultGroupId = groups[0]?.id;
