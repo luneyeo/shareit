@@ -22,11 +22,11 @@ export function DashboardPage() {
 
   return (
     <>
-      <div className="flex flex-col gap-5 p-5">
+      <div className="p-5 pb-3">
         <GroupDropdown groups={groups} currentGroupId={dashboardId} />
-        <CategoryTabs />
       </div>
-      <section aria-labelledby="product-list-heading" className="px-4.5 pb-4.5">
+      <CategoryTabs />
+      <section aria-labelledby="product-list-heading" className="p-4.5">
         <h2 id="product-list-heading" className="sr-only">
           상품 목록
         </h2>

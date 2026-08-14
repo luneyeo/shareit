@@ -20,7 +20,7 @@ export default function CategoryTabs() {
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
-    <nav className="flex gap-5 border-b border-gray-200" aria-label="카테고리">
+    <nav className="flex border-b border-gray-200" aria-label="카테고리">
       {TABS.map(({ label, value }) => {
         const isActive = selected === value;
 
@@ -31,7 +31,7 @@ export default function CategoryTabs() {
             onClick={() => setSelected(value)}
             aria-current={isActive ? "true" : undefined}
             className={cn(
-              "-mb-px border-b-2 pb-2 whitespace-nowrap transition-colors",
+              "-mb-px border-b-2 px-3 py-2 whitespace-nowrap transition-colors",
               isActive
                 ? "border-primary-600 text-gray-900 typo-16-semibold"
                 : "border-transparent text-gray-400 typo-16-medium"
