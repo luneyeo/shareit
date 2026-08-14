@@ -1,5 +1,6 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import GroupDropdown from "@/features/dashboard/ui/GroupDropdown";
 import { useMyGroups } from "@/shared/api/group/useMyGroups";
 
@@ -12,10 +13,12 @@ import { useMyGroups } from "@/shared/api/group/useMyGroups";
  */
 export function DashboardPage() {
   const groups = useMyGroups();
+  // 현재 그룹은 URL(/dashboard/[dashboardId])의 dashboardId에서 파생한다.
+  const { dashboardId } = useParams<{ dashboardId: string }>();
 
   return (
     <div className="flex flex-col gap-5 p-5">
-      <GroupDropdown groups={groups} currentGroupId={groups[0].id} />
+      <GroupDropdown groups={groups} currentGroupId={dashboardId} />
     </div>
   );
 }
