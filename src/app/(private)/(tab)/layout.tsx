@@ -1,4 +1,4 @@
-import TabBarFooter from "@/shared/ui/footer/TabBarFooter";
+import TabBarFooter from "@/shared/ui/footer/tab-bar/TabBarFooter";
 
 /**
  * 기본 메뉴 탭바를 사용하는 페이지 그룹의 레이아웃.

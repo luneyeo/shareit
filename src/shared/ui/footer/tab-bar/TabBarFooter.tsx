@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMyGroups } from "@/shared/api/group/useMyGroups";
 import { cn } from "@/shared/utils/cn";
-import FooterBase from "./FooterBase";
+import FooterBase from "../base/FooterBase";
 import { TAB_ITEMS } from "./tabItems";
 
 /**
@@ -42,7 +42,7 @@ export default function TabBarFooter() {
               aria-current={isActive ? "page" : undefined}
               className={cn(
                 "flex flex-1 flex-col items-center gap-1",
-                isActive ? "text-primary-600" : "text-gray-400"
+                isActive ? "text-primary-600" : "text-gray-500"
               )}
             >
               <TabIcon className="h-6 w-6" />
