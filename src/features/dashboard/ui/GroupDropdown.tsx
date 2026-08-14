@@ -16,8 +16,7 @@ interface GroupDropdownProps {
   groups: Group[];
   currentGroupId: string;
 }
-
-/** 열림 상태에 따라 회전하는 트리거 화살표 아이콘. */
+/** 열림 상태에 따라 회전하는 트리거 화살표 아이콘 */
 function TriggerChevron() {
   const { isOpen } = useDropdownContext();
   return <IcChevronDown className={cn("h-5 w-5 transition-transform", isOpen && "rotate-180")} />;
@@ -27,15 +26,6 @@ function TriggerChevron() {
  * 홈 헤더의 그룹 선택 드롭다운입니다.
  *
  * 현재 그룹명을 제목처럼 노출하고, 선택하면 해당 대시보드로 이동합니다.
- * 열림 상태·키보드·포커스 등 listbox 상호작용은 `useListbox`가 담당합니다.
- *
- * - `groups`: 선택 가능한 그룹 목록
- * - `currentGroupId`: 현재 보고 있는 그룹의 id
- *
- * @example
- * ```tsx
- * <GroupDropdown groups={groups} currentGroupId={dashboardId} />
- * ```
  */
 export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownProps) {
   const router = useRouter();

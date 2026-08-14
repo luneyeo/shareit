@@ -6,5 +6,5 @@
  * export default DashboardPage
  */
 export function DashboardPage() {
-  return <div>DashboardPage</div>
+  return <div>DashboardPage</div>;
 }
