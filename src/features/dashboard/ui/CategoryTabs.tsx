@@ -17,6 +17,8 @@ const TABS: { label: string; value: string | null }[] = [
 ];
 
 export default function CategoryTabs() {
+  // TODO: 선택 상태를 DashboardPage로 끌어올려 ProductList의 필터 조건으로 전달할 것.
+  //       현재는 로컬 상태라 탭을 눌러도 상품 목록에 반영되지 않는다. (별도 이슈)
   const [selected, setSelected] = useState<string | null>(null);
 
   return (

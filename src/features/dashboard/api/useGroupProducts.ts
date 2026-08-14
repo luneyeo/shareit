@@ -12,6 +12,10 @@ const MOCK_TAGS = ["캠핑", "아웃도어", "가전", "패션"];
  *
  * TODO: API 연동 전까지 사용하는 임시 목업. groupId로 10개를 생성한다.
  * Supabase 연동 시 groupId로 실제 상품을 조회(useQuery)하도록 교체.
+ *
+ * TODO: 카테고리 필터 연동을 위해 상품 모델에 CATEGORIES와 호환되는 category 필드를 추가하고,
+ *       category 인자를 받아 조회/필터 조건으로 전달할 것.
+ *       (현재 MOCK_TAGS는 CATEGORIES와 값이 달라 필터 기준으로 쓸 수 없음 — 별도 이슈)
  */
 export function useGroupProducts(groupId: string): ProductCardData[] {
   return Array.from({ length: 10 }, (_, i) => ({
