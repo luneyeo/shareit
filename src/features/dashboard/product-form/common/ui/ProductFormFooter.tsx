@@ -1,5 +1,5 @@
 import Button from "@/shared/ui/button/Button";
-import ActionFooter from "@/shared/ui/footer/ActionFooter";
+import ActionFooter from "@/shared/ui/footer/action/ActionFooter";
 
 type ProductFormFooterProps = {
   /** 제출 버튼 문구. 페이지에 따라 다르게 전달합니다. 예: "등록하기" | "수정하기" */
