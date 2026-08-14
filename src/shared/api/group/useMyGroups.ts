@@ -2,7 +2,7 @@ import type { Group } from "./types";
 
 // TODO: 실제 Supabase 멤버십 조회로 교체. 현재는 데이터 계층 연동 전까지 사용하는 임시 목업.
 const MY_GROUPS: Group[] = [
-  { id: "g1", name: "송파구 공주들" },
+  { id: "g1", name: "송파구 공주들👸" },
   { id: "g2", name: "강남 러너스" },
   { id: "g3", name: "한강 자전거" },
 ];
