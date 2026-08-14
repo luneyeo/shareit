@@ -20,7 +20,7 @@ export default function CategoryTabs() {
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
-    <nav className="flex gap-5 border-b border-gray-100" aria-label="카테고리">
+    <nav className="flex gap-5 border-b border-gray-200" aria-label="카테고리">
       {TABS.map(({ label, value }) => {
         const isActive = selected === value;
 
