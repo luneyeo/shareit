@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import CategoryTabs from "@/features/dashboard/ui/CategoryTabs";
 import GroupDropdown from "@/features/dashboard/ui/GroupDropdown";
 import { useMyGroups } from "@/shared/api/group/useMyGroups";
 
@@ -19,6 +20,7 @@ export function DashboardPage() {
   return (
     <div className="flex flex-col gap-5 p-5">
       <GroupDropdown groups={groups} currentGroupId={dashboardId} />
+      <CategoryTabs />
     </div>
   );
 }
