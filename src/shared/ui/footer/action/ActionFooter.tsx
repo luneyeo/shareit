@@ -1,6 +1,6 @@
 import { Children } from "react";
 import { cn } from "@/shared/utils/cn";
-import FooterBase from "./FooterBase";
+import FooterBase from "../base/FooterBase";
 
 type ActionFooterProps = {
   /** 하단에 배치할 액션 버튼. 개수에 따라 버튼 사이 간격이 자동으로 설정됩니다. */

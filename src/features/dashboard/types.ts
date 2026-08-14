@@ -1,7 +1,4 @@
-export interface Group {
-  id: string;
-  name: string;
-}
+export type { Group } from "@/shared/api/group/types";
 
 export interface ProductDetail {
   id: string;

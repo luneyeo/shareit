@@ -1,27 +1,11 @@
 "use client";
 
-import type { SVGProps } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { IcTabMy } from "@/shared/assets/icons";
+import { useMyGroups } from "@/shared/api/group/useMyGroups";
 import { cn } from "@/shared/utils/cn";
-import FooterBase from "../footer/FooterBase";
-
-type TabItem = {
-  href: string;
-  label: string;
-  /** 비활성 상태 아이콘 */
-  Icon: React.FC<SVGProps<SVGSVGElement>>;
-  /** 활성 상태 아이콘 (없으면 `Icon`을 그대로 사용하며 색상만 currentColor로 변경) */
-  ActiveIcon: React.FC<SVGProps<SVGSVGElement>>;
-};
-
-// TODO: 대시보드/좋아요 경로는 실제 라우트가 정해지면 교체 (마이페이지만 실제 경로 /mypage)
-const TAB_ITEMS: TabItem[] = [
-  // { href: "/dashboard", label: "대시보드", Icon: IcTabDashboard, ActiveIcon: IcTabDashboard },
-  // { href: "/likes", label: "좋아요", Icon: IcHeartOutlined, ActiveIcon: IcHeartFilled },
-  { href: "/mypage", label: "마이페이지", Icon: IcTabMy, ActiveIcon: IcTabMy },
-];
+import FooterBase from "../base/FooterBase";
+import { TAB_ITEMS } from "./tabItems";
 
 /**
  * private 페이지 하단에 고정되는 기본 메뉴 탭바입니다.
@@ -34,11 +18,13 @@ const TAB_ITEMS: TabItem[] = [
  * // app/(private)/layout.tsx
  * <>
  *   {children}
- *   <TabBar />
+ *   <TabBarFooter />
  * </>
  */
-export default function TabBar() {
+export default function TabBarFooter() {
   const pathname = usePathname();
+  const groups = useMyGroups();
+  const defaultGroupId = groups[0]?.id;
 
   return (
     <FooterBase>
@@ -46,15 +32,17 @@ export default function TabBar() {
         {TAB_ITEMS.map(({ href, label, Icon, ActiveIcon }) => {
           const isActive = pathname === href || pathname.startsWith(`${href}/`);
           const TabIcon = isActive ? ActiveIcon : Icon;
+          // 대시보드 탭은 사용자가 속한 첫 그룹의 대시보드(/dashboard/{groupId})로 이동한다.
+          const to = href === "/dashboard" && defaultGroupId ? `${href}/${defaultGroupId}` : href;
 
           return (
             <Link
               key={href}
-              href={href}
+              href={to}
               aria-current={isActive ? "page" : undefined}
               className={cn(
                 "flex flex-1 flex-col items-center gap-1",
-                isActive ? "text-primary-600" : "text-gray-400"
+                isActive ? "text-primary-600" : "text-gray-500"
               )}
             >
               <TabIcon className="h-6 w-6" />

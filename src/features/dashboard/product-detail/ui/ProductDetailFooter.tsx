@@ -1,6 +1,6 @@
 import { IcBookmark, IcHeartFilled } from "@/shared/assets/icons";
 import Button from "@/shared/ui/button/Button";
-import ActionFooter from "@/shared/ui/footer/ActionFooter";
+import ActionFooter from "@/shared/ui/footer/action/ActionFooter";
 
 type ProductDetailFooterProps = {
   /** 저장하기(북마크) 클릭 핸들러 */

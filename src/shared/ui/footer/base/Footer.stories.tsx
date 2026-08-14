@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Button from "../button/Button";
-import ActionFooter from "./ActionFooter";
+import Button from "../../button/Button";
 import FooterBase from "./FooterBase";
+import ActionFooter from "../action/ActionFooter";
 
 /**
  * 하단 고정 푸터 모음.

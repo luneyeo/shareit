@@ -35,7 +35,7 @@ export default function FooterBase({ children, className }: FooterBaseProps) {
     <footer
       className={cn(
         "fixed inset-x-0 bottom-0 z-footer bg-white",
-        "border-t border-gray-100",
+        "border-t border-gray-200",
         "px-4 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]",
         className
       )}
