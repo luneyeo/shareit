@@ -3,13 +3,24 @@
 import { useRouter } from "next/navigation";
 
 import { IcChevronDown } from "@/shared/assets/icons";
-import { useListbox } from "@/shared/hooks/useListbox";
 import { cn } from "@/shared/utils/cn";
+import {
+  DropdownProvider,
+  DropdownTrigger,
+  DropdownSelectMenu,
+  useDropdownContext,
+} from "@/shared/ui/dropdown";
 import type { Group } from "@/features/dashboard/types";
 
 interface GroupDropdownProps {
   groups: Group[];
   currentGroupId: string;
+}
+
+/** 열림 상태에 따라 회전하는 트리거 화살표 아이콘. */
+function TriggerChevron() {
+  const { isOpen } = useDropdownContext();
+  return <IcChevronDown className={cn("h-5 w-5 transition-transform", isOpen && "rotate-180")} />;
 }
 
 /**
@@ -28,48 +39,26 @@ interface GroupDropdownProps {
  */
 export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownProps) {
   const router = useRouter();
-  const currentIndex = groups.findIndex((group) => group.id === currentGroupId);
-  const currentGroup = groups[currentIndex];
+  const currentGroup = groups.find((group) => group.id === currentGroupId);
 
-  const { isOpen, activeIndex, containerRef, triggerProps, listboxProps, getOptionProps } =
-    useListbox({
-      itemCount: groups.length,
-      selectedIndex: currentIndex,
-      onSelect: (index) => {
-        const group = groups[index];
-        if (group && group.id !== currentGroupId) {
-          router.push(`/dashboard/${group.id}`);
-        }
-      },
-    });
+  const handleSelect = (groupId: string) => {
+    if (groupId !== currentGroupId) {
+      router.push(`/dashboard/${groupId}`);
+    }
+  };
 
   return (
-    <div ref={containerRef} className="relative">
-      <button {...triggerProps} className="flex items-center gap-1">
+    <DropdownProvider>
+      <DropdownTrigger className="flex items-center gap-1">
         <h1 className="typo-20-bold text-gray-900">{currentGroup?.name ?? "그룹 선택"}</h1>
-        <IcChevronDown className={cn("h-5 w-5 transition-transform", isOpen && "rotate-180")} />
-      </button>
-
-      {isOpen && (
-        <ul
-          {...listboxProps}
-          className="absolute left-0 top-full z-dropdown mt-2 max-h-72 min-w-40 overflow-auto rounded-xl bg-white py-1 shadow-lg outline-none"
-        >
-          {groups.map((group, index) => (
-            <li
-              key={group.id}
-              {...getOptionProps(index, group.id === currentGroupId)}
-              className={cn(
-                "typo-16-medium cursor-pointer px-4 py-2.5 text-gray-800",
-                index === activeIndex && "bg-gray-50",
-                group.id === currentGroupId && "typo-16-semibold text-gray-900"
-              )}
-            >
-              {group.name}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+        <TriggerChevron />
+      </DropdownTrigger>
+      <DropdownSelectMenu
+        className="left-0 top-full mt-2 min-w-40"
+        options={groups.map((group) => ({ value: group.id, label: group.name }))}
+        selectedValue={currentGroupId}
+        onSelect={handleSelect}
+      />
+    </DropdownProvider>
   );
 }
