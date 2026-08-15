@@ -1,19 +1,20 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { IcChevronDown, IcPlus } from "@/shared/assets/icons";
 import { cn } from "@/shared/utils/cn";
-import {
-  DropdownProvider,
-  DropdownTrigger,
-  DropdownSelectMenu,
-  useDropdownContext,
-} from "@/shared/ui/dropdown";
+import { DropdownProvider, DropdownTrigger, DropdownSelectMenu } from "@/shared/ui/dropdown";
 import OverlayPortal from "@/shared/ui/overlay/OverlayPortal";
 import InputDialog from "@/shared/ui/dialog/InputDialog";
 import InviteCodeDialog from "@/features/dashboard/ui/InviteCodeDialog";
-import type { Group } from "@/features/dashboard/types";
+import GroupActionButton from "@/features/dashboard/ui/GroupActionButton";
+import type {
+  Group,
+  GroupDialogType,
+  GroupDialogConfig,
+  GroupDialogState,
+} from "@/features/dashboard/types";
 
 interface GroupDropdownProps {
   groups: Group[];
@@ -24,79 +25,21 @@ function TriggerChevron() {
   return <IcChevronDown className={cn("h-6 w-6 text-gray-900")} />;
 }
 
-interface GroupActionButtonProps {
-  /** 아이콘 원 안에 표시할 아이콘 */
-  icon: ReactNode;
-  /** 버튼 문구 */
-  label: string;
-  /** 클릭 시 동작. 실행 전 드롭다운이 닫힙니다. */
-  onClick?: () => void;
-  /** 비활성화 여부 */
-  disabled?: boolean;
-}
-
-/**
- * 그룹 드롭다운 푸터의 액션 버튼입니다. (예: 새 그룹 만들기 / 그룹 입장)
- *
- * 아이콘 원 + 문구로 구성되며, 클릭 시 드롭다운을 닫고 `onClick`을 실행합니다.
- */
-function GroupActionButton({ icon, label, onClick, disabled }: GroupActionButtonProps) {
-  const { close } = useDropdownContext();
-
-  const handleClick = () => {
-    close();
-    onClick?.();
-  };
-
-  return (
-    <button
-      type="button"
-      disabled={disabled}
-      onClick={handleClick}
-      className={cn(
-        "group flex w-full items-center gap-3",
-        " border-gray-200 px-5 py-4",
-        "text-left typo-16-medium text-primary-600 transition-colors",
-        "disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-300"
-      )}
-    >
-      <span className="flex size-7 items-center justify-center rounded-full bg-primary-600 group-disabled:bg-gray-300">
-        {icon}
-      </span>
-      {label}
-    </button>
-  );
-}
-
-/** 푸터 액션으로 열 수 있는 입력 다이얼로그 종류 (한 번에 하나만 열림) */
-type GroupDialogType = "create" | "join";
-
 /** 다이얼로그 종류별 문구 설정. 키는 `InputDialog` props와 그대로 매칭됩니다. */
-const GROUP_DIALOG_CONFIG: Record<
-  GroupDialogType,
-  { title: string; label: string; placeholder: string; confirmText: string }
-> = {
+const GROUP_DIALOG_CONFIG = {
   create: {
     title: "새 그룹 만들기",
     label: "그룹 이름",
-    placeholder: "송파구 공주들",
+    placeholder: "그룹명을 입력해 주세요",
     confirmText: "생성",
   },
   join: {
-    title: "그룹 입장",
-    label: "초대 코드",
-    placeholder: "초대 코드를 입력해 주세요",
+    title: "새 그룹 입장하기",
+    label: "입장 코드",
+    placeholder: "입장 코드를 입력해 주세요",
     confirmText: "입장",
   },
-};
-
-/**
- * 다이얼로그 상태 머신. (한 번에 하나만 열림)
- * - 입력 단계: create·join 공통 `InputDialog`
- * - 완료 단계: create만 초대 코드 모달로 이어짐 (join은 완료 시 토스트)
- */
-type DialogState =
-  { type: GroupDialogType; step: "input" } | { type: "create"; step: "done"; inviteCode: string };
+} as const satisfies Record<GroupDialogType, GroupDialogConfig>;
 
 /**
  * 홈 헤더의 그룹 선택 드롭다운입니다.
@@ -107,7 +50,7 @@ export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownP
   const router = useRouter();
   const currentGroup = groups.find((group) => group.id === currentGroupId);
 
-  const [dialog, setDialog] = useState<DialogState | null>(null);
+  const [dialog, setDialog] = useState<GroupDialogState | null>(null);
   const [value, setValue] = useState("");
 
   const handleSelect = (groupId: string) => {
@@ -150,7 +93,7 @@ export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownP
           selectedValue={currentGroupId}
           onSelect={handleSelect}
           footer={
-            <>
+            <div className="border-t border-gray-200">
               <GroupActionButton
                 icon={<IcPlus />}
                 label="새 그룹 만들기"
@@ -158,10 +101,10 @@ export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownP
               />
               <GroupActionButton
                 icon={<IcPlus />}
-                label="그룹 입장"
+                label="새 그룹 입장하기"
                 onClick={() => openDialog("join")}
               />
-            </>
+            </div>
           }
         />
       </DropdownProvider>
