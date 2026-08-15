@@ -66,6 +66,7 @@ export default function InputDialog({
       confirmText={confirmText}
       cancelText={cancelText}
       onConfirm={onConfirm}
+      confirmDisabled={value.trim() === ""}
       onCancel={onCancel}
       onClose={onClose}
     >

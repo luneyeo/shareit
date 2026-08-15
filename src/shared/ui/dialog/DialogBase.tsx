@@ -15,6 +15,8 @@ interface DialogBaseProps {
   cancelText?: string;
   /** 확인 버튼 클릭 시 호출됩니다. */
   onConfirm: () => void;
+  /** `true`면 확인 버튼을 비활성화하고, `asForm`일 때 Enter 제출도 막습니다. */
+  confirmDisabled?: boolean;
   /** 취소 버튼 클릭 시 호출됩니다. */
   onCancel: () => void;
   /** 헤더의 닫기(X) 버튼 클릭 시 호출됩니다. 미전달 시 `onCancel`이 사용됩니다. */
@@ -46,6 +48,7 @@ export default function DialogBase({
   confirmText = "확인",
   cancelText = "취소",
   onConfirm,
+  confirmDisabled = false,
   onCancel,
   onClose,
   hideCancel = false,
@@ -78,6 +81,7 @@ export default function DialogBase({
           size="md"
           className="flex-1"
           type={asForm ? "submit" : "button"}
+          disabled={confirmDisabled}
           onClick={asForm ? undefined : onConfirm}
         >
           {confirmText}
@@ -93,6 +97,7 @@ export default function DialogBase({
       className={className}
       onSubmit={(event) => {
         event.preventDefault();
+        if (confirmDisabled) return;
         onConfirm();
       }}
     >
