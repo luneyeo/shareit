@@ -29,7 +29,7 @@ export default function Profile({ name, size = "md" }: ProfileProps) {
   return (
     <div className="flex items-center gap-2">
       <Avatar seed={name} size={size} aria-hidden="true" />
-      <span className={` text-gray-900 ${fontClasses}`}>{name}</span>
+      <span className={fontClasses}>{name}</span>
     </div>
   );
 }

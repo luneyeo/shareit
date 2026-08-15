@@ -50,7 +50,7 @@ export default function ConfirmDialog({
       onConfirm={onConfirm}
       onCancel={onCancel}
     >
-      <p className="typo-16-medium text-center text-gray-900">{message}</p>
+      <p className="typo-16-medium text-center">{message}</p>
     </DialogBase>
   );
 }

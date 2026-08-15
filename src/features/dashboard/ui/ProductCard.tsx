@@ -40,9 +40,7 @@ export default function ProductCard({ prdName, price, imageUrl, tag, userId }: P
         )}
         <div className="flex flex-col justify-center">
           <h3 className="font-medium text-gray-800">{prdName}</h3>
-          {price !== null && (
-            <span className="font-semibold text-gray-900">{formatPrice(price)}</span>
-          )}
+          {price !== null && <span className="font-semibold">{formatPrice(price)}</span>}
         </div>
         <Avatar seed={userId} size="sm" aria-label="등록자 프로필 아바타" />
       </div>

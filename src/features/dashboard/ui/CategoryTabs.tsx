@@ -35,7 +35,7 @@ export default function CategoryTabs() {
             className={cn(
               "-mb-px border-b-2 px-3 py-2 whitespace-nowrap transition-colors",
               isActive
-                ? "border-primary-600 text-gray-900 typo-16-semibold"
+                ? "border-primary-600 typo-16-semibold"
                 : "border-transparent text-gray-400 typo-16-medium"
             )}
           >
