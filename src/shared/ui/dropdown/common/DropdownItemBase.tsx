@@ -21,7 +21,7 @@ export default function DropdownItemBase({ className, children, ...props }: Drop
         type="button"
         role="menuitem"
         className={cn(
-          "flex w-full items-center gap-3 px-5 py-4 text-left text-gray-900 transition-colors",
+          "flex w-full items-center gap-3 px-5 py-4 text-left transition-colors",
           "hover:bg-gray-50 disabled:pointer-events-none disabled:text-gray-400",
           className
         )}
