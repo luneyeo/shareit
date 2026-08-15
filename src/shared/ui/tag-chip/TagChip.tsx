@@ -15,12 +15,11 @@ export default function TagChip({ label, className, ...props }: TagChipProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full bg-gray-200 px-4 py-2 text-14-medium text-gray-700",
+        "inline-flex items-center rounded-full bg-gray-200 px-2.5 py-1.5 typo-12-medium text-gray-700",
         className
       )}
       {...props}
     >
-      {" "}
       #{label}
     </span>
   );
