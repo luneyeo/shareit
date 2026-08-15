@@ -19,6 +19,8 @@ interface DialogBaseProps {
   onCancel: () => void;
   /** 헤더의 닫기(X) 버튼 클릭 시 호출됩니다. 미전달 시 `onCancel`이 사용됩니다. */
   onClose?: () => void;
+  /** `true`면 취소 버튼을 숨기고 확인 버튼만 전체 너비로 표시합니다. (예: 완료 알림 모달) */
+  hideCancel?: boolean;
   /** `true`면 콘텐츠를 `<form>`으로 감싸 확인 버튼을 submit으로 동작시킵니다. 입력 필드에서 Enter로도 제출됩니다. */
   asForm?: boolean;
 }
@@ -46,6 +48,7 @@ export default function DialogBase({
   onConfirm,
   onCancel,
   onClose,
+  hideCancel = false,
   asForm = false,
 }: DialogBaseProps) {
   const content = (
@@ -65,9 +68,11 @@ export default function DialogBase({
       )}
       {children}
       <div className="flex gap-2">
-        <Button theme="secondary" size="md" className="flex-1" onClick={onCancel}>
-          {cancelText}
-        </Button>
+        {!hideCancel && (
+          <Button theme="secondary" size="md" className="flex-1" onClick={onCancel}>
+            {cancelText}
+          </Button>
+        )}
         <Button
           theme="primary"
           size="md"
