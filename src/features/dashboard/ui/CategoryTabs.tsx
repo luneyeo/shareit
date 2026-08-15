@@ -33,10 +33,10 @@ export default function CategoryTabs() {
             onClick={() => setSelected(value)}
             aria-current={isActive ? "true" : undefined}
             className={cn(
-              "-mb-px border-b-2 px-3 py-2 whitespace-nowrap transition-colors",
+              "-mb-px border-b-2 px-3.5 py-2 whitespace-nowrap transition-colors",
               isActive
-                ? "border-primary-600 text-gray-900 typo-16-semibold"
-                : "border-transparent text-gray-400 typo-16-medium"
+                ? "border-primary-600 typo-16-bold"
+                : "border-transparent text-gray-700 typo-16-medium"
             )}
           >
             {label}

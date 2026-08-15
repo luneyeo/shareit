@@ -22,7 +22,7 @@ interface GroupDropdownProps {
 }
 /** 열림 상태에 따라 회전하는 트리거 화살표 아이콘 */
 function TriggerChevron() {
-  return <IcChevronDown className={cn("h-6 w-6 text-gray-900")} />;
+  return <IcChevronDown className={cn("h-6 w-6")} />;
 }
 
 /** 다이얼로그 종류별 문구 설정. 키는 `InputDialog` props와 그대로 매칭됩니다. */
@@ -84,7 +84,7 @@ export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownP
     <>
       <DropdownProvider>
         <DropdownTrigger className="flex items-center gap-2">
-          <h1 className="typo-20-bold text-gray-900">{currentGroup?.name ?? "그룹 선택"}</h1>
+          <h1 className="typo-20-bold">{currentGroup?.name ?? "그룹 선택"}</h1>
           <TriggerChevron />
         </DropdownTrigger>
         <DropdownSelectMenu

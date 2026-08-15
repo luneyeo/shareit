@@ -73,7 +73,7 @@ export const SelectMenu: Story = {
     return (
       <DemoStage>
         <DropdownProvider>
-          <DropdownTrigger className="flex items-center gap-1 rounded-lg px-3 py-2 typo-16-bold text-gray-900 hover:bg-gray-100">
+          <DropdownTrigger className="flex items-center gap-1 rounded-lg px-3 py-2 typo-16-bold hover:bg-gray-100">
             {selectedLabel}
             <IcChevronDown />
           </DropdownTrigger>

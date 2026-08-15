@@ -58,7 +58,7 @@ export default function DialogBase({
     <>
       {title && (
         <div className="flex items-center justify-between">
-          <h2 className="typo-18-bold text-gray-900">{title}</h2>
+          <h2 className="typo-18-bold">{title}</h2>
           <button
             type="button"
             aria-label="닫기"
