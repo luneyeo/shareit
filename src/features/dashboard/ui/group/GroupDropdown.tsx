@@ -8,7 +8,7 @@ import { DropdownProvider, DropdownTrigger, DropdownSelectMenu } from "@/shared/
 import OverlayPortal from "@/shared/ui/overlay/OverlayPortal";
 import InputDialog from "@/shared/ui/dialog/InputDialog";
 import InviteCodeDialog from "@/features/dashboard/ui/InviteCodeDialog";
-import GroupActionButton from "@/features/dashboard/ui/GroupActionButton";
+import GroupActionButton from "@/features/dashboard/ui/group/GroupActionButton";
 import type {
   Group,
   GroupDialogType,

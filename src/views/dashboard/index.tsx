@@ -3,8 +3,8 @@
 import { useParams } from "next/navigation";
 import CategoryTabs from "@/features/dashboard/ui/CategoryTabs";
 import DashboardFab from "@/features/dashboard/ui/DashboardFab";
-import GroupDropdown from "@/features/dashboard/ui/GroupDropdown";
-import ProductList from "@/features/dashboard/ui/ProductList";
+import GroupDropdown from "@/features/dashboard/ui/group/GroupDropdown";
+import ProductList from "@/features/dashboard/ui/product/ProductList";
 import { useMyGroups } from "@/shared/api/group/useMyGroups";
 
 /**
