@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { IcChevronDown, IcPlus } from "@/shared/assets/icons";
+import { IcChevronDown } from "@/shared/assets/icons";
 import { cn } from "@/shared/utils/cn";
 import { DropdownProvider, DropdownTrigger, DropdownSelectMenu } from "@/shared/ui/dropdown";
 import OverlayPortal from "@/shared/ui/overlay/OverlayPortal";
@@ -94,16 +94,8 @@ export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownP
           onSelect={handleSelect}
           footer={
             <div className="border-t border-gray-200">
-              <GroupActionButton
-                icon={<IcPlus />}
-                label="새 그룹 만들기"
-                onClick={() => openDialog("create")}
-              />
-              <GroupActionButton
-                icon={<IcPlus />}
-                label="새 그룹 입장하기"
-                onClick={() => openDialog("join")}
-              />
+              <GroupActionButton label="새 그룹 만들기" onClick={() => openDialog("create")} />
+              <GroupActionButton label="새 그룹 입장하기" onClick={() => openDialog("join")} />
             </div>
           }
         />

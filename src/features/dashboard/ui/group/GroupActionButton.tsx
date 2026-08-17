@@ -1,12 +1,10 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { IcPlus } from "@/shared/assets/icons";
 import { cn } from "@/shared/utils/cn";
 import { useDropdownContext } from "@/shared/ui/dropdown";
 
 interface GroupActionButtonProps {
-  /** 아이콘 원 안에 표시할 아이콘 */
-  icon: ReactNode;
   /** 버튼 문구 */
   label: string;
   /** 클릭 시 동작. 실행 전 드롭다운이 닫힙니다. */
@@ -21,12 +19,7 @@ interface GroupActionButtonProps {
  * 아이콘 원 + 문구로 구성되며, 클릭 시 드롭다운을 닫고 `onClick`을 실행합니다.
  * `useDropdownContext`에 의존하므로 `DropdownProvider` 내부에서만 사용합니다.
  */
-export default function GroupActionButton({
-  icon,
-  label,
-  onClick,
-  disabled,
-}: GroupActionButtonProps) {
+export default function GroupActionButton({ label, onClick, disabled }: GroupActionButtonProps) {
   const { close } = useDropdownContext();
 
   const handleClick = () => {
@@ -45,8 +38,8 @@ export default function GroupActionButton({
         "disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-300"
       )}
     >
-      <span className="flex size-6 items-center justify-center rounded-full bg-primary-600 group-disabled:bg-gray-300">
-        {icon}
+      <span className="flex size-6 items-center justify-center rounded-full bg-primary-600 text-white group-disabled:bg-gray-300">
+        <IcPlus className="size-4" />
       </span>
       {label}
     </button>
