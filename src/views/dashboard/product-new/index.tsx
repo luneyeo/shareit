@@ -1,3 +1,6 @@
+"use client";
+
+import ProductForm from "@/features/dashboard/product-form/common/ui/ProductForm";
 import ProductFormHeader from "@/features/dashboard/product-form/common/ui/ProductFormHeader";
 
 /**
@@ -11,7 +14,8 @@ export function ProductNewPage() {
   return (
     <>
       <ProductFormHeader title="제품 등록" />
-      {/* TODO: 상품 등록 폼 · 하단 제출 푸터(ProductFormFooter) 연결 */}
+      {/* TODO: Supabase 상품 등록 mutation 연결 */}
+      <ProductForm submitLabel="등록하기" onSubmit={() => {}} />
     </>
   );
 }

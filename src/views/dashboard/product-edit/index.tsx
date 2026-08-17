@@ -1,3 +1,6 @@
+"use client";
+
+import ProductForm from "@/features/dashboard/product-form/common/ui/ProductForm";
 import ProductFormHeader from "@/features/dashboard/product-form/common/ui/ProductFormHeader";
 
 /**
@@ -8,10 +11,11 @@ import ProductFormHeader from "@/features/dashboard/product-form/common/ui/Produ
  * export default ProductEditPage
  */
 export function ProductEditPage() {
+  // TODO: 기존 상품 데이터 로드 → defaultValues 전달, Supabase 수정 mutation 연결
   return (
     <>
       <ProductFormHeader title="제품 수정" />
-      {/* TODO: 기존 상품 데이터 로드 · 수정 폼 · 하단 제출 푸터(ProductFormFooter) 연결 */}
+      <ProductForm submitLabel="수정하기" onSubmit={() => {}} />
     </>
   );
 }
