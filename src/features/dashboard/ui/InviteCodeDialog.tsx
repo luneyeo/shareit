@@ -19,11 +19,15 @@ interface InviteCodeDialogProps {
  * - 배경·서피스는 `OverlayPortal`이 담당하므로 그 내부에 배치해 사용합니다.
  */
 export default function InviteCodeDialog({ inviteCode, onClose }: InviteCodeDialogProps) {
-  const [copied, setCopied] = useState(false);
+  const [status, setStatus] = useState<"idle" | "copied" | "failed">("idle");
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(inviteCode);
-    setCopied(true);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(inviteCode);
+      setStatus("copied");
+    } catch {
+      setStatus("failed");
+    }
   };
 
   return (
@@ -42,12 +46,19 @@ export default function InviteCodeDialog({ inviteCode, onClose }: InviteCodeDial
           onClick={handleCopy}
           className={cn(
             "rounded-full px-3 py-1.5 typo-14-semibold transition-colors",
-            copied ? "bg-[#E7F7EC] text-[#35A15C]" : "bg-primary-100 text-primary-600"
+            status === "copied" && "bg-[#E7F7EC] text-[#35A15C]",
+            status === "failed" && "bg-error/10 text-error",
+            status === "idle" && "bg-primary-100 text-primary-600"
           )}
         >
-          {copied ? "복사됨" : "복사하기"}
+          {status === "copied" ? "복사됨" : status === "failed" ? "다시 시도" : "복사하기"}
         </button>
       </div>
+      {status === "failed" && (
+        <p className="typo-13-medium text-error">
+          복사에 실패했어요. 코드를 직접 선택해서 복사해주세요.
+        </p>
+      )}
     </DialogBase>
   );
 }
