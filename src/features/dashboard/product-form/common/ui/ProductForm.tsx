@@ -51,7 +51,7 @@ export default function ProductForm({
   } = useProductForm(defaultValues);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 px-4 pt-4 pb-28">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 px-6 pt-4 pb-28">
       <ProductImageField control={control} />
       <FormField
         label="브랜드명"
@@ -83,6 +83,7 @@ export default function ProductForm({
       />
       <FormTextarea
         label="설명"
+        required
         placeholder="제품 설명을 입력해주세요"
         {...register("description")}
       />

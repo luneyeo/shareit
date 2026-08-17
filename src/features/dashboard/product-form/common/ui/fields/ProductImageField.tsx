@@ -47,7 +47,7 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
               onChange={handleSelect}
             />
             {preview ? (
-              <div className="relative h-40 w-40 overflow-hidden rounded-xl bg-gray-200">
+              <div className="relative h-44 w-full overflow-hidden rounded-2xl bg-gray-200">
                 {/* eslint-disable-next-line @next/next/no-img-element -- 로컬 objectURL 미리보기라 next/image 최적화 대상이 아님 */}
                 <img
                   src={preview}
@@ -69,11 +69,17 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
                 aria-label="제품 이미지 추가"
                 onClick={() => inputRef.current?.click()}
                 className={cn(
-                  "flex h-40 w-40 items-center justify-center rounded-xl border bg-white",
+                  "flex h-44 w-full flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed bg-white",
                   fieldState.error ? "border-error" : "border-gray-300"
                 )}
               >
-                <IcPlus className="h-6 w-6 text-gray-400" />
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-200">
+                  <IcPlus className="size-6 text-gray-500" />
+                </span>
+                <span className="flex flex-col items-center gap-1">
+                  <span className="typo-16-semibold">이미지 업로드</span>
+                  <span className="typo-13-medium text-gray-500">JPG, PNG 최대 10MB</span>
+                </span>
               </button>
             )}
             <FieldError message={fieldState.error?.message} />
