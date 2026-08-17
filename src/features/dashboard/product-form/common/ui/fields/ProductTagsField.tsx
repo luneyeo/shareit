@@ -38,7 +38,9 @@ export default function ProductTagsField({ control }: ProductTagsFieldProps) {
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
+                // 한글 등 IME 조합 확정용 Enter는 무시한다. (조합 중 Enter가
+                // 태그 추가로 이어져 마지막 글자가 중복 인식되는 문제 방지)
+                if (e.key === "Enter" && !e.nativeEvent.isComposing) {
                   e.preventDefault();
                   addTag();
                 }
