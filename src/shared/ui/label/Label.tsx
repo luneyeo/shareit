@@ -23,10 +23,7 @@ type LabelProps = React.LabelHTMLAttributes<HTMLLabelElement> & {
  */
 export default function Label({ required, children, className, ...props }: LabelProps) {
   return (
-    <label
-      className={cn("inline-flex items-center gap-0.5 typo-16-semibold", className)}
-      {...props}
-    >
+    <label className={cn("inline-flex items-center gap-0.5 typo-16-bold", className)} {...props}>
       {children}
       {required && (
         <span className="text-primary-600" aria-hidden="true">

@@ -39,7 +39,7 @@ export default function ProductFormHeader({ title }: ProductFormHeaderProps) {
       >
         <IcChevronLeft className="h-7 w-7" />
       </button>
-      <h1 className="typo-18-semibold">{title}</h1>
+      <h1 className="typo-18-bold">{title}</h1>
     </header>
   );
 }
