@@ -2,8 +2,9 @@
 
 import { useParams } from "next/navigation";
 import CategoryTabs from "@/features/dashboard/ui/CategoryTabs";
-import GroupDropdown from "@/features/dashboard/ui/GroupDropdown";
-import ProductList from "@/features/dashboard/ui/ProductList";
+import DashboardFab from "@/features/dashboard/ui/DashboardFab";
+import GroupDropdown from "@/features/dashboard/ui/group/GroupDropdown";
+import ProductList from "@/features/dashboard/ui/product/ProductList";
 import { useMyGroups } from "@/shared/api/group/useMyGroups";
 
 /**
@@ -30,6 +31,7 @@ export function DashboardPage() {
           <CategoryTabs />
           {/* TODO: 상품 조회를 비동기로 교체 시 Suspense(로딩 fallback)처리 */}
           <ProductList groupId={currentGroup.id} />
+          <DashboardFab dashboardId={currentGroup.id} />
         </>
       ) : (
         // TODO: EmptyState 컴포넌트로 분리 예정
