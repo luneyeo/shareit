@@ -7,7 +7,7 @@ import { cn } from "@/shared/utils/cn";
 import { DropdownProvider, DropdownSelectMenu, DropdownTrigger } from "@/shared/ui/dropdown";
 import FieldError from "@/shared/ui/form/FieldError";
 import Label from "@/shared/ui/label/Label";
-import type { ProductFormValues } from "../../model/types";
+import type { ProductFormValues } from "../../types";
 
 type ProductCategoryFieldProps = {
   control: Control<ProductFormValues>;

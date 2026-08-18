@@ -2,8 +2,8 @@
 
 import FormField from "@/shared/ui/form/FormField";
 import FormTextarea from "@/shared/ui/form/FormTextarea";
-import type { ProductFormValues } from "../model/types";
-import { useProductForm } from "../model/useProductForm";
+import type { ProductFormValues } from "../types";
+import { useProductForm } from "../hooks/useProductForm";
 import ProductCategoryField from "./fields/ProductCategoryField";
 import ProductImageField from "./fields/ProductImageField";
 import ProductTagsField from "./fields/ProductTagsField";

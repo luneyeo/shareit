@@ -5,7 +5,7 @@ import { type Control, Controller } from "react-hook-form";
 import { IcClose } from "@/shared/assets/icons";
 import Input from "@/shared/ui/input/Input";
 import Label from "@/shared/ui/label/Label";
-import type { ProductFormValues } from "../../model/types";
+import type { ProductFormValues } from "../../types";
 
 type ProductTagsFieldProps = {
   control: Control<ProductFormValues>;
