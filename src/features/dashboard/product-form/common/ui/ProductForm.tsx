@@ -85,7 +85,7 @@ export default function ProductForm({
         label="설명"
         required
         placeholder="제품 설명을 입력해주세요"
-        {...register("description")}
+        {...register("description", { required: "제품 설명을 입력해주세요" })}
       />
       <ProductTagsField control={control} />
       <ProductFormFooter
