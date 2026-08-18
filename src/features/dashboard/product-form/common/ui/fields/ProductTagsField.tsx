@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { type Control, Controller } from "react-hook-form";
-import { IcClose } from "@/shared/assets/icons";
 import Input from "@/shared/ui/input/Input";
 import Label from "@/shared/ui/label/Label";
+import TagChip from "@/shared/ui/tag-chip/TagChip";
 import type { ProductFormValues } from "../../types";
 
 type ProductTagsFieldProps = {
@@ -49,17 +49,8 @@ export default function ProductTagsField({ control }: ProductTagsFieldProps) {
             />
             {field.value.length > 0 && (
               <div className="flex flex-wrap gap-1.5">
-                {/* 삭제(x) 버튼이 필요해 공유 TagChip 대신 pill을 직접 구성합니다. */}
                 {field.value.map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-flex items-center gap-1 rounded-full bg-gray-200 px-2.5 py-1.5 typo-12-medium text-gray-700"
-                  >
-                    #{tag}
-                    <button type="button" aria-label={`${tag} 삭제`} onClick={() => removeTag(tag)}>
-                      <IcClose className="h-3 w-3" />
-                    </button>
-                  </span>
+                  <TagChip key={tag} label={tag} onRemove={() => removeTag(tag)} />
                 ))}
               </div>
             )}
