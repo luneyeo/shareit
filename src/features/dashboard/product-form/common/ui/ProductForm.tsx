@@ -1,6 +1,6 @@
 "use client";
 
-import FormField from "@/shared/ui/form/FormField";
+import FormInput from "@/shared/ui/form/FormInput";
 import FormTextarea from "@/shared/ui/form/FormTextarea";
 import type { ProductFormValues } from "../types";
 import { useProductForm } from "../hooks/useProductForm";
@@ -53,14 +53,14 @@ export default function ProductForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 px-6 pt-4 pb-28">
       <ProductImageField control={control} />
-      <FormField
+      <FormInput
         label="브랜드명"
         required
         placeholder="브랜드명을 입력해주세요"
         error={errors.brandName?.message}
         {...register("brandName", { required: "브랜드명을 입력해주세요" })}
       />
-      <FormField
+      <FormInput
         label="제품명"
         required
         placeholder="제품명을 입력해주세요"
@@ -68,7 +68,7 @@ export default function ProductForm({
         {...register("prdName", { required: "제품명을 입력해주세요" })}
       />
       <ProductCategoryField control={control} />
-      <FormField
+      <FormInput
         label="구매 가격"
         type="number"
         inputMode="numeric"
@@ -76,7 +76,7 @@ export default function ProductForm({
         placeholder="구매 가격을 입력해주세요"
         {...register("price")}
       />
-      <FormField
+      <FormInput
         label="구매처"
         placeholder="구매처를 입력해주세요"
         {...register("purchasePlace")}

@@ -1,8 +1,6 @@
 "use client";
 
-import { useId } from "react";
-import FieldError from "@/shared/ui/form/FieldError";
-import Label from "@/shared/ui/label/Label";
+import Field from "@/shared/ui/form/Field";
 import Textarea from "@/shared/ui/textarea/Textarea";
 
 type FormTextareaProps = Omit<React.ComponentProps<typeof Textarea>, "error"> & {
@@ -14,7 +12,7 @@ type FormTextareaProps = Omit<React.ComponentProps<typeof Textarea>, "error"> & 
 /**
  * Label과 Textarea를 묶은 폼 필드 컴포넌트입니다. (여러 줄 입력용)
  *
- * `FormField`(Input 버전)의 textarea 형제로, 라벨·에러 메시지·접근성 연결을 동일하게
+ * `FormInput`(Input 버전)의 textarea 형제로, 라벨·에러 메시지·접근성 연결을 동일하게
  * 처리합니다.
  *
  * - `label`: 라벨 텍스트. 생략하면 `Label`을 렌더링하지 않습니다.
@@ -38,26 +36,9 @@ export default function FormTextarea({
   error,
   ...textareaProps
 }: FormTextareaProps) {
-  const autoId = useId();
-  const textareaId = id ?? autoId;
-  const errorId = `${textareaId}-error`;
-
   return (
-    <div className="flex flex-col gap-2.5">
-      {label && (
-        <Label htmlFor={textareaId} required={required}>
-          {label}
-        </Label>
-      )}
-      <Textarea
-        ref={ref}
-        id={textareaId}
-        required={required}
-        error={!!error}
-        aria-describedby={error ? errorId : undefined}
-        {...textareaProps}
-      />
-      <FieldError id={errorId} message={error} />
-    </div>
+    <Field label={label} required={required} id={id} error={error}>
+      {(control) => <Textarea ref={ref} required={required} {...control} {...textareaProps} />}
+    </Field>
   );
 }

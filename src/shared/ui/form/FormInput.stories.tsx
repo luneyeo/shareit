@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import FormField from "./FormField";
+import FormInput from "./FormInput";
 
-const meta: Meta<typeof FormField> = {
-  title: "Shared/FormField",
-  component: FormField,
+const meta: Meta<typeof FormInput> = {
+  title: "Shared/FormInput",
+  component: FormInput,
   tags: ["autodocs"],
   argTypes: {
     required: { control: "boolean" },
@@ -12,7 +12,7 @@ const meta: Meta<typeof FormField> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof FormField>;
+type Story = StoryObj<typeof FormInput>;
 
 export const Default: Story = {
   args: {
