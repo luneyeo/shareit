@@ -8,12 +8,12 @@ import LogoText from "@/shared/assets/logo/logo-text.svg";
  */
 export default function Hero() {
   return (
-    <section className="flex flex-col gap-12 px-5 pt-8 pb-12">
+    <section className="flex flex-col gap-12 px-5 pt-8">
       <h1 aria-label="Shareit">
         <LogoText aria-hidden className="block h-7 w-auto" />
       </h1>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 pb-22 border-b border-gray-200">
         <span className="inline-flex w-fit items-center gap-1 rounded-full bg-primary-100 px-3 py-1.5 typo-14-semibold text-primary-700">
           ❤️‍🔥 초대받은 친구들과 공유
         </span>
