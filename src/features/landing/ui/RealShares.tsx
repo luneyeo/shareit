@@ -24,7 +24,7 @@ export default function RealShares() {
           <Image
             src={SCREENSHOT}
             alt="Shareit에서 친구에게 공유된 상품 정보 화면"
-            sizes="(max-width: 480px) 80vw, 384px"
+            sizes="(max-width: 480px) calc((100vw - 48px) * 0.8), 346px"
             className="w-full rounded-2xl border border-gray-200"
           />
         ) : (
