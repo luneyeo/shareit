@@ -1,5 +1,5 @@
 import DialogBase from "@/shared/ui/dialog/DialogBase";
-import FormField from "@/shared/ui/form/FormField";
+import FormInput from "@/shared/ui/form/FormInput";
 
 interface InputDialogProps {
   /** 다이얼로그 제목 */
@@ -27,7 +27,7 @@ interface InputDialogProps {
 /**
  * 제목·입력 필드·확인/취소 버튼으로 구성된 입력형 다이얼로그의 콘텐츠 컴포넌트입니다.
  *
- * - 헤더에 제목과 닫기(X) 버튼을 두고, 본문에 `FormField` 하나를 배치합니다.
+ * - 헤더에 제목과 닫기(X) 버튼을 두고, 본문에 `FormInput` 하나를 배치합니다.
  * - 입력값은 `value`/`onChange`로 외부에서 제어합니다.
  * - 배경·서피스·중앙 정렬은 `OverlayPortal`이 담당하므로 그 내부에 배치해 사용합니다.
  *
@@ -70,7 +70,7 @@ export default function InputDialog({
       onCancel={onCancel}
       onClose={onClose}
     >
-      <FormField
+      <FormInput
         label={label}
         aria-label={label ? undefined : title}
         placeholder={placeholder}
