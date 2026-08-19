@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { User, SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/shared/lib/supabase/server";
+import { DEFAULT_DASHBOARD_ID } from "@/shared/api/group/useMyGroups";
 
 /**
  * users 테이블에 프로필을 저장한다. (이미 있으면 갱신)
@@ -24,7 +25,7 @@ async function saveUserProfile(supabase: SupabaseClient, user: User) {
  * 카카오 OAuth 인증 후 리다이렉트되는 콜백 라우트.
  *
  * 전달받은 인증 코드를 세션으로 교환(exchangeCodeForSession)한 뒤,
- * 인증 사용자 정보를 users 테이블에 저장하고 홈으로 이동시킨다.
+ * 인증 사용자 정보를 users 테이블에 저장하고 대시보드로 이동시킨다.
  * 코드가 없거나 교환에 실패하면 로그인 페이지로 되돌린다.
  */
 export async function GET(request: Request) {
@@ -37,7 +38,7 @@ export async function GET(request: Request) {
 
     if (!error) {
       await saveUserProfile(supabase, data.user);
-      return NextResponse.redirect(`${origin}/`);
+      return NextResponse.redirect(`${origin}/dashboard/${DEFAULT_DASHBOARD_ID}`);
     }
   }
 
