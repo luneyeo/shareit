@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { signOut } from "@/features/auth/apis/logout";
+import { logout } from "@/features/auth/apis/oauth";
 
 /**
  * 로그아웃 버튼.
@@ -12,7 +12,7 @@ export default function LogoutButton() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await signOut();
+    await logout();
     router.replace("/login");
   };
 

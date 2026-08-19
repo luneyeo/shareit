@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signInWithKakao } from "@/features/auth/apis/signInWithKakao";
+import { signInWithKakao } from "@/features/auth/apis/oauth";
 
 /**
  * 카카오 OAuth 로그인/회원가입을 시작하고 진행·오류 상태를 관리하는 훅.
