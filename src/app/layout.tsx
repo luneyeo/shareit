@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "@/shared/styles/global.css";
 import { QueryProvider } from "@/shared/providers/QueryProvider";
+import { AuthProvider } from "@/shared/providers/AuthProvider";
+import { createClient } from "@/shared/lib/supabase/server";
 
 const pretendard = localFont({
   src: "../shared/assets/font/PretendardVariable.woff2",
@@ -20,11 +22,16 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <html lang="ko" className={`${pretendard.variable} h-full antialiased`}>
       <body className="min-h-dvh bg-primary-100">
@@ -34,7 +41,9 @@ export default function RootLayout({
          */}
         <div className="mx-auto flex h-dvh w-full max-w-120 flex-col overflow-hidden bg-background transform-gpu">
           <QueryProvider>
-            <div className="flex-1 overflow-y-auto">{children}</div>
+            <AuthProvider initialUser={user}>
+              <div className="flex-1 overflow-y-auto">{children}</div>
+            </AuthProvider>
           </QueryProvider>
         </div>
       </body>
