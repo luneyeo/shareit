@@ -1,6 +1,7 @@
 "use client";
 
 import { useKakaoAuth } from "@/features/auth/hooks/useKakaoAuth";
+import { AUTH_MESSAGE } from "@/features/auth/constants/messages";
 import AuthIntro from "@/features/auth/ui/AuthIntro";
 import KakaoAuthButton from "@/features/auth/ui/KakaoAuthButton";
 
@@ -25,7 +26,7 @@ export function LoginPage() {
         {/* TODO: 토스트 알림 도입 시 인라인 오류 메시지를 토스트로 교체 */}
         {hasError && (
           <p role="alert" className="mt-3 text-center typo-13-medium text-error">
-            로그인을 시작하지 못했어요. 잠시 후 다시 시도해 주세요.
+            {AUTH_MESSAGE.OAUTH.KAKAO.SIGNIN.ERROR}
           </p>
         )}
       </div>
