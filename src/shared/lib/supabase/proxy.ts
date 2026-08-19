@@ -48,18 +48,24 @@ export async function updateSession(request: NextRequest) {
   const isPrivateRoute = PRIVATE_ROUTES.some((route) => matchesRoute(pathname, route));
   const isAuthRoute = AUTH_ROUTES.some((route) => matchesRoute(pathname, route));
 
+  // 리다이렉트 응답에도 supabaseResponse에 기록된 갱신 세션 쿠키를 복사한다.
+  // 복사하지 않으면 새 redirect 응답으로 인해 갱신된 쿠키가 브라우저에 전달되지 않는다.
+  const redirectTo = (path: string) => {
+    const url = request.nextUrl.clone();
+    url.pathname = path;
+    const response = NextResponse.redirect(url);
+    supabaseResponse.cookies.getAll().forEach((cookie) => response.cookies.set(cookie));
+    return response;
+  };
+
   // 세션이 없는데 보호된 경로에 접근하면 로그인 페이지로 보낸다.
   if (!data?.claims && isPrivateRoute) {
-    const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = "/login";
-    return NextResponse.redirect(loginUrl);
+    return redirectTo("/login");
   }
 
   // 세션이 있는데 인증 경로에 접근하면 대시보드로 보낸다.
   if (data?.claims && isAuthRoute) {
-    const dashboardUrl = request.nextUrl.clone();
-    dashboardUrl.pathname = `/dashboard/${DEFAULT_DASHBOARD_ID}`;
-    return NextResponse.redirect(dashboardUrl);
+    return redirectTo(`/dashboard/${DEFAULT_DASHBOARD_ID}`);
   }
 
   return supabaseResponse;
