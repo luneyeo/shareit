@@ -36,7 +36,7 @@ export default function ProductFormFooter({
   disabled = false,
 }: ProductFormFooterProps) {
   return (
-    <ActionFooter>
+    <ActionFooter className="py-4">
       <Button
         type="button"
         theme="primary"

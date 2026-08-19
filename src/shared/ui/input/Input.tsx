@@ -6,6 +6,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   ref?: React.Ref<HTMLInputElement>;
   suffix?: React.ReactNode;
   containerClassName?: string;
+  error?: boolean;
 };
 
 /**
@@ -13,6 +14,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
  *
  * - `suffix`: 인풋 오른쪽에 표시할 아이콘, 버튼 등 (ReactNode)
  * - `containerClassName`: 외부 컨테이너 div에 적용됩니다. 너비·레이아웃 클래스는 여기에 전달해야 suffix 위치가 올바릅니다.
+ * - `error`: 유효성 실패 시 테두리를 에러 색으로 표시하고 `aria-invalid`를 켭니다.
  * - `className`: 인풋 요소에 직접 적용됩니다.
  *
  * @example
@@ -36,6 +38,7 @@ export default function Input({
   containerClassName,
   className,
   disabled,
+  error,
   ...props
 }: InputProps) {
   return (
@@ -43,11 +46,13 @@ export default function Input({
       <input
         ref={ref}
         disabled={disabled}
+        aria-invalid={error || undefined}
         className={cn(
-          "w-full h-12 px-4 rounded-xl border border-gray-400 bg-white outline-none transition-colors",
+          "w-full h-12 px-4 rounded-xl border border-gray-300 bg-white outline-none transition-colors",
           "placeholder:text-gray-400 typo-16-medium",
           "focus:border-primary-600",
           "disabled:bg-gray-200 disabled:border-transparent disabled:pointer-events-none disabled:text-gray-500",
+          error && "border-error focus:border-error",
           suffix && "pr-10",
           className
         )}

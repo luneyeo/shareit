@@ -38,7 +38,7 @@ interface DialogBaseProps {
  * @example
  * ```tsx
  * <DialogBase title="새 그룹 생성" confirmText="생성" onConfirm={...} onCancel={...}>
- *   <FormField label="이름" ... />
+ *   <FormInput label="이름" ... />
  * </DialogBase>
  * ```
  */

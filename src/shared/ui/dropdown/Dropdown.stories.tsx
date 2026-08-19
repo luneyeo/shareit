@@ -88,8 +88,8 @@ export const SelectMenu: Story = {
                 onClick={fn()}
                 className="flex w-full items-center gap-3 border-t border-gray-100 px-5 py-4 text-left typo-16-medium text-primary-600 transition-colors hover:bg-gray-50"
               >
-                <span className="flex size-7 items-center justify-center rounded-full bg-primary-600">
-                  <IcPlus />
+                <span className="flex size-7 items-center justify-center rounded-full bg-primary-600 text-white">
+                  <IcPlus className="size-4" />
                 </span>
                 새 그룹 만들기
               </button>
@@ -125,8 +125,8 @@ export const RawGroupList: Story = {
         onClick={fn()}
         className="flex w-full items-center gap-3 border-t border-gray-100 px-5 py-4 text-left typo-16-medium text-primary-600 transition-colors hover:bg-gray-50"
       >
-        <span className="flex size-7 items-center justify-center rounded-full bg-primary-600">
-          <IcPlus />
+        <span className="flex size-7 items-center justify-center rounded-full bg-primary-600 text-white">
+          <IcPlus className="size-4" />
         </span>
         새 그룹 만들기
       </button>
