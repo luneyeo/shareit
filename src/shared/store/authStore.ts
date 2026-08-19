@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 import type { User } from "@supabase/supabase-js";
 
 interface AuthState {
@@ -17,10 +18,17 @@ interface AuthState {
  *
  * 세션의 실제 진실의 원천은 Supabase(쿠키)이며, 이 store는 그 상태를 반영하는 캐시다.
  * AuthProvider가 onAuthStateChange 구독을 통해 이 store를 동기화한다.
+ *
+ * 개발 환경에서는 devtools로 Redux DevTools 확장에서 상태·액션을 확인할 수 있다.
  */
-export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  isLoggedIn: false,
-  setUser: (user) => set({ user, isLoggedIn: !!user }),
-  clearUser: () => set({ user: null, isLoggedIn: false }),
-}));
+export const useAuthStore = create<AuthState>()(
+  devtools(
+    (set) => ({
+      user: null,
+      isLoggedIn: false,
+      setUser: (user) => set({ user, isLoggedIn: !!user }, undefined, "auth/setUser"),
+      clearUser: () => set({ user: null, isLoggedIn: false }, undefined, "auth/clearUser"),
+    }),
+    { name: "authStore", enabled: process.env.NODE_ENV === "development" }
+  )
+);
