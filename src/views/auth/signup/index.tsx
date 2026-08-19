@@ -1,5 +1,6 @@
 "use client";
 
+import { signInWithKakao } from "@/features/auth/apis/signInWithKakao";
 import AuthIntro from "@/features/auth/ui/AuthIntro";
 import KakaoAuthButton from "@/features/auth/ui/KakaoAuthButton";
 
@@ -13,8 +14,9 @@ import KakaoAuthButton from "@/features/auth/ui/KakaoAuthButton";
  * export default SignupPage
  */
 export function SignupPage() {
-  // TODO: Supabase 카카오 OAuth(signInWithOAuth) 연동
-  const handleKakaoSignup = () => {};
+  const handleKakaoSignup = () => {
+    signInWithKakao();
+  };
 
   return (
     <div className="flex h-full flex-col px-5 pb-[calc(2rem+env(safe-area-inset-bottom))]">
