@@ -7,6 +7,10 @@ const MY_GROUPS: Group[] = [
   { id: "g3", name: "한강 자전거" },
 ];
 
+// 로그인 직후 진입할 기본 그룹 id.
+// TODO: 실제 멤버십 조회로 교체 시 사용자의 첫 그룹 id로 대체한다.
+export const DEFAULT_DASHBOARD_ID = MY_GROUPS[0].id;
+
 /**
  * 로그인한 사용자가 멤버로 속한 그룹 목록을 반환한다.
  *
