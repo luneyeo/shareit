@@ -67,4 +67,25 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ---
 
+## 5. 코드 스타일 가이드
+
+코드 작성 시 `docs/styleguide.md`를 참고한다.
+
+---
+
+## 6. PR 메시지 작성
+
+PR 메시지 작성 요청 시 `.github/PULL_REQUEST_TEMPLATE.md`를 읽고 해당 템플릿 형식에 맞춰 작성한다.
+
+---
+
+## 7. 커밋 메시지 작성
+
+커밋 메시지 추천/작성 시 `타입: 메시지` 양식을 따른다. (예: `Feat: 메시지`, `Refactor: 메시지`)
+
+- 타입은 `Feat` `Fix` `Refactor` `Style` `Chore` `Docs` `Test` 등을 사용한다.
+- 타입 뒤에 콜론(`:`)과 공백을 두고, 메시지는 한글로 간결하게 작성한다.
+
+---
+
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.

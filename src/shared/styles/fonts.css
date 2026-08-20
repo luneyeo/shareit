@@ -1,0 +1,114 @@
+@theme {
+  --text-12: 0.75rem; /* 12px */
+  --text-12--line-height: 1rem; /* 16px */
+  --text-13: 0.8125rem; /* 13px */
+  --text-13--line-height: 1.25rem; /* 20px */
+  --text-14: 0.875rem; /* 14px */
+  --text-14--line-height: 1.5rem; /* 24px */
+  --text-16: 1rem; /* 16px */
+  --text-16--line-height: 1.5rem; /* 24px */
+  --text-18: 1.125rem; /* 18px */
+  --text-18--line-height: 1.75rem; /* 28px */
+  --text-20: 1.25rem; /* 20px */
+  --text-20--line-height: 1.75rem; /* 28px */
+  --text-24: 1.5rem; /* 24px */
+  --text-24--line-height: 2rem; /* 32px */
+  --text-32: 2rem; /* 32px */
+  --text-32--line-height: 2.5rem; /* 40px */
+}
+
+@utility typo-12-medium {
+  @apply text-12 font-medium;
+}
+
+@utility typo-12-semibold {
+  @apply text-12 font-semibold;
+}
+
+@utility typo-12-bold {
+  @apply text-12 font-bold;
+}
+
+@utility typo-13-medium {
+  @apply text-13 font-medium;
+}
+
+@utility typo-13-semibold {
+  @apply text-13 font-semibold;
+}
+
+@utility typo-13-bold {
+  @apply text-13 font-bold;
+}
+
+@utility typo-14-medium {
+  @apply text-14 font-medium;
+}
+
+@utility typo-14-semibold {
+  @apply text-14 font-semibold;
+}
+
+@utility typo-14-bold {
+  @apply text-14 font-bold;
+}
+
+@utility typo-16-medium {
+  @apply text-16 font-medium;
+}
+
+@utility typo-16-semibold {
+  @apply text-16 font-semibold;
+}
+
+@utility typo-16-bold {
+  @apply text-16 font-bold;
+}
+
+@utility typo-18-medium {
+  @apply text-18 font-medium;
+}
+
+@utility typo-18-semibold {
+  @apply text-18 font-semibold;
+}
+
+@utility typo-18-bold {
+  @apply text-18 font-bold;
+}
+
+@utility typo-20-medium {
+  @apply text-20 font-medium;
+}
+
+@utility typo-20-semibold {
+  @apply text-20 font-semibold;
+}
+
+@utility typo-20-bold {
+  @apply text-20 font-bold;
+}
+
+@utility typo-24-medium {
+  @apply text-24 font-medium;
+}
+
+@utility typo-24-semibold {
+  @apply text-24 font-semibold;
+}
+
+@utility typo-24-bold {
+  @apply text-24 font-bold;
+}
+
+@utility typo-32-medium {
+  @apply text-32 font-medium;
+}
+
+@utility typo-32-semibold {
+  @apply text-32 font-semibold;
+}
+
+@utility typo-32-bold {
+  @apply text-32 font-bold;
+}
