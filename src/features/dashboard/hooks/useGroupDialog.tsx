@@ -6,6 +6,7 @@ import OverlayPortal from "@/shared/ui/overlay/OverlayPortal";
 import InputDialog from "@/shared/ui/dialog/InputDialog";
 import InviteCodeDialog from "@/features/dashboard/ui/InviteCodeDialog";
 import { useCreateGroup } from "@/features/dashboard/hooks/useCreateGroup";
+import { useJoinGroup } from "@/features/dashboard/hooks/useJoinGroup";
 import { useAuthStore } from "@/shared/store/authStore";
 import type {
   GroupDialogType,
@@ -44,16 +45,31 @@ export function useGroupDialog() {
   const router = useRouter();
   const userId = useAuthStore((state) => state.user?.id);
   const createGroup = useCreateGroup();
+  const joinGroup = useJoinGroup();
 
   const [dialog, setDialog] = useState<GroupDialogState | null>(null);
   const [value, setValue] = useState("");
+  const [error, setError] = useState("");
 
-  const openCreate = () => setDialog({ type: "create", step: "input" });
-  const openJoin = () => setDialog({ type: "join", step: "input" });
+  const openCreate = () => {
+    setError("");
+    setDialog({ type: "create", step: "input" });
+  };
+  const openJoin = () => {
+    setError("");
+    setDialog({ type: "join", step: "input" });
+  };
 
   const closeDialog = () => {
     setDialog(null);
     setValue("");
+    setError("");
+  };
+
+  // 입력을 바꾸면 이전 에러 메시지를 지운다.
+  const handleChange = (next: string) => {
+    setValue(next);
+    if (error) setError("");
   };
 
   const handleConfirm = () => {
@@ -78,9 +94,21 @@ export function useGroupDialog() {
         }
       );
     } else {
-      // TODO: 초대 코드로 그룹 입장 api 연결
-      // TODO: 입장 완료 토스트 표시
-      closeDialog();
+      if (!userId || joinGroup.isPending) return;
+
+      joinGroup.mutate(
+        { inviteCode: value.trim(), userId },
+        {
+          onSuccess: ({ id }) => {
+            // 입장한 그룹 대시보드로 이동한다.
+            router.push(`/dashboard/${id}`);
+            closeDialog();
+          },
+          onError: (err) => {
+            setError(err instanceof Error ? err.message : "입장에 실패했어요. 다시 시도해 주세요.");
+          },
+        }
+      );
     }
   };
 
@@ -96,7 +124,8 @@ export function useGroupDialog() {
         <InputDialog
           {...GROUP_DIALOG_CONFIG[dialog.type]}
           value={value}
-          onChange={setValue}
+          onChange={handleChange}
+          error={error}
           onConfirm={handleConfirm}
           onCancel={closeDialog}
         />

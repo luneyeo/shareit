@@ -12,6 +12,8 @@ interface InputDialogProps {
   onChange: (value: string) => void;
   /** 입력 필드 placeholder */
   placeholder?: string;
+  /** 유효성 에러 메시지. 있으면 입력 필드 하단에 표시됩니다. */
+  error?: string;
   /** 확인 버튼 문구 */
   confirmText?: string;
   /** 취소 버튼 문구 */
@@ -53,6 +55,7 @@ export default function InputDialog({
   value,
   onChange,
   placeholder,
+  error,
   confirmText = "확인",
   cancelText = "취소",
   onConfirm,
@@ -76,6 +79,7 @@ export default function InputDialog({
         placeholder={placeholder}
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        error={error}
       />
     </DialogBase>
   );
