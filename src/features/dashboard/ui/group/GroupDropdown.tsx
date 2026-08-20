@@ -81,7 +81,12 @@ export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownP
         { name: value.trim(), userId },
         {
           onSuccess: (group) => {
-            setDialog({ type: "create", step: "done", inviteCode: group.inviteCode });
+            setDialog({
+              type: "create",
+              step: "done",
+              inviteCode: group.inviteCode,
+              groupId: group.id,
+            });
             setValue("");
           },
           // TODO: 생성 실패 토스트 표시
@@ -132,7 +137,14 @@ export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownP
               onCancel={closeDialog}
             />
           ) : (
-            <InviteCodeDialog inviteCode={dialog.inviteCode} onClose={closeDialog} />
+            <InviteCodeDialog
+              inviteCode={dialog.inviteCode}
+              onClose={() => {
+                // 확인 시 방금 만든 그룹 대시보드로 이동한다.
+                router.push(`/dashboard/${dialog.groupId}`);
+                closeDialog();
+              }}
+            />
           )}
         </OverlayPortal>
       )}
