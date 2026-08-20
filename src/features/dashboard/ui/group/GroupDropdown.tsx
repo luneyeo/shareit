@@ -1,22 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { IcChevronDown } from "@/shared/assets/icons";
 import { cn } from "@/shared/utils/cn";
 import { DropdownProvider, DropdownTrigger, DropdownSelectMenu } from "@/shared/ui/dropdown";
-import OverlayPortal from "@/shared/ui/overlay/OverlayPortal";
-import InputDialog from "@/shared/ui/dialog/InputDialog";
-import InviteCodeDialog from "@/features/dashboard/ui/InviteCodeDialog";
 import GroupActionButton from "@/features/dashboard/ui/group/GroupActionButton";
-import { useCreateGroup } from "@/features/dashboard/hooks/useCreateGroup";
-import { useAuthStore } from "@/shared/store/authStore";
-import type {
-  Group,
-  GroupDialogType,
-  GroupDialogConfig,
-  GroupDialogState,
-} from "@/features/dashboard/types";
+import { useGroupDialog } from "@/features/dashboard/hooks/useGroupDialog";
+import type { Group } from "@/features/dashboard/types";
 
 interface GroupDropdownProps {
   groups: Group[];
@@ -27,75 +17,21 @@ function TriggerChevron() {
   return <IcChevronDown className={cn("h-6 w-6")} />;
 }
 
-/** 다이얼로그 종류별 문구 설정. 키는 `InputDialog` props와 그대로 매칭됩니다. */
-const GROUP_DIALOG_CONFIG = {
-  create: {
-    title: "새 그룹 만들기",
-    label: "그룹 이름",
-    placeholder: "그룹명을 입력해 주세요",
-    confirmText: "생성",
-  },
-  join: {
-    title: "새 그룹 입장하기",
-    label: "입장 코드",
-    placeholder: "입장 코드를 입력해 주세요",
-    confirmText: "입장",
-  },
-} as const satisfies Record<GroupDialogType, GroupDialogConfig>;
-
 /**
  * 홈 헤더의 그룹 선택 드롭다운입니다.
  *
  * 현재 그룹명을 제목처럼 노출하고, 선택하면 해당 대시보드로 이동합니다.
+ * 푸터 버튼으로 그룹 생성/입장 다이얼로그(`useGroupDialog`)를 엽니다.
  */
 export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownProps) {
   const router = useRouter();
   const currentGroup = groups.find((group) => group.id === currentGroupId);
 
-  const userId = useAuthStore((state) => state.user?.id);
-  const createGroup = useCreateGroup();
-
-  const [dialog, setDialog] = useState<GroupDialogState | null>(null);
-  const [value, setValue] = useState("");
+  const { openCreate, openJoin, dialogElement } = useGroupDialog();
 
   const handleSelect = (groupId: string) => {
     if (groupId !== currentGroupId) {
       router.push(`/dashboard/${groupId}`);
-    }
-  };
-
-  const openDialog = (type: GroupDialogType) => setDialog({ type, step: "input" });
-
-  const closeDialog = () => {
-    setDialog(null);
-    setValue("");
-  };
-
-  const handleConfirm = () => {
-    if (dialog?.step !== "input") return;
-
-    if (dialog.type === "create") {
-      if (!userId || createGroup.isPending) return;
-
-      createGroup.mutate(
-        { name: value.trim(), userId },
-        {
-          onSuccess: (group) => {
-            setDialog({
-              type: "create",
-              step: "done",
-              inviteCode: group.inviteCode,
-              groupId: group.id,
-            });
-            setValue("");
-          },
-          // TODO: 생성 실패 토스트 표시
-        }
-      );
-    } else {
-      // TODO: 초대 코드로 그룹 입장 api 연결
-      // TODO: 입장 완료 토스트 표시
-      closeDialog();
     }
   };
 
@@ -113,41 +49,14 @@ export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownP
           onSelect={handleSelect}
           footer={
             <div className="border-t border-gray-200">
-              <GroupActionButton label="새 그룹 만들기" onClick={() => openDialog("create")} />
-              <GroupActionButton label="새 그룹 입장하기" onClick={() => openDialog("join")} />
+              <GroupActionButton label="새 그룹 만들기" onClick={openCreate} />
+              <GroupActionButton label="새 그룹 입장하기" onClick={openJoin} />
             </div>
           }
         />
       </DropdownProvider>
 
-      {dialog && (
-        <OverlayPortal
-          ariaLabel={
-            dialog.step === "done" ? "그룹이 생성됐어요" : GROUP_DIALOG_CONFIG[dialog.type].title
-          }
-          onClose={closeDialog}
-          surfaceClassName="w-full max-w-xs"
-        >
-          {dialog.step === "input" ? (
-            <InputDialog
-              {...GROUP_DIALOG_CONFIG[dialog.type]}
-              value={value}
-              onChange={setValue}
-              onConfirm={handleConfirm}
-              onCancel={closeDialog}
-            />
-          ) : (
-            <InviteCodeDialog
-              inviteCode={dialog.inviteCode}
-              onClose={() => {
-                // 확인 시 방금 만든 그룹 대시보드로 이동한다.
-                router.push(`/dashboard/${dialog.groupId}`);
-                closeDialog();
-              }}
-            />
-          )}
-        </OverlayPortal>
-      )}
+      {dialogElement}
     </>
   );
 }
