@@ -8,7 +8,9 @@ import ProductList from "@/features/dashboard/ui/product/ProductList";
 import { useMyGroupList } from "@/features/dashboard/hooks/useMyGroupList";
 
 /**
- * 사용자 대시보드 페이지 컴포넌트
+ * 특정 그룹(`/dashboard/[dashboardId]`)의 대시보드 페이지 컴포넌트.
+ *
+ * 그룹 없음/첫 그룹 진입 분기는 DashboardIndexPage가 담당하고, 이 컴포넌트는 유효한 그룹 화면을 렌더한다.
  *
  * @example
  * import { DashboardPage } from '@/views/dashboard'
@@ -18,7 +20,7 @@ export function DashboardPage() {
   const { data: groups, isLoading } = useMyGroupList();
   // 현재 그룹은 URL(/dashboard/[dashboardId])의 dashboardId에서 파생한다.
   const { dashboardId } = useParams<{ dashboardId: string }>();
-  // 그룹 목록에서 현재 그룹 ID를 검증한다. 실제 조회로 교체해도 이 검증 경로는 유지한다.
+  // 그룹 목록에서 현재 그룹 ID가 내가 속한 그룹인지 검증한다.
   const currentGroup = groups?.find((group) => group.id === dashboardId);
 
   // 그룹 목록을 불러오는 동안에는 "존재하지 않는 그룹" 플래시를 막는다.
