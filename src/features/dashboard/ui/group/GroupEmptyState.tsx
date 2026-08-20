@@ -1,6 +1,6 @@
 "use client";
 
-import { IcGroup, IcPlus } from "@/shared/assets/icons";
+import { IcPlus } from "@/shared/assets/icons";
 import { useGroupDialog } from "@/features/dashboard/hooks/useGroupDialog";
 
 /**
@@ -14,7 +14,6 @@ export default function GroupEmptyState() {
   return (
     <div className="flex min-h-[calc(100dvh-3.75rem-env(safe-area-inset-bottom))] flex-col items-center justify-center px-10 text-center">
       {/* TODO: Lottie 애니메이션으로 변경 예정 */}
-      <IcGroup className="size-10 text-[#4b5573]" />
       <p className="mt-4 typo-18-bold">아직 속한 그룹이 없어요</p>
       <p className="mt-1 typo-16-medium text-gray-500">
         새 그룹을 만들거나 초대 코드로 입장해보세요
