@@ -31,4 +31,5 @@ export type GroupDialogConfig = {
  * - 완료 단계: create만 초대 코드 모달로 이어짐 (join은 완료 시 토스트)
  */
 export type GroupDialogState =
-  { type: GroupDialogType; step: "input" } | { type: "create"; step: "done"; inviteCode: string };
+  | { type: GroupDialogType; step: "input" }
+  | { type: "create"; step: "done"; inviteCode: string; groupId: string };

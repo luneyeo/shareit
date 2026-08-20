@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { User, SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/shared/lib/supabase/server";
-import { DEFAULT_DASHBOARD_ID } from "@/shared/api/group/useMyGroups";
 
 /**
  * users 테이블에 프로필을 저장한다. (이미 있으면 갱신)
@@ -38,7 +37,7 @@ export async function GET(request: Request) {
 
     if (!error) {
       await saveUserProfile(supabase, data.user);
-      return NextResponse.redirect(`${origin}/dashboard/${DEFAULT_DASHBOARD_ID}`);
+      return NextResponse.redirect(`${origin}/dashboard`);
     }
   }
 

@@ -21,7 +21,7 @@ export default function FieldError({ id, message }: FieldErrorProps) {
   if (!message) return null;
 
   return (
-    <p id={id} role="alert" className="typo-13-medium text-error">
+    <p id={id} role="alert" className="relative left-1 -top-1 typo-13-medium text-error">
       {message}
     </p>
   );

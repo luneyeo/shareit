@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useMyGroups } from "@/shared/api/group/useMyGroups";
 import { cn } from "@/shared/utils/cn";
 import FooterBase from "../base/FooterBase";
 import { TAB_ITEMS } from "./tabItems";
@@ -23,8 +22,6 @@ import { TAB_ITEMS } from "./tabItems";
  */
 export default function TabBarFooter() {
   const pathname = usePathname();
-  const groups = useMyGroups();
-  const defaultGroupId = groups[0]?.id;
 
   return (
     <FooterBase>
@@ -32,13 +29,11 @@ export default function TabBarFooter() {
         {TAB_ITEMS.map(({ href, label, Icon, ActiveIcon }) => {
           const isActive = pathname === href || pathname.startsWith(`${href}/`);
           const TabIcon = isActive ? ActiveIcon : Icon;
-          // 대시보드 탭은 사용자가 속한 첫 그룹의 대시보드(/dashboard/{groupId})로 이동한다.
-          const to = href === "/dashboard" && defaultGroupId ? `${href}/${defaultGroupId}` : href;
 
           return (
             <Link
               key={href}
-              href={to}
+              href={href}
               aria-current={isActive ? "page" : undefined}
               className={cn(
                 "flex flex-1 flex-col items-center gap-1",
