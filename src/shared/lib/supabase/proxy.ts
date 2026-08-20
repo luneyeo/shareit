@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-import { DEFAULT_DASHBOARD_ID } from "@/shared/api/group/useMyGroups";
 
 // (private) 라우트 그룹은 URL에 드러나지 않으므로, 해당 그룹이 만들어내는 실제 경로로 판별한다.
 const PRIVATE_ROUTES = ["/dashboard", "/mypage"];
@@ -65,7 +64,7 @@ export async function updateSession(request: NextRequest) {
 
   // 세션이 있는데 인증 경로에 접근하면 대시보드로 보낸다.
   if (data?.claims && isAuthRoute) {
-    return redirectTo(`/dashboard/${DEFAULT_DASHBOARD_ID}`);
+    return redirectTo("/dashboard");
   }
 
   return supabaseResponse;

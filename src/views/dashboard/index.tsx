@@ -5,7 +5,7 @@ import CategoryTabs from "@/features/dashboard/ui/CategoryTabs";
 import DashboardFab from "@/features/dashboard/ui/DashboardFab";
 import GroupDropdown from "@/features/dashboard/ui/group/GroupDropdown";
 import ProductList from "@/features/dashboard/ui/product/ProductList";
-import { useMyGroups } from "@/shared/api/group/useMyGroups";
+import { useMyGroupList } from "@/shared/api/group/useMyGroupList";
 
 /**
  * 사용자 대시보드 페이지 컴포넌트
@@ -15,16 +15,25 @@ import { useMyGroups } from "@/shared/api/group/useMyGroups";
  * export default DashboardPage
  */
 export function DashboardPage() {
-  const groups = useMyGroups();
+  const { data: groups, isLoading } = useMyGroupList();
   // 현재 그룹은 URL(/dashboard/[dashboardId])의 dashboardId에서 파생한다.
   const { dashboardId } = useParams<{ dashboardId: string }>();
   // 그룹 목록에서 현재 그룹 ID를 검증한다. 실제 조회로 교체해도 이 검증 경로는 유지한다.
-  const currentGroup = groups.find((group) => group.id === dashboardId);
+  const currentGroup = groups?.find((group) => group.id === dashboardId);
+
+  // 그룹 목록을 불러오는 동안에는 "존재하지 않는 그룹" 플래시를 막는다.
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center gap-1 px-5 py-16 text-center">
+        <p className="typo-14-medium text-gray-500">그룹을 불러오는 중이에요.</p>
+      </div>
+    );
+  }
 
   return (
     <>
       <div className="p-5 pb-3">
-        <GroupDropdown groups={groups} currentGroupId={dashboardId} />
+        <GroupDropdown groups={groups ?? []} currentGroupId={dashboardId} />
       </div>
       {currentGroup ? (
         <>
