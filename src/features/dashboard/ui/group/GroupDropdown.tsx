@@ -9,6 +9,8 @@ import OverlayPortal from "@/shared/ui/overlay/OverlayPortal";
 import InputDialog from "@/shared/ui/dialog/InputDialog";
 import InviteCodeDialog from "@/features/dashboard/ui/InviteCodeDialog";
 import GroupActionButton from "@/features/dashboard/ui/group/GroupActionButton";
+import { useCreateGroup } from "@/features/dashboard/hooks/useCreateGroup";
+import { useAuthStore } from "@/shared/store/authStore";
 import type {
   Group,
   GroupDialogType,
@@ -50,6 +52,9 @@ export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownP
   const router = useRouter();
   const currentGroup = groups.find((group) => group.id === currentGroupId);
 
+  const userId = useAuthStore((state) => state.user?.id);
+  const createGroup = useCreateGroup();
+
   const [dialog, setDialog] = useState<GroupDialogState | null>(null);
   const [value, setValue] = useState("");
 
@@ -70,9 +75,18 @@ export default function GroupDropdown({ groups, currentGroupId }: GroupDropdownP
     if (dialog?.step !== "input") return;
 
     if (dialog.type === "create") {
-      // TODO: 그룹 생성 api 연결 후 응답의 초대 코드로 교체
-      setDialog({ type: "create", step: "done", inviteCode: "FA7MBG" });
-      setValue("");
+      if (!userId || createGroup.isPending) return;
+
+      createGroup.mutate(
+        { name: value.trim(), userId },
+        {
+          onSuccess: (group) => {
+            setDialog({ type: "create", step: "done", inviteCode: group.inviteCode });
+            setValue("");
+          },
+          // TODO: 생성 실패 토스트 표시
+        }
+      );
     } else {
       // TODO: 초대 코드로 그룹 입장 api 연결
       // TODO: 입장 완료 토스트 표시
