@@ -22,7 +22,7 @@ export function useCreateGroup() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ name, userId }: CreateGroupParams) => createGroup(name, userId),
+    mutationFn: ({ name }: CreateGroupParams) => createGroup(name),
     onSuccess: (_group, { userId }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.groups.my(userId) });
     },
