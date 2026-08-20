@@ -16,7 +16,7 @@ interface AuthIntroProps {
  */
 export default function AuthIntro({ description }: AuthIntroProps) {
   return (
-    <section className="flex flex-1 flex-col items-center justify-center gap-3">
+    <section className="flex flex-col items-center gap-3">
       <h1>
         <LogoText role="img" aria-label="Shareit!" className="h-auto w-50" />
       </h1>
