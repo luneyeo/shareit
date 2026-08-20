@@ -1,47 +1,30 @@
 import { createClient } from "@/shared/lib/supabase/client";
 
 /**
- * 입장 코드로 그룹을 찾아 사용자를 멤버로 추가한다.
+ * 입장 코드로 그룹에 멤버로 입장한다. (원자적·멱등)
  *
- * 1) invite_code로 그룹을 찾고(없으면 잘못된 코드),
- * 2) 이미 속한 그룹이면 중복 등록 없이 그대로 통과시키고,
- * 3) 아니면 group_members에 member로 등록한다.
+ * 코드 조회와 멤버십 등록을 PostgreSQL 함수(`join_group_by_code`)로 묶어 `supabase.rpc`로 호출한다.
+ * 함수는 INSERT ... ON CONFLICT DO NOTHING으로 등록하므로, 동시 요청이나 이미 속한 그룹이어도
+ * 중복 행 없이 항상 같은 결과(그룹 id)를 반환한다. 사용자는 함수 내부 auth.uid()로 결정된다.
  *
- * 실패 시 에러를 throw해 mutation의 onError/isError로 처리할 수 있게 한다.
+ * - 조회/등록 실패(error) → 일반 실패 메시지로 throw.
+ * - 잘못된 코드(빈 결과) → '입장 코드를 다시 확인해 주세요'로 throw.
  *
  * @param inviteCode 입장 코드
- * @param userId 입장할 유저 id
  * @returns 입장한 그룹 id
  */
-export async function joinGroup(inviteCode: string, userId: string): Promise<{ id: string }> {
+export async function joinGroup(inviteCode: string): Promise<{ id: string }> {
   const supabase = createClient();
 
-  // 1단계: 코드로 그룹 찾기
-  const { data: group, error: findError } = await supabase
-    .from("groups")
-    .select("id")
-    .eq("invite_code", inviteCode)
-    .single();
-
-  if (findError || !group) throw new Error("입장 코드를 다시 확인해 주세요");
-
-  // 2단계: 이미 속한 그룹이면 중복 등록 없이 그대로 통과시킨다.
-  const { data: existing } = await supabase
-    .from("group_members")
-    .select("group_id")
-    .eq("group_id", group.id)
-    .eq("user_id", userId)
+  const { data, error } = await supabase
+    .rpc("join_group_by_code", { invite_code: inviteCode })
     .maybeSingle();
 
-  if (existing) return { id: group.id };
+  // 조회 자체가 실패했으면(네트워크·DB 오류) 성공으로 오인하지 않고 중단한다.
+  if (error) throw new Error("입장에 실패했어요. 다시 시도해 주세요.");
+  // 빈 결과 = 코드에 해당하는 그룹 없음.
+  if (!data) throw new Error("입장 코드를 다시 확인해 주세요");
 
-  // 3단계: group_members에 member로 추가
-  const { error: joinError } = await supabase
-    .from("group_members")
-    .insert({ group_id: group.id, user_id: userId, role: "member" });
-
-  // 원본 DB 에러 메시지가 입력창에 그대로 노출되지 않도록 친화적 메시지로 감싼다.
-  if (joinError) throw new Error("입장에 실패했어요. 다시 시도해 주세요.");
-
+  const group = data as { id: string };
   return { id: group.id };
 }

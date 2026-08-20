@@ -22,7 +22,7 @@ export function useJoinGroup() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ inviteCode, userId }: JoinGroupParams) => joinGroup(inviteCode, userId),
+    mutationFn: ({ inviteCode }: JoinGroupParams) => joinGroup(inviteCode),
     onSuccess: (_data, { userId }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.groups.my(userId) });
     },
