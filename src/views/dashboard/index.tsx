@@ -5,7 +5,7 @@ import CategoryTabs from "@/features/dashboard/ui/CategoryTabs";
 import DashboardFab from "@/features/dashboard/ui/DashboardFab";
 import GroupDropdown from "@/features/dashboard/ui/group/GroupDropdown";
 import ProductList from "@/features/dashboard/ui/product/ProductList";
-import { useMyGroupList } from "@/shared/api/group/useMyGroupList";
+import { useMyGroupList } from "@/features/dashboard/hooks/useMyGroupList";
 
 /**
  * 사용자 대시보드 페이지 컴포넌트

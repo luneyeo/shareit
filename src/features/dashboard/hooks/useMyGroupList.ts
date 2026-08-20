@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/shared/store/authStore";
 import { queryKeys } from "@/shared/constants/queryKey";
-import { getMyGroups } from "./getMyGroups";
+import { getMyGroups } from "@/shared/api/group/getMyGroups";
 
 /**
  * 로그인한 사용자가 멤버로 속한 그룹 목록을 조회하는 훅.
