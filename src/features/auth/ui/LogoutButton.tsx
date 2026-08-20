@@ -25,7 +25,7 @@ export default function LogoutButton() {
         return;
       }
 
-      router.replace("/login");
+      router.replace("/auth");
     } catch {
       setHasError(true);
     }
