@@ -44,6 +44,15 @@
 - **[필수] 단일 책임 원칙(SRP)**: 함수와 컴포넌트는 하나의 책임만 가져야 한다. 컴포넌트가 비대해졌다면 UI/로직 분리 또는 컴포넌트 분해를 제안한다.
 - **[권장] 패턴 공통화**: 동일한 코드 패턴이나 UI 구조가 2회 이상 반복되면 `shared` 또는 해당 레이어의 공통 컴포넌트로 승격할 것을 제안한다.
 
+### 2-1. 데이터 계층 (DB 접근 함수 ↔ 훅 분리)
+
+DB(Supabase) 접근 로직과 React Query 훅은 역할과 위치를 분리한다.
+
+- **[필수] DB 접근 함수 위치**: Supabase를 직접 호출하는 함수는 도메인별로 `shared/api/<도메인>/`에 모은다. (예: `shared/api/group/createGroup.ts`, `shared/api/auth/oauth.ts`) 특정 feature 폴더에 흩어져 있으면 이동을 제안한다.
+- **[필수] DB 함수 네이밍**: DB 접근 함수는 `use` 접두사 없이 동사형으로 짓는다. (예: `createGroup`, `getMyGroups`) 훅이 아닌데 `use`가 붙어 있으면 지적한다.
+- **[필수] 훅 위치**: 해당 DB 함수를 감싸는 React Query 훅(`useMutation`/`useQuery`)은 `features/<feature>/hooks/`에 두고 `use*`로 짓는다. (예: `features/dashboard/hooks/useCreateGroup.ts`)
+- **[필수] queryKey 관리**: TanStack Query의 `queryKey`는 `shared/constants/queryKey.ts`의 `queryKeys` 객체에서 도메인별로 일괄 관리한다. 훅/컴포넌트에 키를 하드코딩하면 지적한다.
+
 ---
 
 ## 3. 네이밍 컨벤션

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { logout } from "@/features/auth/apis/oauth";
+import { logout } from "@/shared/api/auth/oauth";
 import { AUTH_MESSAGE } from "@/features/auth/constants/messages";
 
 /**
