@@ -17,11 +17,14 @@ export async function DashboardIndexPage() {
   // 미들웨어가 인증을 보장하지만, user 타입을 좁히기 위해 방어한다.
   if (!user) redirect("/login");
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("group_members")
     .select("group_id")
     .eq("user_id", user.id)
     .limit(1);
+
+  // 조회 실패를 '그룹 없음(EmptyState)'으로 오인하지 않도록 에러 바운더리(error.tsx)로 전달한다.
+  if (error) throw error;
 
   const firstGroupId = data?.[0]?.group_id;
   if (firstGroupId) redirect(`/dashboard/${firstGroupId}`);

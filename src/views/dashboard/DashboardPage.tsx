@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import CategoryTabs from "@/features/dashboard/ui/CategoryTabs";
 import DashboardFab from "@/features/dashboard/ui/DashboardFab";
 import GroupDropdown from "@/features/dashboard/ui/group/GroupDropdown";
+import GroupLoadError from "@/features/dashboard/ui/group/GroupLoadError";
 import ProductList from "@/features/dashboard/ui/product/ProductList";
 import { useMyGroupList } from "@/features/dashboard/hooks/useMyGroupList";
 
@@ -17,7 +18,7 @@ import { useMyGroupList } from "@/features/dashboard/hooks/useMyGroupList";
  * export default DashboardPage
  */
 export function DashboardPage() {
-  const { data: groups, isLoading } = useMyGroupList();
+  const { data: groups, isLoading, isError, refetch } = useMyGroupList();
   // 현재 그룹은 URL(/dashboard/[dashboardId])의 dashboardId에서 파생한다.
   const { dashboardId } = useParams<{ dashboardId: string }>();
   // 그룹 목록에서 현재 그룹 ID가 내가 속한 그룹인지 검증한다.
@@ -30,6 +31,11 @@ export function DashboardPage() {
         <p className="typo-14-medium text-gray-500">그룹을 불러오는 중이에요.</p>
       </div>
     );
+  }
+
+  // 조회 실패를 "존재하지 않는 그룹"으로 오인하지 않도록 재시도 가능한 에러 화면을 보여준다.
+  if (isError) {
+    return <GroupLoadError onRetry={() => refetch()} />;
   }
 
   return (
