@@ -15,7 +15,7 @@ export async function DashboardIndexPage() {
     data: { user },
   } = await supabase.auth.getUser();
   // 미들웨어가 인증을 보장하지만, user 타입을 좁히기 위해 방어한다.
-  if (!user) redirect("/login");
+  if (!user) redirect("/auth");
 
   const { data, error } = await supabase
     .from("group_members")
