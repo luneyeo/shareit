@@ -90,7 +90,10 @@ export function useGroupDialog() {
             });
             setValue("");
           },
-          // TODO: 생성 실패 토스트 표시
+          // TODO: 토스트 도입 시 전역 알림으로 전환 (생성 실패는 필드 오류가 아니라 시스템 오류)
+          onError: () => {
+            setError("그룹 생성에 실패했어요. 다시 시도해 주세요.");
+          },
         }
       );
     } else {
