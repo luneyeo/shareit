@@ -17,7 +17,7 @@ export function useMyGroupList() {
   const userId = useAuthStore((state) => state.user?.id);
 
   return useQuery({
-    queryKey: queryKeys.groups.my,
+    queryKey: queryKeys.groups.my(userId),
     queryFn: () => getMyGroups(userId!),
     enabled: !!userId,
   });

@@ -23,8 +23,8 @@ export function useJoinGroup() {
 
   return useMutation({
     mutationFn: ({ inviteCode, userId }: JoinGroupParams) => joinGroup(inviteCode, userId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.groups.my });
+    onSuccess: (_data, { userId }) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.groups.my(userId) });
     },
   });
 }

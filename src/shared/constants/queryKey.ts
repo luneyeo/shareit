@@ -6,7 +6,7 @@ export const queryKeys = {
   groups: {
     /** 그룹 도메인 전체 무효화용 루트 키 */
     all: ["groups"] as const,
-    /** 로그인한 사용자가 속한 그룹 목록 */
-    my: ["groups", "my"] as const,
+    /** 특정 사용자가 속한 그룹 목록. 사용자 간 캐시가 섞이지 않도록 userId를 키에 포함한다. */
+    my: (userId: string | undefined) => ["groups", "my", userId] as const,
   },
 } as const;
