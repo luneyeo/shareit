@@ -72,7 +72,7 @@ export default function DialogBase({
       {children}
       <div className="flex gap-2">
         {!hideCancel && (
-          <Button theme="gray" size="md" className="flex-1" onClick={onCancel}>
+          <Button theme="secondary" size="md" className="flex-1" onClick={onCancel}>
             {cancelText}
           </Button>
         )}
