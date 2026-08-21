@@ -18,14 +18,15 @@ import EmptyState from "@/shared/ui/empty-state/EmptyState";
  * export default DashboardPage
  */
 export function DashboardPage() {
-  const { data: groups, isLoading, isError, refetch } = useMyGroupList();
+  const { data: groups, isPending, isError, refetch } = useMyGroupList();
   // 현재 그룹은 URL(/dashboard/[dashboardId])의 dashboardId에서 파생한다.
   const { dashboardId } = useParams<{ dashboardId: string }>();
   // 그룹 목록에서 현재 그룹 ID가 내가 속한 그룹인지 검증한다.
   const currentGroup = groups?.find((group) => group.id === dashboardId);
 
   // 그룹 목록을 불러오는 동안에는 "존재하지 않는 그룹" 플래시를 막는다.
-  if (isLoading) {
+  // (userId 대기로 쿼리가 disabled면 isLoading이 false라 isPending으로 판별한다.)
+  if (isPending) {
     return (
       <div className="flex flex-col items-center gap-1 px-5 py-16 text-center">
         <p className="typo-14-medium text-gray-500">그룹을 불러오는 중이에요.</p>
