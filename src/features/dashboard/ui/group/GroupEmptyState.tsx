@@ -1,6 +1,5 @@
 "use client";
 
-import noGroupAnimation from "@/shared/assets/lottie/lottie-no-group.json";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
 import { useGroupDialog } from "@/features/dashboard/hooks/useGroupDialog";
 
@@ -16,7 +15,6 @@ export default function GroupEmptyState() {
     <>
       <EmptyState
         type="group"
-        animationData={noGroupAnimation}
         message="아직 속한 그룹이 없어요"
         description="새 그룹을 만들거나 초대 코드로 입장해보세요"
         className="min-h-[calc(100dvh-3.75rem-env(safe-area-inset-bottom))] justify-center px-10 py-0"

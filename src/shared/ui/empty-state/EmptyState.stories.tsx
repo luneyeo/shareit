@@ -1,17 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import { fn } from "storybook/test";
-import noGroupAnimation from "@/shared/assets/lottie/lottie-no-group.json";
-import noProductAnimation from "@/shared/assets/lottie/lottie-no-product.json";
-import noDataAnimation from "@/shared/assets/lottie/lottie-no-data.json";
 import EmptyState from "./EmptyState";
 
 const meta: Meta<typeof EmptyState> = {
   title: "Shared/EmptyState",
   component: EmptyState,
   tags: ["autodocs"],
-  args: {
-    animationData: noGroupAnimation,
-  },
 };
 
 export default meta;
@@ -30,7 +24,6 @@ export const Group: Story = {
 export const Product: Story = {
   args: {
     type: "product",
-    animationData: noProductAnimation,
     message: "아직 등록된 상품이 없어요",
     description: "첫 상품을 등록해보세요",
     onAddProduct: fn(),
@@ -40,7 +33,6 @@ export const Product: Story = {
 export const Error: Story = {
   args: {
     type: "error",
-    animationData: noDataAnimation,
     message: "문제가 발생했어요",
     description: "잠시 후 다시 시도해주세요",
     onRetry: fn(),
