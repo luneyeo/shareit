@@ -1,6 +1,7 @@
 "use client";
 
-import { IcPlus } from "@/shared/assets/icons";
+import noGroupAnimation from "@/shared/assets/lottie/lottie-no-group.json";
+import EmptyState from "@/shared/ui/empty-state/EmptyState";
 import { useGroupDialog } from "@/features/dashboard/hooks/useGroupDialog";
 
 /**
@@ -12,31 +13,18 @@ export default function GroupEmptyState() {
   const { openCreate, openJoin, dialogElement } = useGroupDialog();
 
   return (
-    <div className="flex min-h-[calc(100dvh-3.75rem-env(safe-area-inset-bottom))] flex-col items-center justify-center px-10 text-center">
-      {/* TODO: Lottie 애니메이션으로 변경 예정 */}
-      <p className="mt-4 typo-18-bold">아직 속한 그룹이 없어요</p>
-      <p className="mt-1 typo-16-medium text-gray-500">
-        새 그룹을 만들거나 초대 코드로 입장해보세요
-      </p>
-
-      <div className="mt-8 flex w-full flex-col gap-3.5 px-10">
-        <button
-          type="button"
-          onClick={openCreate}
-          className="flex w-full items-center justify-center gap-1.5 rounded-full bg-primary-600 py-4 text-white typo-16-semibold"
-        >
-          <IcPlus className="size-4" />새 그룹 만들기
-        </button>
-        <button
-          type="button"
-          onClick={openJoin}
-          className="w-full rounded-full border border-primary-600 py-4 text-primary-600 typo-16-semibold"
-        >
-          코드로 그룹 입장하기
-        </button>
-      </div>
+    <>
+      <EmptyState
+        type="group"
+        animationData={noGroupAnimation}
+        message="아직 속한 그룹이 없어요"
+        description="새 그룹을 만들거나 초대 코드로 입장해보세요"
+        className="min-h-[calc(100dvh-3.75rem-env(safe-area-inset-bottom))] justify-center px-10 py-0"
+        onCreateGroup={openCreate}
+        onJoinGroup={openJoin}
+      />
 
       {dialogElement}
-    </div>
+    </>
   );
 }
