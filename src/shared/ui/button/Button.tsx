@@ -4,13 +4,14 @@ import { cn } from "@/shared/utils/cn";
 import type { ButtonProps } from "./types";
 
 const buttonVariants = cva(
-  "relative inline-flex gap-1 items-center justify-center whitespace-nowrap rounded-full border transition-colors px-3 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-transparent disabled:pointer-events-none",
+  "relative inline-flex gap-1 items-center justify-center whitespace-nowrap rounded-full border transition-colors px-3 disabled:bg-gray-200 disabled:text-gray-600 disabled:border-transparent disabled:pointer-events-none",
   {
     variants: {
       theme: {
         primary:
           "bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-700 border-transparent",
         secondary: "bg-white text-primary-600 border-primary-500 hover:bg-gray-100",
+        gray: "border-transparent bg-gray-200 text-gray-600 hover:bg-gray-300",
       },
       size: {
         lg: "h-12.5 typo-16-bold",
@@ -28,7 +29,7 @@ const buttonVariants = cva(
 /**
  * 공통 버튼 컴포넌트입니다.
  *
- * - `theme`: 버튼 색상 스타일 (`primary` | `secondary`)
+ * - `theme`: 버튼 색상 스타일 (`primary` | `secondary` | `gray`)
  * - `size`: 버튼 높이 및 폰트 크기 (`lg` | `md` | `sm`)
  * - `icon`: 텍스트 왼쪽에 표시할 아이콘 (ReactNode)
  * - `width`: size variant에 포함되지 않으므로 `className`으로 직접 지정합니다.

@@ -1,4 +1,4 @@
-export type ButtonTheme = "primary" | "secondary";
+export type ButtonTheme = "primary" | "secondary" | "gray";
 export type ButtonSize = "lg" | "md" | "sm";
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
