@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import EmptyState from "@/shared/ui/empty-state/EmptyState";
 import { useGroupProducts } from "@/features/dashboard/api/useGroupProducts";
 import ProductCard from "./ProductCard";
 
@@ -11,6 +13,19 @@ import ProductCard from "./ProductCard";
  */
 export default function ProductList({ groupId }: { groupId: string }) {
   const products = useGroupProducts(groupId);
+  const router = useRouter();
+
+  if (products.length === 0) {
+    return (
+      <EmptyState
+        type="product"
+        message="아직 등록된 상품이 없어요"
+        description="첫 상품을 등록해보세요"
+        className="min-h-[calc(100dvh-13rem-env(safe-area-inset-bottom))]"
+        onAddProduct={() => router.push(`/dashboard/${groupId}/product/new`)}
+      />
+    );
+  }
 
   return (
     <section aria-labelledby="product-list-heading" className="p-4.5">
