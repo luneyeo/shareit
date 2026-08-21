@@ -1,6 +1,6 @@
 "use client";
 
-import GroupLoadError from "@/features/dashboard/ui/group/GroupLoadError";
+import EmptyState from "@/shared/ui/empty-state/EmptyState";
 
 /**
  * 대시보드 세그먼트(`/dashboard`, `/dashboard/[dashboardId]`)의 에러 바운더리.
@@ -9,5 +9,12 @@ import GroupLoadError from "@/features/dashboard/ui/group/GroupLoadError";
  * `reset`은 해당 세그먼트를 다시 렌더(서버 재요청)한다.
  */
 export default function DashboardError({ reset }: { error: Error; reset: () => void }) {
-  return <GroupLoadError onRetry={reset} />;
+  return (
+    <EmptyState
+      type="error"
+      message="그룹 정보를 불러오지 못했어요"
+      description="잠시 후 다시 시도해 주세요."
+      onRetry={reset}
+    />
+  );
 }

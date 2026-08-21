@@ -19,6 +19,7 @@ type BaseProps = {
  * - `group`: 그룹 생성/입장 버튼 (핸들러 필수)
  * - `product`: 상품 등록 버튼 (핸들러 필수)
  * - `error`: 다시 시도 버튼 (핸들러 필수)
+ * - `notice`: 버튼 없이 안내 문구만 (핸들러 없음)
  */
 type EmptyStateProps =
   | (BaseProps & {
@@ -27,13 +28,15 @@ type EmptyStateProps =
       onJoinGroup: () => void;
     })
   | (BaseProps & { type: "product"; onAddProduct: () => void })
-  | (BaseProps & { type: "error"; onRetry: () => void });
+  | (BaseProps & { type: "error"; onRetry: () => void })
+  | (BaseProps & { type: "notice" });
 
 /** 타입별 Lottie 애니메이션과 크기 매핑 */
 const ANIMATION: Record<EmptyStateProps["type"], { data: object; size: string }> = {
   group: { data: noGroupAnimation, size: "h-24 w-24" },
   product: { data: noProductAnimation, size: "h-18 w-18" },
   error: { data: noDataAnimation, size: "h-24 w-24" },
+  notice: { data: noDataAnimation, size: "h-24 w-24" },
 };
 
 /**
@@ -70,6 +73,15 @@ const ANIMATION: Record<EmptyStateProps["type"], { data: object; size: string }>
  *   message="문제가 발생했어요"
  *   description="잠시 후 다시 시도해주세요"
  *   onRetry={refetch}
+ * />
+ * ```
+ *
+ * @example notice - 버튼 없이 안내 문구만
+ * ```tsx
+ * <EmptyState
+ *   type="notice"
+ *   message="존재하지 않는 그룹이에요"
+ *   description="위에서 다른 그룹을 선택해 주세요"
  * />
  * ```
  */
@@ -128,5 +140,8 @@ function EmptyStateAction(props: EmptyStateProps) {
           다시 시도
         </Button>
       );
+
+    case "notice":
+      return null;
   }
 }

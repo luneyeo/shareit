@@ -58,10 +58,13 @@ export function DashboardPage() {
           <DashboardFab dashboardId={currentGroup.id} />
         </>
       ) : (
-        // TODO: EmptyState 컴포넌트로 분리 예정
-        <div className="flex flex-col items-center gap-1 px-5 py-16 text-center">
-          <p className="typo-16-semibold">존재하지 않는 그룹이에요</p>
-          <p className="typo-14-medium text-gray-500">위에서 다른 그룹을 선택해 주세요.</p>
+        <div className="">
+          <EmptyState
+            type="notice"
+            message="존재하지 않는 그룹이에요"
+            description="위에서 다른 그룹을 선택해 주세요"
+            className="min-h-[calc(100dvh-13rem-env(safe-area-inset-bottom))]"
+          />
         </div>
       )}
     </>
