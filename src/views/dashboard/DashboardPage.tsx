@@ -4,9 +4,9 @@ import { useParams } from "next/navigation";
 import CategoryTabs from "@/features/dashboard/ui/CategoryTabs";
 import DashboardFab from "@/features/dashboard/ui/DashboardFab";
 import GroupDropdown from "@/features/dashboard/ui/group/GroupDropdown";
-import GroupLoadError from "@/features/dashboard/ui/group/GroupLoadError";
 import ProductList from "@/features/dashboard/ui/product/ProductList";
 import { useMyGroupList } from "@/features/dashboard/hooks/useMyGroupList";
+import EmptyState from "@/shared/ui/empty-state/EmptyState";
 
 /**
  * 특정 그룹(`/dashboard/[dashboardId]`)의 대시보드 페이지 컴포넌트.
@@ -35,7 +35,14 @@ export function DashboardPage() {
 
   // 조회 실패를 "존재하지 않는 그룹"으로 오인하지 않도록 재시도 가능한 에러 화면을 보여준다.
   if (isError) {
-    return <GroupLoadError onRetry={() => refetch()} />;
+    return (
+      <EmptyState
+        type="error"
+        message="그룹 정보를 불러오지 못했어요"
+        description="잠시 후 다시 시도해 주세요."
+        onRetry={() => refetch()}
+      />
+    );
   }
 
   return (
