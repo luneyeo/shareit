@@ -58,14 +58,12 @@ export function DashboardPage() {
           <DashboardFab dashboardId={currentGroup.id} />
         </>
       ) : (
-        <div className="">
-          <EmptyState
-            type="notice"
-            message="존재하지 않는 그룹이에요"
-            description="위에서 다른 그룹을 선택해 주세요"
-            className="min-h-[calc(100dvh-13rem-env(safe-area-inset-bottom))]"
-          />
-        </div>
+        <EmptyState
+          type="notice"
+          message="존재하지 않는 그룹이에요"
+          description="상단에서 다른 그룹을 선택해 주세요"
+          className="min-h-[calc(100dvh-13rem-env(safe-area-inset-bottom))]"
+        />
       )}
     </>
   );

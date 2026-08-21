@@ -38,3 +38,11 @@ export const Error: Story = {
     onRetry: fn(),
   },
 };
+
+export const Notice: Story = {
+  args: {
+    type: "notice",
+    message: "존재하지 않는 그룹이에요",
+    description: "상단에서 다른 그룹을 선택해 주세요",
+  },
+};
