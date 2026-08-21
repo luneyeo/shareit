@@ -14,7 +14,7 @@ const buttonVariants = cva(
       },
       size: {
         lg: "h-12.5 typo-16-bold",
-        md: "h-11 typo-14-medium",
+        md: "h-10 typo-14-medium",
         sm: "h-7 typo-14-medium",
       },
     },
