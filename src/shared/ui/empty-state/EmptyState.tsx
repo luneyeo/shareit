@@ -1,8 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
 import { IcPlus } from "@/shared/assets/icons";
-import { noDataAnimation, noGroupAnimation, noProductAnimation } from "@/shared/assets/lottie";
 import Button from "@/shared/ui/button/Button";
 import { cn } from "@/shared/utils/cn";
 
@@ -31,13 +31,26 @@ type EmptyStateProps =
   | (BaseProps & { type: "error"; onRetry: () => void })
   | (BaseProps & { type: "notice" });
 
-/** 타입별 Lottie 애니메이션과 크기 매핑 */
-const ANIMATION: Record<EmptyStateProps["type"], { data: object; size: string }> = {
-  group: { data: noGroupAnimation, size: "h-24 w-24" },
-  product: { data: noProductAnimation, size: "h-18 w-18" },
-  error: { data: noDataAnimation, size: "h-24 w-24" },
-  notice: { data: noDataAnimation, size: "h-24 w-24" },
+/** 타입별 Lottie 애니메이션 크기 (자산 데이터는 loadAnimation에서 지연 로드) */
+const ANIMATION_SIZE: Record<EmptyStateProps["type"], string> = {
+  group: "h-24 w-24",
+  product: "h-18 w-18",
+  error: "h-24 w-24",
+  notice: "h-24 w-24",
 };
+
+/** type에 해당하는 Lottie JSON만 동적으로 import 한다. (번들 분리) */
+function loadAnimation(type: EmptyStateProps["type"]): Promise<{ default: object }> {
+  switch (type) {
+    case "group":
+      return import("@/shared/assets/lottie/lottie-no-group.json");
+    case "product":
+      return import("@/shared/assets/lottie/lottie-no-product.json");
+    case "error":
+    case "notice":
+      return import("@/shared/assets/lottie/lottie-no-data.json");
+  }
+}
 
 /**
  * 데이터가 없는 상태를 안내하는 EmptyState 컴포넌트입니다.
@@ -87,13 +100,34 @@ const ANIMATION: Record<EmptyStateProps["type"], { data: object; size: string }>
  */
 export default function EmptyState(props: EmptyStateProps) {
   const { message, description, className } = props;
-  const animation = ANIMATION[props.type];
+  const size = ANIMATION_SIZE[props.type];
+  const [loaded, setLoaded] = useState<{ type: EmptyStateProps["type"]; data: object } | null>(
+    null
+  );
+
+  useEffect(() => {
+    let active = true;
+    loadAnimation(props.type).then((mod) => {
+      if (active) setLoaded({ type: props.type, data: mod.default });
+    });
+    return () => {
+      active = false;
+    };
+  }, [props.type]);
+
+  // type이 바뀌면 새 애니메이션 로드 전까지는 placeholder를 유지한다.
+  const animationData = loaded?.type === props.type ? loaded.data : null;
 
   return (
     <div
       className={cn("flex flex-col items-center justify-center px-4 py-10 text-center", className)}
     >
-      <Lottie animationData={animation.data} loop play className={animation.size} />
+      {/* 로딩 중에는 동일 크기의 빈 영역으로 레이아웃(자리)을 유지한다. */}
+      {animationData ? (
+        <Lottie animationData={animationData} loop play className={size} />
+      ) : (
+        <div className={size} aria-hidden />
+      )}
       <p className="typo-16-bold mt-4 text-gray-800">{message}</p>
       {description && <p className="typo-14-medium mt-1 text-gray-500">{description}</p>}
       <EmptyStateAction {...props} />
