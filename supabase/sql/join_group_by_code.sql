@@ -51,3 +51,10 @@ begin
   return query select target_group_id;
 end;
 $$;
+
+-- 3) EXECUTE 권한을 인증 사용자로 제한.
+--    security definer 함수는 기본적으로 PUBLIC에 EXECUTE가 부여되므로, 앱의 로그인 검사와
+--    무관하게 anon도 RPC를 직접 호출할 수 있다. 따라서 PUBLIC/anon 권한을 회수하고
+--    authenticated에만 부여하여 RLS 우회 조회가 미인증 요청에 노출되지 않도록 한다.
+revoke execute on function public.join_group_by_code(text) from public, anon;
+grant execute on function public.join_group_by_code(text) to authenticated;
