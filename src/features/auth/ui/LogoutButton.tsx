@@ -32,7 +32,7 @@ export default function LogoutButton() {
   };
 
   return (
-    <div>
+    <>
       <button
         type="button"
         onClick={handleLogout}
@@ -46,6 +46,6 @@ export default function LogoutButton() {
           {AUTH_MESSAGE.LOGOUT.ERROR}
         </p>
       )}
-    </div>
+    </>
   );
 }
