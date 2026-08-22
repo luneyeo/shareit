@@ -25,12 +25,5 @@ export const WithBottom: Story = {
   args: {
     title: "우리 동네 모임",
     showSearch: true,
-    bottom: (
-      <div className="flex gap-2 px-4 pb-3">
-        <span className="typo-14-medium rounded-full bg-gray-100 px-3 py-1">전체</span>
-        <span className="typo-14-medium rounded-full bg-gray-100 px-3 py-1">캠핑</span>
-        <span className="typo-14-medium rounded-full bg-gray-100 px-3 py-1">가전</span>
-      </div>
-    ),
   },
 };

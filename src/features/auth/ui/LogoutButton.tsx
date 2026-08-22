@@ -8,7 +8,7 @@ import { AUTH_MESSAGE } from "@/features/auth/constants/messages";
 /**
  * 로그아웃 버튼.
  *
- * TODO: 로그인 상태 관리 확인용 임시 버튼. 실제 마이페이지 UI로 교체 예정.
+ * 마이페이지에서 사용하며, 클릭 시 로그아웃 후 `/auth`로 이동합니다.
  */
 export default function LogoutButton() {
   const router = useRouter();
@@ -32,11 +32,11 @@ export default function LogoutButton() {
   };
 
   return (
-    <div>
+    <>
       <button
         type="button"
         onClick={handleLogout}
-        className="flex h-13 w-full items-center justify-center rounded-full bg-gray-100 text-black typo-16-bold"
+        className="flex h-13 w-full items-center justify-center rounded-full bg-gray-100 text-gray-700 typo-16-bold"
       >
         로그아웃
       </button>
@@ -46,6 +46,6 @@ export default function LogoutButton() {
           {AUTH_MESSAGE.LOGOUT.ERROR}
         </p>
       )}
-    </div>
+    </>
   );
 }
