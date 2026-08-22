@@ -4,17 +4,17 @@ import { cn } from "@/shared/utils/cn";
 import type { ButtonProps } from "./types";
 
 const buttonVariants = cva(
-  "relative inline-flex gap-1 items-center justify-center whitespace-nowrap rounded-full border transition-colors px-3 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-transparent disabled:pointer-events-none",
+  "relative inline-flex gap-1 items-center justify-center whitespace-nowrap rounded-full border transition-colors px-3 disabled:bg-gray-200 disabled:text-gray-600 disabled:border-transparent disabled:pointer-events-none",
   {
     variants: {
       theme: {
         primary:
           "bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-700 border-transparent",
-        secondary: "bg-white text-primary-600 border-primary-500 hover:bg-gray-100",
+        secondary: "bg-white border border-gray-400 hover:bg-gray-100",
       },
       size: {
         lg: "h-12.5 typo-16-bold",
-        md: "h-11 typo-14-medium",
+        md: "h-10 typo-14-medium",
         sm: "h-7 typo-14-medium",
       },
     },

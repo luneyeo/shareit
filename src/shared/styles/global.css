@@ -2,6 +2,7 @@
 @import "./colors.css";
 @import "./fonts.css";
 @import "./z-index.css";
+@import "./Input.css";
 
 @theme inline {
   --color-background: #ffffff;

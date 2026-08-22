@@ -48,10 +48,7 @@ export default function Input({
         disabled={disabled}
         aria-invalid={error || undefined}
         className={cn(
-          "w-full h-12 px-4 rounded-xl border border-gray-300 bg-white outline-none transition-colors",
-          "placeholder:text-gray-400 typo-16-medium",
-          "focus:border-primary-600",
-          "disabled:bg-gray-200 disabled:border-transparent disabled:pointer-events-none disabled:text-gray-500",
+          "input-base h-12",
           error && "border-error focus:border-error",
           suffix && "pr-10",
           className
