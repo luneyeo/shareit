@@ -1,5 +1,7 @@
+"use client";
+
 import LogoutButton from "@/features/auth/ui/LogoutButton";
-import { MYPAGE_SECTIONS } from "@/features/mypage/constants/sections";
+import { useMyPageSections } from "@/features/mypage/hooks/useMyPageSections";
 import { MyPageSection } from "@/features/mypage/ui";
 import PageHeader from "@/shared/ui/page-header/PageHeader";
 import { cn } from "@/shared/utils/cn";
@@ -17,10 +19,12 @@ function Divider({ className }: { className?: string }) {
  * export default MyPage
  */
 export function MyPage() {
+  const { sections, dialogElement } = useMyPageSections();
+
   return (
     <>
       <PageHeader title="마이페이지" />
-      {MYPAGE_SECTIONS.map((section, index) => (
+      {sections.map((section, index) => (
         <div key={section.title}>
           {index > 0 && <Divider className="h-0.5" />}
           <MyPageSection title={section.title} items={section.items} />
@@ -30,6 +34,7 @@ export function MyPage() {
       <div className="p-5">
         <LogoutButton />
       </div>
+      {dialogElement}
     </>
   );
 }
