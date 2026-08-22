@@ -1,4 +1,5 @@
 import LogoutButton from "@/features/auth/ui/LogoutButton";
+import PageHeader from "@/shared/ui/page-header/PageHeader";
 
 /**
  * 사용자 개인 정보 및 설정을 관리하는 마이페이지 컴포넌트
@@ -9,9 +10,12 @@ import LogoutButton from "@/features/auth/ui/LogoutButton";
  */
 export function MyPage() {
   return (
-    <div className="p-5">
-      {/* TODO: 로그인 상태 관리 확인용 임시 로그아웃 버튼 */}
-      <LogoutButton />
-    </div>
+    <>
+      <PageHeader title="마이페이지" />
+      <div className="p-5">
+        {/* TODO: 로그인 상태 관리 확인용 임시 로그아웃 버튼 */}
+        <LogoutButton />
+      </div>
+    </>
   );
 }
