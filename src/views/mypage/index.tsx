@@ -13,7 +13,6 @@ export function MyPage() {
     <>
       <PageHeader title="마이페이지" />
       <div className="p-5">
-        {/* TODO: 로그인 상태 관리 확인용 임시 로그아웃 버튼 */}
         <LogoutButton />
       </div>
     </>
