@@ -28,10 +28,7 @@ export default function Textarea({ ref, className, disabled, error, ...props }: 
       disabled={disabled}
       aria-invalid={error || undefined}
       className={cn(
-        "w-full min-h-28 px-4 py-3 rounded-xl border border-gray-300 bg-white outline-none transition-colors resize-none",
-        "placeholder:text-gray-400 typo-16-medium",
-        "focus:border-primary-600",
-        "disabled:bg-gray-200 disabled:border-transparent disabled:pointer-events-none disabled:text-gray-500",
+        "input-base min-h-28 py-3 resize-none",
         error && "border-error focus:border-error",
         className
       )}
