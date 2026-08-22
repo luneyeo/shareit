@@ -1,0 +1,9 @@
+@layer components {
+  /* Input·Textarea 공통 외형 (테두리·라운드·배경·플레이스홀더·비활성) */
+  .input-base {
+    @apply w-full px-4 rounded-xl border border-gray-300 bg-white outline-none transition-colors;
+    @apply placeholder:text-gray-400 typo-16-medium;
+    @apply focus:border-primary-600 
+    @apply disabled:bg-gray-200 disabled:border-transparent disabled:pointer-events-none disabled:text-gray-500;
+  }
+}
