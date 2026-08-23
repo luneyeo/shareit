@@ -10,8 +10,6 @@ import BackHeader from "@/shared/ui/back-header/BackHeader";
  * 탭바 없이 뒤로가기로 진입하는 드릴다운 페이지입니다. (`(action)` 라우트)
  * 상단 필터 탭(전체/내가 만든/참여 중)에 따라 그룹 카드 목록을 보여줍니다.
  *
- * TODO: 목록은 목 데이터(MOCK_GROUPS) 기반이며, 실제 그룹 목록 조회로 교체 예정.
- *
  * @example
  * import { GroupListPage } from '@/views/mypage/group-list'
  * export default GroupListPage

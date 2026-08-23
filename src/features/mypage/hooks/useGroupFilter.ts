@@ -1,24 +1,25 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useMyGroupList } from "@/features/dashboard/hooks/useMyGroupList";
 import { GROUP_FILTERS, type GroupFilter } from "@/features/mypage/constants/groupFilters";
-import { MOCK_GROUPS } from "@/features/mypage/constants/mockGroups";
 
 /**
  * 전체 그룹 목록의 필터 탭 상태와, 선택된 필터로 걸러진 그룹 목록을 돌려주는 훅.
  *
- * TODO: 현재는 MOCK_GROUPS 기반이며, 실제 그룹 목록 조회 훅으로 교체 예정.
+ * 목록은 getMyGroups(useMyGroupList)로 조회하며, 필터 탭은 각 그룹의 role로 거른다.
  *
  * @example
- * const { filters, filter, setFilter, groups, total, activeGroupId } = useGroupFilter();
+ * const { filters, filter, setFilter, groups, total } = useGroupFilter();
  */
 export function useGroupFilter() {
   const [filter, setFilter] = useState<GroupFilter>("all");
+  const { data } = useMyGroupList();
 
-  const groups = useMemo(
-    () => (filter === "all" ? MOCK_GROUPS : MOCK_GROUPS.filter((group) => group.role === filter)),
-    [filter]
-  );
+  const groups = useMemo(() => {
+    const list = data ?? [];
+    return filter === "all" ? list : list.filter((group) => group.role === filter);
+  }, [data, filter]);
 
   return {
     filters: GROUP_FILTERS,
