@@ -1,3 +1,5 @@
+import BackHeader from "@/shared/ui/back-header/BackHeader";
+
 /**
  * 마이페이지 하위 "그룹 상세" 페이지 컴포넌트
  *
@@ -8,5 +10,9 @@
  * export default GroupDetailPage
  */
 export function GroupDetailPage() {
-  return <div>GroupDetailPage</div>;
+  return (
+    <div className="flex min-h-dvh flex-col">
+      <BackHeader title="그룹 상세" />
+    </div>
+  );
 }
