@@ -17,14 +17,22 @@ import EmptyState from "@/shared/ui/empty-state/EmptyState";
  * export default GroupListPage
  */
 export function GroupListPage() {
-  const { filters, filter, setFilter, groups, total, isEmpty } = useGroupFilter();
+  const { filters, filter, setFilter, groups, total, isEmpty, isError, refetch } = useGroupFilter();
   const { openCreate, openJoin, dialogElement } = useGroupDialog();
 
   return (
     <div className="flex min-h-dvh flex-col">
       <BackHeader title="전체 그룹" />
 
-      {isEmpty ? (
+      {isError ? (
+        <EmptyState
+          type="error"
+          message="그룹을 불러오지 못했어요"
+          description="잠시 후 다시 시도해주세요"
+          className="flex-1"
+          onRetry={() => refetch()}
+        />
+      ) : isEmpty ? (
         <EmptyState
           type="group"
           message="아직 속한 그룹이 없어요"
