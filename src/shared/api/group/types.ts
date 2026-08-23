@@ -16,6 +16,13 @@ export interface MyGroupSummary extends GroupWithRole {
   memberCount: number;
 }
 
+/** 그룹 상세 화면용. 역할·개설일·전체 멤버 수를 포함한다. */
+export interface GroupDetailSummary extends GroupWithRole {
+  /** 그룹 개설일 (groups.created_at, ISO 8601 문자열). */
+  openedAt: string;
+  memberCount: number;
+}
+
 /** 그룹 생성 응답. DB에서 발급된 초대 코드를 포함한다. */
 export interface CreatedGroup extends Group {
   inviteCode: string;
