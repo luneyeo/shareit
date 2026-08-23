@@ -1,8 +1,10 @@
 "use client";
 
+import { useGroupDialog } from "@/features/dashboard/hooks/useGroupDialog";
 import { useGroupFilter } from "@/features/mypage/hooks/useGroupFilter";
 import { GroupFilterTabs, GroupListItem } from "@/features/mypage/ui";
 import BackHeader from "@/shared/ui/back-header/BackHeader";
+import EmptyState from "@/shared/ui/empty-state/EmptyState";
 
 /**
  * 마이페이지 하위 "전체 그룹 목록" 페이지 컴포넌트
@@ -15,23 +17,37 @@ import BackHeader from "@/shared/ui/back-header/BackHeader";
  * export default GroupListPage
  */
 export function GroupListPage() {
-  const { filters, filter, setFilter, groups, total } = useGroupFilter();
+  const { filters, filter, setFilter, groups, total, isEmpty } = useGroupFilter();
+  const { openCreate, openJoin, dialogElement } = useGroupDialog();
 
   return (
-    <>
+    <div className="flex min-h-dvh flex-col">
       <BackHeader title="전체 그룹" />
 
-      <div className="flex flex-col gap-4 px-5 py-4">
-        <GroupFilterTabs filters={filters} value={filter} onChange={setFilter} />
-        <p className="typo-14-medium text-gray-500">총 {total}개 그룹</p>
-        <ul className="flex flex-col gap-3">
-          {groups.map((group) => (
-            <li key={group.id}>
-              <GroupListItem group={group} />
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
+      {isEmpty ? (
+        <EmptyState
+          type="group"
+          message="아직 속한 그룹이 없어요"
+          description="새 그룹을 만들거나 초대 코드로 입장해보세요"
+          className="flex-1"
+          onCreateGroup={openCreate}
+          onJoinGroup={openJoin}
+        />
+      ) : (
+        <div className="flex flex-col gap-4 px-5 py-4">
+          <GroupFilterTabs filters={filters} value={filter} onChange={setFilter} />
+          <p className="typo-14-medium text-gray-500">총 {total}개 그룹</p>
+          <ul className="flex flex-col gap-3">
+            {groups.map((group) => (
+              <li key={group.id}>
+                <GroupListItem group={group} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {dialogElement}
+    </div>
   );
 }
