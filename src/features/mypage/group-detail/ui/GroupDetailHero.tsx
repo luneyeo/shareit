@@ -20,7 +20,13 @@ type GroupDetailHeroProps = {
  * 방장(`owner`)이면 이름 옆에 "방장" 배지를 노출합니다.
  *
  * @example
- * <GroupDetailHero name="송파구 공주들" role="owner" openedAt="2026-03-12" onGoToDashboard={goToDashboard} />
+ * ```tsx
+ * <GroupDetailHero
+ *   name={name}
+ *   role={role}
+ *   openedAt={openedAt}
+ *   onGoToDashboard={handleGoToDashboard}
+ * />
  */
 export default function GroupDetailHero({
   name,
