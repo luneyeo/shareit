@@ -6,6 +6,7 @@ type GroupRow = {
   id: string;
   name: string;
   created_at: string;
+  invite_code: string;
   group_members: { count: number }[];
 };
 
@@ -21,7 +22,7 @@ export async function getGroupDetail(groupId: string, userId: string): Promise<G
 
   const { data, error } = await supabase
     .from("group_members")
-    .select("role, groups(id, name, created_at, group_members(count))")
+    .select("role, groups(id, name, created_at, invite_code, group_members(count))")
     .eq("user_id", userId)
     .eq("group_id", groupId)
     .maybeSingle();
@@ -40,5 +41,6 @@ export async function getGroupDetail(groupId: string, userId: string): Promise<G
     role: data.role as GroupRole,
     openedAt: group.created_at,
     memberCount: group.group_members[0]?.count ?? 0,
+    inviteCode: group.invite_code,
   };
 }
