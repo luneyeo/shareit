@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { MyGroup } from "@/features/mypage/types/group";
+import type { MyGroup } from "@/features/mypage/group-list/types/group";
 import { IcChevronLeft } from "@/shared/assets/icons";
 
 type GroupListItemProps = {

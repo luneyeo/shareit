@@ -1,6 +1,6 @@
 "use client";
 
-import type { GroupFilter } from "@/features/mypage/constants/groupFilters";
+import type { GroupFilter } from "@/features/mypage/group-list/constants/groupFilters";
 import { cn } from "@/shared/utils/cn";
 
 type GroupFilterTabsProps = {
