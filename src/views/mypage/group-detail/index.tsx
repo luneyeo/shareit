@@ -1,9 +1,15 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
+import { useGroupDialog } from "@/features/dashboard/hooks/useGroupDialog";
 import { useGroupDetail } from "@/features/mypage/group-detail/hooks/useGroupDetail";
-import { GroupDetailHero, GroupStatsCard } from "@/features/mypage/group-detail/ui";
+import {
+  GroupDetailHero,
+  GroupManageSection,
+  GroupStatsCard,
+} from "@/features/mypage/group-detail/ui";
 import BackHeader from "@/shared/ui/back-header/BackHeader";
+import Divider from "@/shared/ui/divider/Divider";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
 
 /**
@@ -19,9 +25,14 @@ export function GroupDetailPage() {
   const { groupId } = useParams<{ groupId: string }>();
   const router = useRouter();
   const { data: group, isPending, isError, refetch } = useGroupDetail(groupId);
+  const { openEditName, dialogElement } = useGroupDialog();
 
   const handleGoToDashboard = () => {
     router.push(`/dashboard/${groupId}`);
+  };
+
+  const handleRemove = () => {
+    // TODO: 방장이면 그룹 삭제, 멤버이면 그룹 나가기 뮤테이션 연결
   };
 
   return (
@@ -41,20 +52,33 @@ export function GroupDetailPage() {
           onRetry={() => refetch()}
         />
       ) : (
-        <div className="flex flex-col gap-6 px-5 py-4">
-          <GroupDetailHero
-            name={group.name}
+        <>
+          <div className="flex flex-col gap-6 px-5 py-4">
+            <GroupDetailHero
+              name={group.name}
+              role={group.role}
+              openedAt={group.openedAt}
+              onGoToDashboard={handleGoToDashboard}
+            />
+            <GroupStatsCard
+              memberCount={group.memberCount}
+              postCount={group.postCount}
+              savedCount={group.likedCount}
+            />
+          </div>
+
+          <Divider className="h-2" />
+
+          <GroupManageSection
             role={group.role}
-            openedAt={group.openedAt}
-            onGoToDashboard={handleGoToDashboard}
+            inviteCode={group.inviteCode}
+            onEditName={() => openEditName(group.id, group.name)}
+            onRemove={handleRemove}
           />
-          <GroupStatsCard
-            memberCount={group.memberCount}
-            postCount={group.postCount}
-            savedCount={group.likedCount}
-          />
-        </div>
+        </>
       )}
+
+      {dialogElement}
     </div>
   );
 }
