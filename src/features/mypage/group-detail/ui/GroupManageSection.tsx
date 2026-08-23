@@ -33,7 +33,7 @@ export default function GroupManageSection({
 
   return (
     <section className="px-5">
-      <ul className="divide-y divide-gray-100">
+      <ul className="divide-y divide-gray-200">
         <li className="flex items-center justify-between py-4">
           <span className="typo-16-semibold">입장 코드</span>
           <span className="typo-16-semibold">{inviteCode}</span>
