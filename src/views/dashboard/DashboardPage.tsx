@@ -1,10 +1,12 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import CategoryTabs from "@/features/dashboard/ui/CategoryTabs";
 import DashboardFab from "@/features/dashboard/ui/DashboardFab";
 import GroupDropdown from "@/features/dashboard/ui/group/GroupDropdown";
+import JoinErrorNotice from "@/features/dashboard/ui/group/JoinErrorNotice";
 import ProductList from "@/features/dashboard/ui/product/ProductList";
 import { useMyGroupList } from "@/features/dashboard/hooks/useMyGroupList";
 import { IcSettings } from "@/shared/assets/icons";
@@ -50,6 +52,10 @@ export function DashboardPage() {
 
   return (
     <>
+      {/* useSearchParams(joinError)를 읽으므로 Suspense 경계로 감싼다. */}
+      <Suspense>
+        <JoinErrorNotice />
+      </Suspense>
       <div className="flex items-center justify-between px-4.5 py-6">
         <GroupDropdown groups={groups ?? []} currentGroupId={dashboardId} />
         {currentGroup && (

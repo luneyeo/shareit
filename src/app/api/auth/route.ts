@@ -75,7 +75,8 @@ export async function GET(request: Request) {
         const result = await joinGroupByInvite(supabase, invite);
         if (result.groupId !== null)
           return NextResponse.redirect(`${origin}/dashboard/${result.groupId}`);
-        // TODO: 토스트 도입 후 실패 안내를 전역 토스트로 전환하고, 그룹 보유 사용자(리다이렉트되는 경우)에게도 노출되도록 joinError 처리 범위 확대
+        // 그룹 보유 사용자는 DashboardIndexPage가 최종 대시보드까지 joinError를 보존해 안내한다.
+        // TODO: 토스트 도입 후 실패 안내를 전역 토스트로 전환
         return NextResponse.redirect(`${origin}/dashboard?joinError=${result.reason}`);
       }
 
