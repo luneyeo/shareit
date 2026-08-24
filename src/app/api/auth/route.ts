@@ -21,18 +21,30 @@ async function saveUserProfile(supabase: SupabaseClient, user: User) {
 }
 
 /**
- * 초대 코드로 그룹에 입장시키고 그룹 id를 반환한다. 무효 코드/실패면 null.
+ * 초대 코드로 그룹에 입장시킨 결과를 반환한다.
+ *
+ * 입장 성공 시 `groupId`를 담고, 무효 코드(`invalid`)와 DB/네트워크 오류(`error`)를
+ * 구분해 반환한다. 호출부에서 두 경우에 서로 다른 안내를 노출할 수 있다.
  *
  * `join_group_by_code`는 내부 auth.uid()로 사용자를 결정하므로,
  * 세션 교환이 끝난 뒤 같은 서버 클라이언트로 호출해야 한다.
  */
-async function joinGroupByInvite(supabase: SupabaseClient, inviteCode: string) {
+type JoinGroupResult = { groupId: string } | { groupId: null; reason: "invalid" | "error" };
+
+async function joinGroupByInvite(
+  supabase: SupabaseClient,
+  inviteCode: string
+): Promise<JoinGroupResult> {
   const { data, error } = await supabase
     .rpc("join_group_by_code", { invite_code: inviteCode.trim() })
     .maybeSingle();
 
-  if (error || !data) return null;
-  return (data as { id: string }).id;
+  if (error) {
+    console.error("그룹 입장 에러:", error.message);
+    return { groupId: null, reason: "error" };
+  }
+  if (!data) return { groupId: null, reason: "invalid" };
+  return { groupId: (data as { id: string }).id };
 }
 
 /**
@@ -60,10 +72,11 @@ export async function GET(request: Request) {
       await saveUserProfile(supabase, data.user);
 
       if (invite) {
-        const groupId = await joinGroupByInvite(supabase, invite);
-        if (groupId) return NextResponse.redirect(`${origin}/dashboard/${groupId}`);
+        const result = await joinGroupByInvite(supabase, invite);
+        if (result.groupId !== null)
+          return NextResponse.redirect(`${origin}/dashboard/${result.groupId}`);
         // TODO: 토스트 도입 후 실패 안내를 전역 토스트로 전환하고, 그룹 보유 사용자(리다이렉트되는 경우)에게도 노출되도록 joinError 처리 범위 확대
-        return NextResponse.redirect(`${origin}/dashboard?joinError=1`);
+        return NextResponse.redirect(`${origin}/dashboard?joinError=${result.reason}`);
       }
 
       return NextResponse.redirect(`${origin}/dashboard`);
