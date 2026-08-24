@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import CategoryTabs from "@/features/dashboard/ui/CategoryTabs";
 import DashboardFab from "@/features/dashboard/ui/DashboardFab";
 import GroupDropdown from "@/features/dashboard/ui/group/GroupDropdown";
 import ProductList from "@/features/dashboard/ui/product/ProductList";
 import { useMyGroupList } from "@/features/dashboard/hooks/useMyGroupList";
+import { IcSettings } from "@/shared/assets/icons";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
 
 /**
@@ -48,8 +50,17 @@ export function DashboardPage() {
 
   return (
     <>
-      <div className="p-5 pb-3">
+      <div className="flex items-center justify-between px-4.5 py-6">
         <GroupDropdown groups={groups ?? []} currentGroupId={dashboardId} />
+        {currentGroup && (
+          <Link
+            href={`/mypage/groups/${currentGroup.id}`}
+            aria-label="그룹 설정"
+            className="shrink-0"
+          >
+            <IcSettings className="h-5 w-5 text-gray-700" />
+          </Link>
+        )}
       </div>
       {currentGroup ? (
         <>
