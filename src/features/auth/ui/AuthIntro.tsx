@@ -1,3 +1,4 @@
+import Link from "next/link";
 import LogoText from "@/shared/assets/logo/logo-text.svg";
 
 interface AuthIntroProps {
@@ -18,7 +19,9 @@ export default function AuthIntro({ description }: AuthIntroProps) {
   return (
     <section className="flex flex-col items-center gap-3">
       <h1>
-        <LogoText role="img" aria-label="Shareit!" className="h-auto w-50" />
+        <Link href="/" aria-label="홈으로 이동">
+          <LogoText role="img" aria-label="Shareit!" className="h-auto w-50" />
+        </Link>
       </h1>
       <p className="typo-16-medium text-gray-500">{description}</p>
     </section>

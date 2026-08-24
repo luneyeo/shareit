@@ -18,7 +18,7 @@ type SectionProps = React.ComponentPropsWithoutRef<"section">;
  */
 export default function Section({ children, className, ...props }: SectionProps) {
   return (
-    <section className={cn("flex flex-col gap-8 px-6 pt-22 pb-10", className)} {...props}>
+    <section className={cn("flex flex-col gap-8 px-6 pt-16 pb-10", className)} {...props}>
       {children}
     </section>
   );

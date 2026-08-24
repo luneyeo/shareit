@@ -13,6 +13,7 @@ export { default as IcMenu } from "./ic-menu.svg";
 export { default as IcPlus } from "./ic-plus.svg";
 export { default as IcQuotes } from "./ic-quotes.svg";
 export { default as IcSearch } from "./ic-search.svg";
+export { default as IcSettings } from "./ic-settings.svg";
 export { default as IcShare } from "./ic-share.svg";
 export { default as IcProfile } from "./ic-profile.svg";
 
