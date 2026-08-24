@@ -26,7 +26,7 @@ export function useUpdateGroupName() {
   return useMutation({
     mutationFn: ({ groupId, name }: UpdateGroupNameParams) => updateGroupName(groupId, name),
     onSuccess: (_data, { groupId }) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.groups.detail(groupId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.groups.detail(groupId, userId) });
       queryClient.invalidateQueries({ queryKey: queryKeys.groups.my(userId) });
     },
   });
