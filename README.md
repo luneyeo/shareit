@@ -14,7 +14,7 @@
 | ------------- | ---------------------- |
 | 현재 버전     | `v0.1.0` (pre-release) |
 | 진행 단계     | 초기 개발              |
-| 최근 업데이트 | 2026-08-22             |
+| 최근 업데이트 | 2026-08-24             |
 
 <br>
 
@@ -24,9 +24,6 @@
 - [x] 그룹 관리(생성 및 입장)
 - [ ] 그룹 관리(수정 및 삭제)
 - [ ] 상품 관리
-  - [ ] 상품 등록
-  - [ ] 상품 수정
-  - [ ] 상품 삭제
 - [ ] 좋아요 페이지
 
 <br>
@@ -42,12 +39,12 @@
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 
-**상태 관리 · 데이터 페칭** (도입 예정)
+**상태 관리 · 데이터 페칭**
 
 ![Zustand](https://img.shields.io/badge/Zustand-planned-764ABC?style=flat-square&logo=react&logoColor=white)
 ![TanStack Query](https://img.shields.io/badge/TanStack_Query-planned-FF4154?style=flat-square&logo=reactquery&logoColor=white)
 
-**데이터베이스** (도입 예정)
+**데이터베이스**
 
 ![Supabase](https://img.shields.io/badge/Supabase-planned-3FCF8E?style=flat-square&logo=supabase&logoColor=white)
 
