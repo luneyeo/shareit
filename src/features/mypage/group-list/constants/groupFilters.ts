@@ -1,4 +1,4 @@
-import type { GroupRole } from "@/features/mypage/types/group";
+import type { GroupRole } from "@/features/mypage/group-list/types/group";
 
 /** 전체 그룹 목록 상단 필터 탭 값. "all"은 전체, 나머지는 역할과 동일하다. */
 export type GroupFilter = "all" | GroupRole;

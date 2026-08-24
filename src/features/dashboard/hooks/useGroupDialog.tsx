@@ -7,6 +7,7 @@ import InputDialog from "@/shared/ui/dialog/InputDialog";
 import InviteCodeDialog from "@/features/dashboard/ui/InviteCodeDialog";
 import { useCreateGroup } from "@/features/dashboard/hooks/useCreateGroup";
 import { useJoinGroup } from "@/features/dashboard/hooks/useJoinGroup";
+import { useUpdateGroupName } from "@/features/dashboard/hooks/useUpdateGroupName";
 import { useAuthStore } from "@/shared/store/authStore";
 import type {
   GroupDialogType,
@@ -28,6 +29,12 @@ const GROUP_DIALOG_CONFIG = {
     placeholder: "입장 코드를 입력해 주세요",
     confirmText: "입장",
   },
+  edit: {
+    title: "그룹명 수정",
+    label: "그룹 이름",
+    placeholder: "그룹명을 입력해 주세요",
+    confirmText: "수정",
+  },
 } as const satisfies Record<GroupDialogType, GroupDialogConfig>;
 
 /**
@@ -46,6 +53,7 @@ export function useGroupDialog() {
   const userId = useAuthStore((state) => state.user?.id);
   const createGroup = useCreateGroup();
   const joinGroup = useJoinGroup();
+  const updateGroupName = useUpdateGroupName();
 
   const [dialog, setDialog] = useState<GroupDialogState | null>(null);
   const [value, setValue] = useState("");
@@ -58,6 +66,11 @@ export function useGroupDialog() {
   const openJoin = () => {
     setError("");
     setDialog({ type: "join", step: "input" });
+  };
+  const openEditName = (groupId: string, currentName: string) => {
+    setError("");
+    setValue(currentName);
+    setDialog({ type: "edit", step: "input", groupId });
   };
 
   const closeDialog = () => {
@@ -93,6 +106,20 @@ export function useGroupDialog() {
           // TODO: 토스트 도입 시 전역 알림으로 전환 (생성 실패는 필드 오류가 아니라 시스템 오류)
           onError: () => {
             setError("그룹 생성에 실패했어요. 다시 시도해 주세요.");
+          },
+        }
+      );
+    } else if (dialog.type === "edit") {
+      if (updateGroupName.isPending) return;
+
+      updateGroupName.mutate(
+        { groupId: dialog.groupId, name: value.trim() },
+        {
+          onSuccess: () => {
+            closeDialog();
+          },
+          onError: () => {
+            setError("그룹명 수정에 실패했어요. 다시 시도해 주세요.");
           },
         }
       );
@@ -145,5 +172,5 @@ export function useGroupDialog() {
     </OverlayPortal>
   ) : null;
 
-  return { openCreate, openJoin, dialogElement };
+  return { openCreate, openJoin, openEditName, dialogElement };
 }

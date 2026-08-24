@@ -2,7 +2,10 @@
 
 import { useMemo, useState } from "react";
 import { useMyGroupList } from "@/features/dashboard/hooks/useMyGroupList";
-import { GROUP_FILTERS, type GroupFilter } from "@/features/mypage/constants/groupFilters";
+import {
+  GROUP_FILTERS,
+  type GroupFilter,
+} from "@/features/mypage/group-list/constants/groupFilters";
 
 /**
  * 전체 그룹 목록의 필터 탭 상태와, 선택된 필터로 걸러진 그룹 목록을 돌려주는 훅.

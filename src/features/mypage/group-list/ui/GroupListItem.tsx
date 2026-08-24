@@ -1,6 +1,7 @@
 import Link from "next/link";
-import type { MyGroup } from "@/features/mypage/types/group";
+import type { MyGroup } from "@/features/mypage/group-list/types/group";
 import { IcChevronLeft } from "@/shared/assets/icons";
+import OwnerBadge from "@/shared/ui/owner-badge/OwnerBadge";
 
 type GroupListItemProps = {
   group: MyGroup;
@@ -29,11 +30,7 @@ export default function GroupListItem({ group }: GroupListItemProps) {
       <div className="flex flex-col gap-0.5">
         <div className="flex items-center gap-2">
           <span className="typo-16-bold">{group.name}</span>
-          {group.role === "owner" && (
-            <span className="border border-primary-200 bg-primary-100 rounded-xl px-1.5 py-0.5 typo-12-bold text-primary-600">
-              방장
-            </span>
-          )}
+          {group.role === "owner" && <OwnerBadge />}
         </div>
         <span className="typo-14-medium text-gray-500">
           멤버 {group.memberCount}명 · {roleLabel[group.role]}
