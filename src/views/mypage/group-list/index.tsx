@@ -1,8 +1,8 @@
 "use client";
 
 import { useGroupDialog } from "@/features/dashboard/hooks/useGroupDialog";
-import { useGroupFilter } from "@/features/mypage/hooks/useGroupFilter";
-import { GroupFilterTabs, GroupListItem } from "@/features/mypage/ui";
+import { useGroupFilter } from "@/features/mypage/group-list/hooks/useGroupFilter";
+import { GroupFilterTabs, GroupListItem } from "@/features/mypage/group-list/ui";
 import BackHeader from "@/shared/ui/back-header/BackHeader";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
 
