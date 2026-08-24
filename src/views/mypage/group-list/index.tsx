@@ -17,14 +17,19 @@ import EmptyState from "@/shared/ui/empty-state/EmptyState";
  * export default GroupListPage
  */
 export function GroupListPage() {
-  const { filters, filter, setFilter, groups, total, isEmpty, isError, refetch } = useGroupFilter();
+  const { filters, filter, setFilter, groups, total, isPending, isEmpty, isError, refetch } =
+    useGroupFilter();
   const { openCreate, openJoin, dialogElement } = useGroupDialog();
 
   return (
     <div className="flex min-h-dvh flex-col">
       <BackHeader title="전체 그룹" />
 
-      {isError ? (
+      {isPending ? (
+        <div className="flex flex-1 flex-col items-center justify-center px-5 py-16 text-center">
+          <p className="typo-14-medium text-gray-500">그룹을 불러오는 중이에요.</p>
+        </div>
+      ) : isError ? (
         <EmptyState
           type="error"
           message="그룹을 불러오지 못했어요"

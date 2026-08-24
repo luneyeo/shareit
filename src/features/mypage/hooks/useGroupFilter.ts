@@ -27,6 +27,7 @@ export function useGroupFilter() {
     setFilter,
     groups,
     total: groups.length,
+    isPending,
     isError,
     refetch,
     // 필터와 무관하게, 조회에 성공했지만 속한 그룹이 아예 없을 때만 참.
