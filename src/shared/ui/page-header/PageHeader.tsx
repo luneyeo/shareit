@@ -7,7 +7,6 @@ type SearchProps =
 
 type PageHeaderProps = {
   title: React.ReactNode;
-  bottom?: React.ReactNode;
 } & SearchProps;
 
 /**
@@ -20,7 +19,6 @@ type PageHeaderProps = {
  * - `title`: 좌측에 표시할 제목 (문자열 또는 드롭다운 같은 커스텀 노드)
  * - `showSearch`: 우측 검색 아이콘 노출 여부 (`true`면 `onSearchClick` 필수)
  * - `onSearchClick`: 검색 아이콘 클릭 핸들러
- * - `bottom`: 타이틀 줄 아래에 붙는 영역 (예: 카테고리 필터)
  *
  * @example
  * ```tsx
@@ -28,18 +26,15 @@ type PageHeaderProps = {
  * <PageHeader title="마이페이지" />
  * ```
  */
-export default function PageHeader({ title, showSearch, onSearchClick, bottom }: PageHeaderProps) {
+export default function PageHeader({ title, showSearch, onSearchClick }: PageHeaderProps) {
   return (
-    <header className="flex flex-col bg-white">
-      <div className="flex items-center justify-between px-4 py-3">
-        {typeof title === "string" ? <h1 className="typo-20-bold">{title}</h1> : title}
-        {showSearch && (
-          <button type="button" aria-label="검색" onClick={onSearchClick} className="p-1">
-            <IcSearch className="h-6 w-6" />
-          </button>
-        )}
-      </div>
-      {bottom}
+    <header className="flex items-center justify-between px-4.5 py-6 bg-white border-b border-gray-200">
+      {typeof title === "string" ? <h1 className="typo-20-bold">{title}</h1> : title}
+      {showSearch && (
+        <button type="button" aria-label="검색" onClick={onSearchClick} className="p-1">
+          <IcSearch className="h-6 w-6" />
+        </button>
+      )}
     </header>
   );
 }

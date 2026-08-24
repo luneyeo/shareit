@@ -13,21 +13,21 @@ export default function Hero() {
         <LogoText aria-hidden className="block h-7 w-auto" />
       </h1>
 
-      <div className="flex flex-col gap-3 pb-22 border-b border-gray-200">
+      <div className="flex flex-col gap-4 pb-10">
         <span className="inline-flex w-fit items-center gap-1 rounded-full bg-primary-100 px-3 py-1.5 typo-14-semibold text-primary-700">
-          ❤️‍🔥 초대받은 친구들과 공유
+          💖 초대받은 친구들과 공유
         </span>
 
-        <p className="typo-32-bold">
+        <p className="typo-32-bold tracking-tight leading-snug">
           친구가 말해준 거잖아,
           <br />
           <span className="text-primary-600">믿어봐.</span>
         </p>
 
-        <p className="typo-16-semibold text-gray-600">
+        <p className="typo-16-medium text-gray-600">
           광고없이 아는 사람들끼리 나누는 찐템 정보!
           <br />
-          초대된 친구들과 쉽게 빠르게 공유하세요.
+          초대된 친구들과 쉽고 빠르게 공유하세요.
         </p>
       </div>
     </section>

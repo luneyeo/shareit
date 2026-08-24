@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import CopyButton from "@/shared/ui/copy-button/CopyButton";
 import DialogBase from "@/shared/ui/dialog/DialogBase";
-import { cn } from "@/shared/utils/cn";
 
 interface InviteCodeDialogProps {
   /** 표시·복사할 그룹 입장 코드 */
@@ -19,16 +19,7 @@ interface InviteCodeDialogProps {
  * - 배경·서피스는 `OverlayPortal`이 담당하므로 그 내부에 배치해 사용합니다.
  */
 export default function InviteCodeDialog({ inviteCode, onClose }: InviteCodeDialogProps) {
-  const [status, setStatus] = useState<"idle" | "copied" | "failed">("idle");
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(inviteCode);
-      setStatus("copied");
-    } catch {
-      setStatus("failed");
-    }
-  };
+  const [copyFailed, setCopyFailed] = useState(false);
 
   return (
     <DialogBase
@@ -41,20 +32,13 @@ export default function InviteCodeDialog({ inviteCode, onClose }: InviteCodeDial
       <p className="typo-13-medium text-gray-500">아래 입장 코드를 공유해서 멤버를 초대하세요.</p>
       <div className="flex items-center justify-between rounded-xl bg-gray-100 border border-gray-200 px-4 py-3">
         <span className="typo-18-semibold tracking">{inviteCode}</span>
-        <button
-          type="button"
-          onClick={handleCopy}
-          className={cn(
-            "rounded-full px-3 py-1.5 typo-14-semibold transition-colors",
-            status === "copied" && "bg-[#E7F7EC] text-[#35A15C]",
-            status === "failed" && "bg-error/10 text-error",
-            status === "idle" && "bg-primary-100 text-primary-600"
-          )}
-        >
-          {status === "copied" ? "복사됨" : status === "failed" ? "다시 시도" : "복사하기"}
-        </button>
+        <CopyButton
+          value={inviteCode}
+          onSuccess={() => setCopyFailed(false)}
+          onError={() => setCopyFailed(true)}
+        />
       </div>
-      {status === "failed" && (
+      {copyFailed && (
         <p className="typo-13-medium text-error">
           복사에 실패했어요. 코드를 직접 선택해서 복사해주세요.
         </p>

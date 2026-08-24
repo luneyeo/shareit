@@ -8,5 +8,8 @@ export const queryKeys = {
     all: ["groups"] as const,
     /** 특정 사용자가 속한 그룹 목록. 사용자 간 캐시가 섞이지 않도록 userId를 키에 포함한다. */
     my: (userId: string | undefined) => ["groups", "my", userId] as const,
+    /** 특정 그룹 상세. 사용자별 role이 응답에 포함되므로 userId를 키에 포함한다. */
+    detail: (groupId: string, userId: string | undefined) =>
+      ["groups", "detail", groupId, userId] as const,
   },
 } as const;

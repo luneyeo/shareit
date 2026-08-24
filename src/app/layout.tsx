@@ -34,7 +34,7 @@ export default async function RootLayout({
 
   return (
     <html lang="ko" className={`${pretendard.variable} h-full antialiased`}>
-      <body className="min-h-dvh bg-primary-100">
+      <body className="min-h-dvh bg-[#0F1B20]">
         {/*
          * 데스크탑·태블릿에서도 모바일 폭(480px)으로 중앙 고정. transform-gpu로 내부 fixed(탭바·오버레이)를 프레임 안에 가둔다.
          * 프레임은 뷰포트 높이로 고정(h-dvh)하고 콘텐츠만 내부 스크롤시켜, fixed 푸터가 프레임(=뷰포트) 하단에 항상 고정되도록 한다.

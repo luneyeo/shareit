@@ -12,20 +12,18 @@
 
 | 항목          | 상태                   |
 | ------------- | ---------------------- |
-| 현재 버전     | `v0.1.0` (pre-release) |
+| 현재 버전     | `v0.4.0` (pre-release) |
 | 진행 단계     | 초기 개발              |
-| 최근 업데이트 | 2026-08-05             |
+| 최근 업데이트 | 2026-08-24             |
 
 <br>
 
 ## ✨ 주요 기능
 
-- [ ] 소셜 로그인 (Kakao)
-- [ ] 마이페이지 (그룹 관리)
+- [x] 소셜 로그인 (Kakao)
+- [x] 그룹 관리(생성 및 입장)
+- [ ] 그룹 관리(수정 및 삭제)
 - [ ] 상품 관리
-  - [ ] 상품 등록
-  - [ ] 상품 수정
-  - [ ] 상품 삭제
 - [ ] 좋아요 페이지
 
 <br>
@@ -41,12 +39,12 @@
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 
-**상태 관리 · 데이터 페칭** (도입 예정)
+**상태 관리 · 데이터 페칭**
 
 ![Zustand](https://img.shields.io/badge/Zustand-planned-764ABC?style=flat-square&logo=react&logoColor=white)
 ![TanStack Query](https://img.shields.io/badge/TanStack_Query-planned-FF4154?style=flat-square&logo=reactquery&logoColor=white)
 
-**데이터베이스** (도입 예정)
+**데이터베이스**
 
 ![Supabase](https://img.shields.io/badge/Supabase-planned-3FCF8E?style=flat-square&logo=supabase&logoColor=white)
 
@@ -71,12 +69,14 @@ src/
 └── shared/    # 공통 리소스 (UI 컴포넌트, 유틸, 훅, 스타일 등)
 ```
 
-- **`app`** — 라우팅 전용 영역으로, 경로와 레이아웃만 담당합니다.
-- **`views`** — 페이지 조합용 영역으로, `features`와 `shared`를 조합해 하나의 페이지를 구성합니다.
-- **`features`** — 도메인별 기능 단위로 UI·API·타입을 관리합니다.
-- **`shared`** — 여러 곳에서 재사용하는 공통 리소스를 모아둡니다.
+- `app` — 라우팅 전용 영역으로, 경로와 레이아웃만 담당합니다.
+- `views` — 페이지 조합용 영역으로, `features`와 `shared`를 조합해 하나의 페이지를 구성합니다.
+- `features` — 도메인별 기능 단위로 UI·API·타입을 관리합니다.
+- `shared` — 여러 곳에서 재사용하는 공통 리소스를 모아둡니다.
 
 <br>
+
+<!-- ---
 
 ## 🚀 시작하기
 
@@ -99,8 +99,6 @@ pnpm dev
 ```
 
 실행 후 `http://localhost:3000` 에서 확인할 수 있습니다.
-
-<!-- ---
 
 ## 🗺️ 로드맵
 

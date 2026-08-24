@@ -15,11 +15,11 @@ export const useKakaoAuth = () => {
   const [isPending, setIsPending] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  const startKakaoAuth = async () => {
+  const startKakaoAuth = async (inviteCode?: string) => {
     setIsPending(true);
     setHasError(false);
 
-    const { error } = await signInWithKakao();
+    const { error } = await signInWithKakao(inviteCode);
 
     if (error) {
       setHasError(true);
