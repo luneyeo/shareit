@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/shared/lib/supabase/server";
 import GroupEmptyState from "@/features/dashboard/ui/group/GroupEmptyState";
@@ -29,5 +30,10 @@ export async function DashboardIndexPage() {
   const firstGroupId = data?.[0]?.group_id;
   if (firstGroupId) redirect(`/dashboard/${firstGroupId}`);
 
-  return <GroupEmptyState />;
+  // GroupEmptyState는 useSearchParams(joinError)를 읽으므로 Suspense 경계로 감싼다.
+  return (
+    <Suspense>
+      <GroupEmptyState />
+    </Suspense>
+  );
 }

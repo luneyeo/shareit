@@ -15,15 +15,18 @@ import KakaoAuthButton from "@/features/auth/ui/KakaoAuthButton";
  */
 function AuthPageContent() {
   const { isPending, hasError, startKakaoAuth } = useKakaoAuth();
-  const callbackFailed = useSearchParams().get("error") === "auth";
+  const searchParams = useSearchParams();
+  const callbackFailed = searchParams.get("error") === "auth";
   const showError = hasError || callbackFailed;
+  // 랜딩에서 넘어온 초대 코드가 있으면 로그인 왕복 뒤 콜백까지 이어 붙인다.
+  const inviteCode = searchParams.get("invite") ?? undefined;
 
   return (
     <div className="flex h-full flex-col justify-center gap-16 px-5 pb-[calc(2rem+env(safe-area-inset-bottom))]">
       <AuthIntro description="반가워요! 공유하고 싶은 제품 있으세요?" />
 
       <div className="mx-auto w-4/6">
-        <KakaoAuthButton onClick={startKakaoAuth} isPending={isPending} />
+        <KakaoAuthButton onClick={() => startKakaoAuth(inviteCode)} isPending={isPending} />
         {/* TODO: 토스트 알림 도입 시 인라인 오류 메시지를 토스트로 교체 */}
         {showError && (
           <p role="alert" className="mt-3 text-center typo-13-medium text-error">
