@@ -62,6 +62,7 @@ export async function GET(request: Request) {
       if (invite) {
         const groupId = await joinGroupByInvite(supabase, invite);
         if (groupId) return NextResponse.redirect(`${origin}/dashboard/${groupId}`);
+        // TODO: 토스트 도입 후 실패 안내를 전역 토스트로 전환하고, 그룹 보유 사용자(리다이렉트되는 경우)에게도 노출되도록 joinError 처리 범위 확대
         return NextResponse.redirect(`${origin}/dashboard?joinError=1`);
       }
 

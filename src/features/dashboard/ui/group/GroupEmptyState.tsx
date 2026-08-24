@@ -16,6 +16,7 @@ export default function GroupEmptyState() {
 
   return (
     <>
+      {/* TODO: 토스트 도입 후 인라인 안내를 토스트로 교체 (무효 코드 입장 실패 알림) */}
       {joinFailed && (
         <p role="alert" className="px-10 pt-6 text-center typo-14-medium text-error">
           입장 코드를 다시 확인해 주세요
