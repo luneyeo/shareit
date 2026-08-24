@@ -23,7 +23,7 @@ const STEPS: Step[] = [
  */
 export default function HowItWorks() {
   return (
-    <Section className="px-10">
+    <Section>
       <SectionHeading eyebrow="HOW IT WORKS" title="이렇게 시작해요" />
 
       <ol className="flex flex-col">
