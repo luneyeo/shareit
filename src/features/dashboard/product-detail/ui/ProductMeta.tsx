@@ -19,15 +19,15 @@ export default function ProductMeta({ recommender, store }: ProductMetaProps) {
   return (
     <div className="flex items-start gap-2">
       <div className="flex-1">
-        <p className="typo-14-medium text-gray-500">추천인</p>
-        <div className="mt-1">
-          <Profile name={recommender} size="sm" />
+        <p className="typo-14-medium text-gray-600">추천인</p>
+        <div className="mt-1.5">
+          <Profile name={recommender} size="md" />
         </div>
       </div>
       {store && (
         <div className="flex-1">
-          <p className="typo-14-medium text-gray-500">구매처</p>
-          <p className="mt-1 typo-14-medium">{store}</p>
+          <p className="typo-14-medium text-gray-600">구매처</p>
+          <p className="mt-1.5 typo-16-medium">{store}</p>
         </div>
       )}
     </div>
