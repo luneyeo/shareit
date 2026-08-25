@@ -18,8 +18,8 @@ const COLORS = [
 ];
 
 const SIZE: Record<AvatarSize, { container: string; icon: string }> = {
-  sm: { container: "w-7 h-7", icon: "w-6 h-6" },
-  md: { container: "w-9 h-9", icon: "w-7 h-7" },
+  sm: { container: "w-5.5 h-5.5", icon: "w-5 h-5" },
+  md: { container: "w-6.5 h-6.5", icon: "w-6 h-6" },
   lg: { container: "w-12 h-12", icon: "w-10 h-10" },
 };
 
