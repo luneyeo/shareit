@@ -46,7 +46,7 @@ export function ProductPage() {
     <main className="pb-17">
       <ProductImage imageUrl={SAMPLE.imageUrl} prdName={SAMPLE.prdName} onBack={handleBack} />
 
-      <div className="flex flex-col gap-3 p-4.5">
+      <div className="flex flex-col gap-4 p-4.5">
         <ProductInfo brandName={SAMPLE.brandName} prdName={SAMPLE.prdName} price={SAMPLE.price} />
         <hr className="border-gray-200" />
         <ProductMeta recommender={SAMPLE_RECOMMENDER} store={SAMPLE_STORE} />

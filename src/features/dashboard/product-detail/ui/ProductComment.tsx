@@ -19,7 +19,7 @@ export default function ProductComment({ description, tag }: ProductCommentProps
   return (
     <section className="flex flex-col gap-3">
       <h2 className="typo-16-bold text-primary-600">코멘트</h2>
-      <p className="typo-16-semibold text-gray-700 leading-relaxed">{displayDescription}</p>
+      <p className="typo-16-medium text-gray-700 leading-relaxed">{displayDescription}</p>
       {hasTags && (
         <ul className="flex flex-wrap gap-1.5">
           {tag.map((t) => (
