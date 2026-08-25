@@ -1,7 +1,6 @@
 "use client";
 
 import ProductComment from "@/features/dashboard/product-detail/ui/ProductComment";
-import ProductDetailFooter from "@/features/dashboard/product-detail/ui/ProductDetailFooter";
 import ProductDetailTopBar from "@/features/dashboard/product-detail/ui/ProductDetailTopBar";
 import ProductImage from "@/features/dashboard/product-detail/ui/ProductImage";
 import ProductInfo from "@/features/dashboard/product-detail/ui/ProductInfo";
@@ -41,11 +40,9 @@ const SAMPLE_STORE = "올리브영";
 export function ProductPage() {
   const handleBack = () => history.back();
   const handleMore = () => {};
-  const handleSave = () => {};
-  const handleLike = () => {};
 
   return (
-    <main className="pb-17">
+    <main>
       <ProductDetailTopBar onBack={handleBack} onMore={handleMore} />
       <ProductImage imageUrl={SAMPLE.imageUrl} prdName={SAMPLE.prdName} />
 
@@ -56,8 +53,7 @@ export function ProductPage() {
         <hr className="border-gray-200" />
         <ProductComment description={SAMPLE.description} tag={SAMPLE.tag} />
       </div>
-
-      <ProductDetailFooter onSave={handleSave} onLike={handleLike} />
+      {/* TODO: 좋아요 및 저장하기 기능 추가 시 ProductDetailFooter 컴포넌트 추가 */}
     </main>
   );
 }
