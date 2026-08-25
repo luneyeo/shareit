@@ -10,6 +10,7 @@ export { default as IcHeartFilled } from "./ic-heart-filled.svg";
 export { default as IcHeartOutlined } from "./ic-heart-outlined.svg";
 export { default as IcKakao } from "./ic-kakao.svg";
 export { default as IcMenu } from "./ic-menu.svg";
+export { default as IcPlaceholder } from "./ic-placeholder.svg";
 export { default as IcPlus } from "./ic-plus.svg";
 export { default as IcQuotes } from "./ic-quotes.svg";
 export { default as IcSearch } from "./ic-search.svg";
