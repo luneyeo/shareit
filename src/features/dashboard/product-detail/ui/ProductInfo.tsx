@@ -13,10 +13,15 @@ type ProductInfoProps = Pick<ProductDetail, "brandName" | "prdName" | "price">;
  */
 export default function ProductInfo({ brandName, prdName, price }: ProductInfoProps) {
   return (
-    <div className="flex flex-col">
-      {brandName && <p className="typo-14-medium text-gray-700 mb-2">{brandName}</p>}
-      <h1 className="typo-20-bold">{prdName}</h1>
-      {price !== null && <p className="typo-18-bold">{formatPrice(price)}</p>}
+    <div className="flex flex-col gap-1">
+      {brandName && <p className="typo-14-medium text-gray-700 mb-1.5">{brandName}</p>}
+      <h1 className="typo-20-semibold">{prdName}</h1>
+      {price !== null && (
+        <p className="typo-24-bold tracking-tight">
+          {formatPrice(price)}
+          <span className="typo-18-bold pl-0.5">원</span>
+        </p>
+      )}
     </div>
   );
 }
