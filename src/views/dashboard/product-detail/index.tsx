@@ -2,6 +2,7 @@
 
 import ProductComment from "@/features/dashboard/product-detail/ui/ProductComment";
 import ProductDetailFooter from "@/features/dashboard/product-detail/ui/ProductDetailFooter";
+import ProductDetailTopBar from "@/features/dashboard/product-detail/ui/ProductDetailTopBar";
 import ProductImage from "@/features/dashboard/product-detail/ui/ProductImage";
 import ProductInfo from "@/features/dashboard/product-detail/ui/ProductInfo";
 import ProductMeta from "@/features/dashboard/product-detail/ui/ProductMeta";
@@ -39,12 +40,14 @@ const SAMPLE_STORE = "올리브영";
  */
 export function ProductPage() {
   const handleBack = () => history.back();
+  const handleMore = () => {};
   const handleSave = () => {};
   const handleLike = () => {};
 
   return (
     <main className="pb-17">
-      <ProductImage imageUrl={SAMPLE.imageUrl} prdName={SAMPLE.prdName} onBack={handleBack} />
+      <ProductDetailTopBar onBack={handleBack} onMore={handleMore} />
+      <ProductImage imageUrl={SAMPLE.imageUrl} prdName={SAMPLE.prdName} />
 
       <div className="flex flex-col gap-4 p-4.5">
         <ProductInfo brandName={SAMPLE.brandName} prdName={SAMPLE.prdName} price={SAMPLE.price} />
