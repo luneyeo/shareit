@@ -44,7 +44,7 @@ export default function ProductCard({ prdName, price, imageUrl, tag, userId }: P
         )}
         <div className="flex flex-col justify-center tracking-tight">
           <h3 className="typo-16-medium text-gray-800">{prdName}</h3>
-          {price !== null && <span className="typo-16-semibold">{formatPrice(price)}</span>}
+          {price !== null && <span className="typo-16-semibold">{formatPrice(price)}원</span>}
         </div>
         <Avatar seed={userId} size="sm" aria-label="등록자 프로필 아바타" />
       </div>
