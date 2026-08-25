@@ -7,7 +7,7 @@ type ProductCommentProps = Pick<ProductDetail, "description" | "tag">;
  * 상품 상세 페이지의 코멘트 영역입니다.
  *
  * "코멘트" 제목 아래에 추천인의 코멘트(`description`)와 태그 목록(`tag`)을 보여줍니다.
- * 코멘트와 태그가 모두 없으면 아무것도 렌더링하지 않습니다.
+ * 태그는 없으면 아무것도 렌더링하지 않습니다.
  *
  * @example
  * <ProductComment description={product.description} tag={product.tag} />
