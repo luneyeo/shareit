@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { ActionSheet, ActionSheetItem } from "@/shared/ui/action-sheet";
 import ProductComment from "@/features/dashboard/product-detail/ui/ProductComment";
 import ProductDetailTopBar from "@/features/dashboard/product-detail/ui/ProductDetailTopBar";
 import ProductImage from "@/features/dashboard/product-detail/ui/ProductImage";
@@ -38,8 +41,23 @@ const SAMPLE_STORE = "올리브영";
  * export default ProductPage
  */
 export function ProductPage() {
+  const router = useRouter();
+  const { dashboardId, productId } = useParams<{ dashboardId: string; productId: string }>();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
   const handleBack = () => history.back();
-  const handleMore = () => {};
+  const handleMore = () => setIsSheetOpen(true);
+  const closeSheet = () => setIsSheetOpen(false);
+
+  const handleEdit = () => {
+    closeSheet();
+    router.push(`/dashboard/${dashboardId}/product/${productId}/edit`);
+  };
+
+  const handleDelete = () => {
+    closeSheet();
+    // TODO: 상품 삭제 API 연결 (삭제 확인 다이얼로그 포함)
+  };
 
   return (
     <main>
@@ -54,6 +72,13 @@ export function ProductPage() {
         <ProductComment description={SAMPLE.description} tag={SAMPLE.tag} />
       </div>
       {/* TODO: 좋아요 및 저장하기 기능 추가 시 ProductDetailFooter 컴포넌트 추가 */}
+
+      <ActionSheet isOpen={isSheetOpen} onClose={closeSheet} ariaLabel="상품 더보기 메뉴">
+        <ActionSheetItem onClick={handleEdit}>수정하기</ActionSheetItem>
+        <ActionSheetItem variant="destructive" onClick={handleDelete}>
+          삭제하기
+        </ActionSheetItem>
+      </ActionSheet>
     </main>
   );
 }
