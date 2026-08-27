@@ -13,4 +13,10 @@ export const AUTH_MESSAGE = {
   LOGOUT: {
     ERROR: "로그아웃에 실패했어요. 잠시 후 다시 시도해 주세요.",
   },
+  INVITE: {
+    JOIN: {
+      INVALID: "입장 코드를 다시 확인해 주세요.",
+      ERROR: "일시적인 오류로 입장하지 못했어요. 다시 시도해 주세요.",
+    },
+  },
 } as const;
