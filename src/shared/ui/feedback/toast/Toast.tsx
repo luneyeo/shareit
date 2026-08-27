@@ -31,7 +31,7 @@ export default function Toast({ status, message }: ToastProps) {
       >
         {FEEDBACK_SYMBOL[status]}
       </span>
-      <p className="line-clamp-2 typo-16-semibold text-gray-800 leading-normal">{message}</p>
+      <p className="line-clamp-2 typo-16-medium text-gray-800 leading-normal">{message}</p>
     </div>
   );
 }
