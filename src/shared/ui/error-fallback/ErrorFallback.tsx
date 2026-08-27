@@ -16,9 +16,14 @@ interface ErrorFallbackProps {
   children: ReactNode;
 }
 
+/**
+ * 애니메이션 컨테이너 크기. 로딩 placeholder와 공유하므로 종횡비(aspect)를 포함해
+ * 폭만으로 높이가 확정되게 한다. (로딩↔완료 상태 간 레이아웃 시프트 방지)
+ * 404는 원본 16:9, 500은 크롭된 viewBox(800x800) 1:1에 맞춘다.
+ */
 const ANIMATION_SIZE: Record<ErrorAnimation, string> = {
-  "404": "w-80",
-  "500": "w-30",
+  "404": "w-80 aspect-video",
+  "500": "w-30 aspect-square",
 };
 
 /**
