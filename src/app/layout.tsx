@@ -4,6 +4,7 @@ import "@/shared/styles/global.css";
 import { QueryProvider } from "@/shared/providers/QueryProvider";
 import { AuthProvider } from "@/shared/providers/AuthProvider";
 import { createClient } from "@/shared/lib/supabase/server";
+import { Toaster } from "@/shared/ui/feedback";
 import { Analytics } from "@vercel/analytics/next";
 
 const pretendard = localFont({
@@ -46,6 +47,7 @@ export default async function RootLayout({
               <div className="flex-1 overflow-y-auto">{children}</div>
             </AuthProvider>
           </QueryProvider>
+          <Toaster />
         </div>
         <Analytics />
       </body>
