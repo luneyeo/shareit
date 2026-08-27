@@ -12,9 +12,9 @@
 
 | 항목          | 상태                   |
 | ------------- | ---------------------- |
-| 현재 버전     | `v0.4.0` (pre-release) |
+| 현재 버전     | `v0.5.0` (pre-release) |
 | 진행 단계     | 초기 개발              |
-| 최근 업데이트 | 2026-08-24             |
+| 최근 업데이트 | 2026-08-27             |
 
 <br>
 
@@ -41,12 +41,12 @@
 
 **상태 관리 · 데이터 페칭**
 
-![Zustand](https://img.shields.io/badge/Zustand-planned-764ABC?style=flat-square&logo=react&logoColor=white)
-![TanStack Query](https://img.shields.io/badge/TanStack_Query-planned-FF4154?style=flat-square&logo=reactquery&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-764ABC?style=flat-square&logo=react&logoColor=white)
+![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?style=flat-square&logo=reactquery&logoColor=white)
 
 **데이터베이스**
 
-![Supabase](https://img.shields.io/badge/Supabase-planned-3FCF8E?style=flat-square&logo=supabase&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=flat-square&logo=supabase&logoColor=white)
 
 **패키지 매니저 · 배포**
 
