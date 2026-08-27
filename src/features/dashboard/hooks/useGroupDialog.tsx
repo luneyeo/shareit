@@ -88,68 +88,75 @@ export function useGroupDialog() {
     if (error) setError("");
   };
 
+  const confirmCreate = () => {
+    if (!userId || createGroup.isPending) return;
+
+    createGroup.mutate(
+      { name: value.trim(), userId },
+      {
+        onSuccess: (group) => {
+          setDialog({
+            type: "create",
+            step: "done",
+            inviteCode: group.inviteCode,
+            groupId: group.id,
+          });
+          setValue("");
+        },
+        // 생성 실패는 시스템 오류로, 다이얼로그를 유지한 채 토스트로 안내한다.
+        onError: () => {
+          toast.error(GROUP_MESSAGE.CREATE.ERROR);
+        },
+      }
+    );
+  };
+
+  const confirmEdit = (groupId: string) => {
+    if (updateGroupName.isPending) return;
+
+    updateGroupName.mutate(
+      { groupId, name: value.trim() },
+      {
+        onSuccess: () => {
+          closeDialog();
+        },
+        // 수정 실패도 시스템 오류이므로 다이얼로그를 유지한 채 토스트로 안내한다.
+        onError: () => {
+          toast.error(GROUP_MESSAGE.EDIT.ERROR);
+        },
+      }
+    );
+  };
+
+  const confirmJoin = () => {
+    if (!userId || joinGroup.isPending) return;
+
+    joinGroup.mutate(
+      { inviteCode: value.trim(), userId },
+      {
+        onSuccess: ({ id }) => {
+          // 입장한 그룹 대시보드로 이동한다.
+          router.push(`/dashboard/${id}`);
+          closeDialog();
+        },
+        onError: (err) => {
+          // 무효 코드(필드 검증)는 입력값을 고쳐야 해소되므로 다이얼로그 인라인으로,
+          // 그 외 시스템 오류는 create·edit와 동일하게 토스트로 안내한다.
+          if (err instanceof InvalidInviteCodeError) {
+            setError(err.message);
+            return;
+          }
+          toast.error(GROUP_MESSAGE.JOIN.ERROR);
+        },
+      }
+    );
+  };
+
   const handleConfirm = () => {
     if (dialog?.step !== "input") return;
-
-    if (dialog.type === "create") {
-      if (!userId || createGroup.isPending) return;
-
-      createGroup.mutate(
-        { name: value.trim(), userId },
-        {
-          onSuccess: (group) => {
-            setDialog({
-              type: "create",
-              step: "done",
-              inviteCode: group.inviteCode,
-              groupId: group.id,
-            });
-            setValue("");
-          },
-          // 생성 실패는 시스템 오류로, 다이얼로그를 유지한 채 토스트로 안내한다.
-          onError: () => {
-            toast.error(GROUP_MESSAGE.CREATE.ERROR);
-          },
-        }
-      );
-    } else if (dialog.type === "edit") {
-      if (updateGroupName.isPending) return;
-
-      updateGroupName.mutate(
-        { groupId: dialog.groupId, name: value.trim() },
-        {
-          onSuccess: () => {
-            closeDialog();
-          },
-          // 수정 실패도 시스템 오류이므로 다이얼로그를 유지한 채 토스트로 안내한다.
-          onError: () => {
-            toast.error(GROUP_MESSAGE.EDIT.ERROR);
-          },
-        }
-      );
-    } else {
-      if (!userId || joinGroup.isPending) return;
-
-      joinGroup.mutate(
-        { inviteCode: value.trim(), userId },
-        {
-          onSuccess: ({ id }) => {
-            // 입장한 그룹 대시보드로 이동한다.
-            router.push(`/dashboard/${id}`);
-            closeDialog();
-          },
-          onError: (err) => {
-            // 무효 코드(필드 검증)는 입력값을 고쳐야 해소되므로 다이얼로그 인라인으로,
-            // 그 외 시스템 오류는 create·edit와 동일하게 토스트로 안내한다.
-            if (err instanceof InvalidInviteCodeError) {
-              setError(err.message);
-              return;
-            }
-            toast.error(GROUP_MESSAGE.JOIN.ERROR);
-          },
-        }
-      );
-    }
+    if (dialog.type === "create") return confirmCreate();
+    if (dialog.type === "edit") return confirmEdit(dialog.groupId);
+    confirmJoin();
   };
 
   const dialogElement: ReactNode = dialog ? (
