@@ -1,7 +1,9 @@
 import * as Sentry from "@sentry/nextjs";
 
-// 배포(production) 빌드에서만 모니터링을 활성화한다. `next dev`(개발) 환경에서는 비활성화된다.
-const enabled = process.env.NODE_ENV === "production";
+// 실제 Production 배포에서만 모니터링을 활성화한다.
+// NODE_ENV는 Vercel Preview 배포에서도 "production"이므로, Preview·개발을 걸러내기 위해
+// 서버에서는 Vercel이 주입하는 VERCEL_ENV로 판별한다.
+const enabled = process.env.VERCEL_ENV === "production";
 
 // nodejs·edge 런타임 공통 초기화. 두 런타임 모두 register()를 호출한다.
 export async function register() {
