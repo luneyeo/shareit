@@ -21,19 +21,17 @@ interface ToastProps {
  */
 export default function Toast({ status, message }: ToastProps) {
   return (
-    <div className="flex items-start gap-[11px] rounded-[14px] border border-[#f0f0ee] bg-white px-4 py-3.5 shadow-[0_6px_20px_rgba(0,0,0,0.08)]">
+    <div className="flex items-start gap-2.5 rounded-[14px] border border-gray-200 bg-white px-4 py-4 shadow-[0_6px_20px_rgba(0,0,0,0.08)]">
       <span
         aria-hidden
         className={cn(
-          "mt-px flex size-[22px] flex-none items-center justify-center rounded-full text-[12px] font-extrabold",
+          "mt-px flex size-5.5 flex-none items-center justify-center rounded-full typo-14-bold",
           badgeStyle[status]
         )}
       >
         {FEEDBACK_SYMBOL[status]}
       </span>
-      <p className="line-clamp-2 text-[13.5px] font-medium leading-[1.5] text-pretty text-[#161616]">
-        {message}
-      </p>
+      <p className="line-clamp-2 typo-16-semibold text-gray-800 leading-normal">{message}</p>
     </div>
   );
 }
