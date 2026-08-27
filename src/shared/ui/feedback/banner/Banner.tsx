@@ -6,9 +6,9 @@ import { FEEDBACK_SYMBOL, type FeedbackStatus } from "@/shared/ui/feedback/statu
 
 /** 상태별 색상(컨테이너 배경 · 심볼/텍스트 색 · 닫기 버튼 색). */
 const bannerStyle: Record<FeedbackStatus, { container: string; close: string }> = {
-  success: { container: "bg-[#EAF7F0] text-[#1D6B45]", close: "text-[#8FBFA6]" },
-  error: { container: "bg-[#FDEDED] text-[#A32B2F]", close: "text-[#D89A9C]" },
-  warning: { container: "bg-[#FFF5E6] text-[#96601C]", close: "text-[#DBB689]" },
+  success: { container: "bg-[#EAF7F0] text-[#1D6B45]", close: "text-[#1D6B45]" },
+  error: { container: "bg-[#FDEDED] text-[#A32B2F]", close: "text-[#A32B2F]" },
+  warning: { container: "bg-[#FFF5E6] text-[#96601C]", close: "text-[#96601C]" },
 };
 
 interface BannerProps {
