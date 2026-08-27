@@ -4,6 +4,7 @@ import "@/shared/styles/global.css";
 import { QueryProvider } from "@/shared/providers/QueryProvider";
 import { AuthProvider } from "@/shared/providers/AuthProvider";
 import { createClient } from "@/shared/lib/supabase/server";
+import { Analytics } from "@vercel/analytics/next";
 
 const pretendard = localFont({
   src: "../shared/assets/font/PretendardVariable.woff2",
@@ -46,6 +47,7 @@ export default async function RootLayout({
             </AuthProvider>
           </QueryProvider>
         </div>
+        <Analytics />
       </body>
     </html>
   );
