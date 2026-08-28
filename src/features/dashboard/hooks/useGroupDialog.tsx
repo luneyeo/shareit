@@ -4,10 +4,13 @@ import { useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import OverlayPortal from "@/shared/ui/overlay/OverlayPortal";
 import InputDialog from "@/shared/ui/dialog/InputDialog";
+import { toast } from "@/shared/ui/feedback";
 import InviteCodeDialog from "@/features/dashboard/ui/InviteCodeDialog";
 import { useCreateGroup } from "@/features/dashboard/hooks/useCreateGroup";
 import { useJoinGroup } from "@/features/dashboard/hooks/useJoinGroup";
+import { InvalidInviteCodeError } from "@/shared/api/group/joinGroup";
 import { useUpdateGroupName } from "@/features/dashboard/hooks/useUpdateGroupName";
+import { GROUP_MESSAGE } from "@/features/dashboard/constants/messages";
 import { useAuthStore } from "@/shared/store/authStore";
 import type {
   GroupDialogType,
@@ -85,61 +88,75 @@ export function useGroupDialog() {
     if (error) setError("");
   };
 
+  const confirmCreate = () => {
+    if (!userId || createGroup.isPending) return;
+
+    createGroup.mutate(
+      { name: value.trim(), userId },
+      {
+        onSuccess: (group) => {
+          setDialog({
+            type: "create",
+            step: "done",
+            inviteCode: group.inviteCode,
+            groupId: group.id,
+          });
+          setValue("");
+        },
+        // 생성 실패는 시스템 오류로, 다이얼로그를 유지한 채 토스트로 안내한다.
+        onError: () => {
+          toast.error(GROUP_MESSAGE.CREATE.ERROR);
+        },
+      }
+    );
+  };
+
+  const confirmEdit = (groupId: string) => {
+    if (updateGroupName.isPending) return;
+
+    updateGroupName.mutate(
+      { groupId, name: value.trim() },
+      {
+        onSuccess: () => {
+          closeDialog();
+        },
+        // 수정 실패도 시스템 오류이므로 다이얼로그를 유지한 채 토스트로 안내한다.
+        onError: () => {
+          toast.error(GROUP_MESSAGE.EDIT.ERROR);
+        },
+      }
+    );
+  };
+
+  const confirmJoin = () => {
+    if (!userId || joinGroup.isPending) return;
+
+    joinGroup.mutate(
+      { inviteCode: value.trim(), userId },
+      {
+        onSuccess: ({ id }) => {
+          // 입장한 그룹 대시보드로 이동한다.
+          router.push(`/dashboard/${id}`);
+          closeDialog();
+        },
+        onError: (err) => {
+          // 무효 코드(필드 검증)는 입력값을 고쳐야 해소되므로 다이얼로그 인라인으로,
+          // 그 외 시스템 오류는 create·edit와 동일하게 토스트로 안내한다.
+          if (err instanceof InvalidInviteCodeError) {
+            setError(err.message);
+            return;
+          }
+          toast.error(GROUP_MESSAGE.JOIN.ERROR);
+        },
+      }
+    );
+  };
+
   const handleConfirm = () => {
     if (dialog?.step !== "input") return;
-
-    if (dialog.type === "create") {
-      if (!userId || createGroup.isPending) return;
-
-      createGroup.mutate(
-        { name: value.trim(), userId },
-        {
-          onSuccess: (group) => {
-            setDialog({
-              type: "create",
-              step: "done",
-              inviteCode: group.inviteCode,
-              groupId: group.id,
-            });
-            setValue("");
-          },
-          // TODO: 토스트 도입 시 전역 알림으로 전환 (생성 실패는 필드 오류가 아니라 시스템 오류)
-          onError: () => {
-            setError("그룹 생성에 실패했어요. 다시 시도해 주세요.");
-          },
-        }
-      );
-    } else if (dialog.type === "edit") {
-      if (updateGroupName.isPending) return;
-
-      updateGroupName.mutate(
-        { groupId: dialog.groupId, name: value.trim() },
-        {
-          onSuccess: () => {
-            closeDialog();
-          },
-          onError: () => {
-            setError("그룹명 수정에 실패했어요. 다시 시도해 주세요.");
-          },
-        }
-      );
-    } else {
-      if (!userId || joinGroup.isPending) return;
-
-      joinGroup.mutate(
-        { inviteCode: value.trim(), userId },
-        {
-          onSuccess: ({ id }) => {
-            // 입장한 그룹 대시보드로 이동한다.
-            router.push(`/dashboard/${id}`);
-            closeDialog();
-          },
-          onError: (err) => {
-            setError(err instanceof Error ? err.message : "입장에 실패했어요. 다시 시도해 주세요.");
-          },
-        }
-      );
-    }
+    if (dialog.type === "create") return confirmCreate();
+    if (dialog.type === "edit") return confirmEdit(dialog.groupId);
+    confirmJoin();
   };
 
   const dialogElement: ReactNode = dialog ? (

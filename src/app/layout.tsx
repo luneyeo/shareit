@@ -47,8 +47,9 @@ export default async function RootLayout({
               <div className="flex-1 overflow-y-auto">{children}</div>
             </AuthProvider>
           </QueryProvider>
-          <Toaster />
         </div>
+        {/* Toaster는 프레임(transform-gpu) 밖 body 직속에 둔다. 프레임 안에 있으면 stacking context에 갇혀 오버레이(body에 포탈로 렌더) 아래로 깔린다. */}
+        <Toaster />
         <Analytics />
       </body>
     </html>
