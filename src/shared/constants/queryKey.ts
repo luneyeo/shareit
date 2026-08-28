@@ -12,4 +12,11 @@ export const queryKeys = {
     detail: (groupId: string, userId: string | undefined) =>
       ["groups", "detail", groupId, userId] as const,
   },
+  products: {
+    /** 상품 도메인 전체 무효화용 루트 키 */
+    all: ["products"] as const,
+    /** 특정 대시보드(그룹) 안의 개별 상품 상세. 대시보드별로 캐시를 분리한다. */
+    detail: (dashboardId: string, productId: string) =>
+      ["products", "detail", dashboardId, productId] as const,
+  },
 } as const;
