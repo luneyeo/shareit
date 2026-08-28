@@ -10,10 +10,10 @@ const buttonVariants = cva(
       theme: {
         primary:
           "bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-700 border-transparent",
-        secondary: "bg-white border border-gray-400 hover:bg-gray-100",
+        secondary: "bg-white border border-gray-300 hover:bg-gray-100",
       },
       size: {
-        lg: "h-12.5 typo-16-bold",
+        lg: "h-12.5 typo-16-medium",
         md: "h-10 typo-14-medium",
         sm: "h-7 typo-14-medium",
       },

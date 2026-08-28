@@ -1,6 +1,7 @@
 import Image from "next/image";
 import TagChip from "@/shared/ui/tag-chip/TagChip";
 import Avatar from "@/shared/ui/avatar/Avatar";
+import ImagePlaceholder from "@/shared/ui/image-placeholder/ImagePlaceholder";
 import type { ProductDetail } from "@/features/dashboard/types";
 import { formatPrice } from "@/shared/utils/formatPrice";
 
@@ -27,7 +28,11 @@ export default function ProductCard({ prdName, price, imageUrl, tag, userId }: P
   return (
     <article className="flex flex-col rounded-2xl bg-white border border-gray-200">
       <div className="relative w-full h-40 overflow-hidden rounded-t-xl bg-gray-200">
-        {firstImage && <Image src={firstImage} alt={prdName} fill className="object-cover" />}
+        {firstImage ? (
+          <Image src={firstImage} alt={prdName} fill className="object-cover" />
+        ) : (
+          <ImagePlaceholder size="sm" />
+        )}
       </div>
       <div className="flex flex-col gap-2 p-2.5">
         {tags && tags.length > 0 && (
@@ -39,7 +44,7 @@ export default function ProductCard({ prdName, price, imageUrl, tag, userId }: P
         )}
         <div className="flex flex-col justify-center tracking-tight">
           <h3 className="typo-16-medium text-gray-800">{prdName}</h3>
-          {price !== null && <span className="typo-16-semibold">{formatPrice(price)}</span>}
+          {price !== null && <span className="typo-16-semibold">{formatPrice(price)}원</span>}
         </div>
         <Avatar seed={userId} size="sm" aria-label="등록자 프로필 아바타" />
       </div>

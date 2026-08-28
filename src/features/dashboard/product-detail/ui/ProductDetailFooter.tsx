@@ -28,7 +28,7 @@ export default function ProductDetailFooter({ onSave, onLike }: ProductDetailFoo
         type="button"
         theme="secondary"
         size="lg"
-        className="flex-1"
+        className="flex-1 text-gray-800"
         icon={<IcBookmark className="h-5 w-5" />}
         onClick={onSave}
       >

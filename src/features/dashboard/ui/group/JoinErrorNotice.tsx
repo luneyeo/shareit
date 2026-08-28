@@ -1,28 +1,39 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { toast } from "@/shared/ui/feedback";
+import { AUTH_MESSAGE } from "@/features/auth/constants/messages";
 
 const JOIN_ERROR_MESSAGES: Record<string, string> = {
-  invalid: "입장 코드를 다시 확인해 주세요",
-  error: "일시적인 오류로 입장하지 못했어요. 잠시 후 다시 시도해 주세요",
+  invalid: AUTH_MESSAGE.INVITE.JOIN.INVALID,
+  error: AUTH_MESSAGE.INVITE.JOIN.ERROR,
 };
 
 /**
- * 초대 코드 입장 실패 안내 문구.
+ * 초대 코드 입장 실패를 토스트로 안내한다.
  *
- * `joinError` 쿼리 파라미터(`invalid`: 무효 코드, `error`: 서버 오류)를 읽어 사유에 맞는 안내를 노출한다.
- * 값이 없거나 알 수 없으면 아무것도 렌더하지 않는다.
- * 그룹 유무와 무관하게 최종 대시보드에서 공통으로 사용한다. (useSearchParams를 쓰므로 Suspense 경계 안에서 렌더한다.)
+ * OAuth 콜백이 넘긴 `joinError` 쿼리 파라미터(`invalid`: 무효 코드, `error`: 서버 오류)를 읽어
+ * 사유에 맞는 토스트를 한 번 띄우고, 새로고침·재진입 시 다시 뜨지 않도록 파라미터를 제거한다.
+ * 화면에는 아무것도 렌더하지 않는다. (useSearchParams를 쓰므로 Suspense 경계 안에서 렌더한다.)
  */
 export default function JoinErrorNotice() {
-  const joinError = useSearchParams().get("joinError");
-  const message = joinError ? JOIN_ERROR_MESSAGES[joinError] : null;
-  if (!message) return null;
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const joinError = searchParams.get("joinError");
 
-  return (
-    // TODO: 토스트 도입 후 인라인 안내를 토스트로 교체 (입장 실패 알림)
-    <p role="alert" className="px-10 pt-6 text-center typo-14-medium text-error">
-      {message}
-    </p>
-  );
+  useEffect(() => {
+    const message = joinError ? JOIN_ERROR_MESSAGES[joinError] : null;
+    if (!message) return;
+
+    toast.error(message);
+
+    const params = new URLSearchParams(searchParams);
+    params.delete("joinError");
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname);
+  }, [joinError, pathname, router, searchParams]);
+
+  return null;
 }

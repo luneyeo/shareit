@@ -25,7 +25,7 @@ export default function TabBarFooter() {
 
   return (
     <FooterBase>
-      <nav className="flex h-11 items-center justify-around" aria-label="기본 메뉴">
+      <nav className="flex items-center justify-around" aria-label="기본 메뉴">
         {TAB_ITEMS.map(({ href, label, Icon, ActiveIcon }) => {
           const isActive = pathname === href || pathname.startsWith(`${href}/`);
           const TabIcon = isActive ? ActiveIcon : Icon;
@@ -36,12 +36,12 @@ export default function TabBarFooter() {
               href={href}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex flex-1 flex-col items-center gap-1",
-                isActive ? "text-primary-600" : "text-gray-500"
+                "flex flex-1 flex-col items-center",
+                isActive ? "text-primary-600 typo-14-bold" : "text-gray-500 typo-14-medium"
               )}
             >
-              <TabIcon className="h-6 w-6" />
-              <span className="typo-12-medium">{label}</span>
+              <TabIcon className="h-5.5 w-5.5" />
+              <span>{label}</span>
             </Link>
           );
         })}

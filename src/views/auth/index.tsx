@@ -1,9 +1,10 @@
 "use client";
 
-import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useKakaoAuth } from "@/features/auth/hooks/useKakaoAuth";
 import { AUTH_MESSAGE } from "@/features/auth/constants/messages";
+import { toast } from "@/shared/ui/feedback";
 import AuthIntro from "@/features/auth/ui/AuthIntro";
 import KakaoAuthButton from "@/features/auth/ui/KakaoAuthButton";
 
@@ -11,15 +12,32 @@ import KakaoAuthButton from "@/features/auth/ui/KakaoAuthButton";
  * 카카오 OAuth 인증 진입 화면 본문.
  *
  * 인증 시작 실패(hasError)뿐 아니라, OAuth 콜백(/api/auth)이 세션 교환에 실패해
- * `?error=auth`로 되돌아온 경우도 오류로 표시한다.
+ * `?error=auth`로 되돌아온 경우도 토스트로 안내한다.
  */
 function AuthPageContent() {
   const { isPending, hasError, startKakaoAuth } = useKakaoAuth();
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const callbackFailed = searchParams.get("error") === "auth";
-  const showError = hasError || callbackFailed;
   // 랜딩에서 넘어온 초대 코드가 있으면 로그인 왕복 뒤 콜백까지 이어 붙인다.
   const inviteCode = searchParams.get("invite") ?? undefined;
+
+  // 인증 시작 실패를 토스트로 안내한다.
+  useEffect(() => {
+    if (hasError) toast.error(AUTH_MESSAGE.OAUTH.KAKAO.SIGNIN.ERROR);
+  }, [hasError]);
+
+  // 콜백 세션 교환 실패(?error=auth)를 토스트로 안내하고, 새로고침·재진입 시 재발화하지 않도록 error 파라미터만 제거한다. (invite는 보존)
+  useEffect(() => {
+    if (!callbackFailed) return;
+    toast.error(AUTH_MESSAGE.OAUTH.KAKAO.SIGNIN.ERROR);
+
+    const params = new URLSearchParams(searchParams);
+    params.delete("error");
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname);
+  }, [callbackFailed, pathname, router, searchParams]);
 
   return (
     <div className="flex h-full flex-col justify-center gap-16 px-5 pb-[calc(2rem+env(safe-area-inset-bottom))]">
@@ -27,12 +45,6 @@ function AuthPageContent() {
 
       <div className="mx-auto w-4/6">
         <KakaoAuthButton onClick={() => startKakaoAuth(inviteCode)} isPending={isPending} />
-        {/* TODO: 토스트 알림 도입 시 인라인 오류 메시지를 토스트로 교체 */}
-        {showError && (
-          <p role="alert" className="mt-3 text-center typo-13-medium text-error">
-            {AUTH_MESSAGE.OAUTH.KAKAO.SIGNIN.ERROR}
-          </p>
-        )}
       </div>
     </div>
   );
