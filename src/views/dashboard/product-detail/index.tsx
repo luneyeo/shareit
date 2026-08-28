@@ -3,30 +3,16 @@
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ActionSheet, ActionSheetItem } from "@/shared/ui/action-sheet";
+import { useProductDetail } from "@/features/dashboard/product-detail/apis/useProductDetail";
 import ProductComment from "@/features/dashboard/product-detail/ui/ProductComment";
 import ProductDetailTopBar from "@/features/dashboard/product-detail/ui/ProductDetailTopBar";
 import ProductImage from "@/features/dashboard/product-detail/ui/ProductImage";
 import ProductInfo from "@/features/dashboard/product-detail/ui/ProductInfo";
 import ProductMeta from "@/features/dashboard/product-detail/ui/ProductMeta";
-import type { ProductDetail } from "@/features/dashboard/types";
-import sampleProductImage from "@/features/dashboard/assets/sample-prd.jpeg";
+import EmptyState from "@/shared/ui/empty-state/EmptyState";
 
-// INFO: 데이터 계층(조회 훅) 연결 전까지 사용하는 샘플입니다. (실제 상품 데이터 아님)
-// TODO: 실제 `ProductDetail` 조회 값 + 추천인 이름·구매처로 교체한다.
-const SAMPLE: ProductDetail = {
-  id: "sample",
-  brandName: "넘버즈인",
-  prdName: "1번 판토텐산 액티브업 수딩세럼",
-  price: 23500,
-  description:
-    "이거 썼더니 유분이 덜 올라와서 너무너무 좋아!!! 완전 물같은 세럼이라서 지성이거나 수부지라면 무조건 사셈 유분기가 전혀 없어서 여름에도 가볍게 바르기 좋아 지금 리필 기획 중이니까 기획 끝나기전에 쟁여!",
-  imageUrl: [sampleProductImage.src],
-  tag: ["속건조", "지성", "수부지"],
-  category: null,
-  userId: "sample-user",
-  groupId: null,
-  created_at: "",
-};
+// INFO: 추천인·구매처는 상품(ProductDetail) 필드가 아니라 별도로 주입하는 값입니다.
+// TODO: 추천인은 userId로 조회한 이름, 구매처는 상품 모델에 필드 추가 후 교체한다.
 const SAMPLE_RECOMMENDER = "여루나";
 const SAMPLE_STORE = "올리브영";
 
@@ -44,6 +30,7 @@ export function ProductPage() {
   const router = useRouter();
   const { dashboardId, productId } = useParams<{ dashboardId: string; productId: string }>();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const { data: product, isPending, isError, refetch } = useProductDetail(dashboardId, productId);
 
   const handleBack = () => history.back();
   const handleMore = () => setIsSheetOpen(true);
@@ -54,31 +41,53 @@ export function ProductPage() {
     router.push(`/dashboard/${dashboardId}/product/${productId}/edit`);
   };
 
-  const handleDelete = () => {
-    closeSheet();
-    // TODO: 상품 삭제 API 연결 (삭제 확인 다이얼로그 포함)
-  };
-
   return (
     <main>
-      <ProductDetailTopBar onBack={handleBack} onMore={handleMore} />
-      <ProductImage imageUrl={SAMPLE.imageUrl} prdName={SAMPLE.prdName} />
+      {/* 뒤로가기는 어떤 상태에서도 가능하되, 더보기(수정)는 상품이 있을 때만 노출한다. */}
+      <ProductDetailTopBar onBack={handleBack} onMore={product ? handleMore : undefined} />
 
-      <div className="flex flex-col gap-4 p-4.5">
-        <ProductInfo brandName={SAMPLE.brandName} prdName={SAMPLE.prdName} price={SAMPLE.price} />
-        <hr className="border-gray-200" />
-        <ProductMeta recommender={SAMPLE_RECOMMENDER} store={SAMPLE_STORE} />
-        <hr className="border-gray-200" />
-        <ProductComment description={SAMPLE.description} tag={SAMPLE.tag} />
-      </div>
-      {/* TODO: 좋아요 및 저장하기 기능 추가 시 ProductDetailFooter 컴포넌트 추가 */}
+      {isPending ? (
+        <div className="flex min-h-dvh items-center justify-center px-5 py-16">
+          <p className="typo-14-medium text-gray-500">상품을 불러오는 중이에요.</p>
+        </div>
+      ) : isError ? (
+        <EmptyState
+          type="error"
+          message="상품을 불러오지 못했어요"
+          description="잠시 후 다시 시도해주세요"
+          className="min-h-dvh"
+          onRetry={() => refetch()}
+        />
+      ) : !product ? (
+        <EmptyState
+          type="notice"
+          message="상품을 찾을 수 없어요"
+          description="삭제되었거나 접근할 수 없는 상품이에요"
+          className="min-h-dvh"
+        />
+      ) : (
+        <>
+          <ProductImage imageUrl={product.imageUrl} prdName={product.prdName} />
 
-      <ActionSheet isOpen={isSheetOpen} onClose={closeSheet} ariaLabel="상품 더보기 메뉴">
-        <ActionSheetItem onClick={handleEdit}>수정하기</ActionSheetItem>
-        <ActionSheetItem variant="destructive" onClick={handleDelete}>
-          삭제하기
-        </ActionSheetItem>
-      </ActionSheet>
+          <div className="flex flex-col gap-4 p-4.5">
+            <ProductInfo
+              brandName={product.brandName}
+              prdName={product.prdName}
+              price={product.price}
+            />
+            <hr className="border-gray-200" />
+            <ProductMeta recommender={SAMPLE_RECOMMENDER} store={SAMPLE_STORE} />
+            <hr className="border-gray-200" />
+            <ProductComment description={product.description} tag={product.tag} />
+          </div>
+          {/* TODO: 좋아요 및 저장하기 기능 추가 시 ProductDetailFooter 컴포넌트 추가 */}
+
+          <ActionSheet isOpen={isSheetOpen} onClose={closeSheet} ariaLabel="상품 더보기 메뉴">
+            <ActionSheetItem onClick={handleEdit}>수정하기</ActionSheetItem>
+            {/* TODO: 상품 삭제 API 연결 시 삭제하기 항목 추가 (삭제 확인 다이얼로그·실패 토스트 포함) */}
+          </ActionSheet>
+        </>
+      )}
     </main>
   );
 }

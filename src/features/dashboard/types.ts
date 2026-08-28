@@ -1,18 +1,5 @@
 export type { Group } from "@/shared/api/group/types";
-
-export interface ProductDetail {
-  id: string;
-  brandName: string | null;
-  prdName: string;
-  price: number | null;
-  description: string | null;
-  imageUrl: string[] | null;
-  tag: string[] | null;
-  category: string | null;
-  userId: string;
-  groupId: string[] | null;
-  created_at: string;
-}
+export type { ProductDetail } from "@/shared/api/product/types";
 
 /** 그룹 입력 다이얼로그 종류 (한 번에 하나만 열림). create·join은 그룹 드롭다운, edit는 그룹 상세에서 연다. */
 export type GroupDialogType = "create" | "join" | "edit";
