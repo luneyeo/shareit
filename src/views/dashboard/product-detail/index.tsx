@@ -41,14 +41,9 @@ export function ProductPage() {
     router.push(`/dashboard/${dashboardId}/product/${productId}/edit`);
   };
 
-  const handleDelete = () => {
-    closeSheet();
-    // TODO: 상품 삭제 API 연결 (삭제 확인 다이얼로그 포함)
-  };
-
   return (
     <main>
-      {/* 뒤로가기는 어떤 상태에서도 가능하되, 더보기(수정·삭제)는 상품이 있을 때만 노출한다. */}
+      {/* 뒤로가기는 어떤 상태에서도 가능하되, 더보기(수정)는 상품이 있을 때만 노출한다. */}
       <ProductDetailTopBar onBack={handleBack} onMore={product ? handleMore : undefined} />
 
       {isPending ? (
@@ -89,9 +84,7 @@ export function ProductPage() {
 
           <ActionSheet isOpen={isSheetOpen} onClose={closeSheet} ariaLabel="상품 더보기 메뉴">
             <ActionSheetItem onClick={handleEdit}>수정하기</ActionSheetItem>
-            <ActionSheetItem variant="destructive" onClick={handleDelete}>
-              삭제하기
-            </ActionSheetItem>
+            {/* TODO: 상품 삭제 API 연결 시 삭제하기 항목 추가 (삭제 확인 다이얼로그·실패 토스트 포함) */}
           </ActionSheet>
         </>
       )}
