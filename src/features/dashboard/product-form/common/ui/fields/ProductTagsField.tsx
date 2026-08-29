@@ -5,7 +5,7 @@ import { type Control, Controller } from "react-hook-form";
 import Input from "@/shared/ui/input/Input";
 import Label from "@/shared/ui/label/Label";
 import TagChip from "@/shared/ui/tag-chip/TagChip";
-import type { ProductFormValues } from "../../types";
+import type { ProductFormValues } from "../../schema";
 
 type ProductTagsFieldProps = {
   control: Control<ProductFormValues>;

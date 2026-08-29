@@ -7,7 +7,7 @@ import { cn } from "@/shared/utils/cn";
 import { IMAGE_ACCEPT } from "@/shared/utils/imageFile";
 import FieldError from "@/shared/ui/form/FieldError";
 import Label from "@/shared/ui/label/Label";
-import type { ProductFormValues } from "../../types";
+import type { ProductFormValues } from "../../schema";
 import { useImagePreview } from "../../hooks/useImagePreview";
 
 type ProductImageFieldProps = {
@@ -25,7 +25,6 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
   const { field, fieldState } = useController({
     control,
     name: "imageUrl",
-    rules: { validate: (value) => value.length > 0 || "제품 이미지를 등록해주세요" },
   });
   const { fileError, isConverting, selectFile, reset } = useImagePreview(field.onChange);
 
@@ -40,7 +39,7 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
 
   return (
     <div className="flex flex-col gap-2.5">
-      <Label required>제품 이미지</Label>
+      <Label>제품 이미지</Label>
       <input
         ref={inputRef}
         type="file"
