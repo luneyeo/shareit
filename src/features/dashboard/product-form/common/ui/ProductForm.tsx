@@ -58,14 +58,14 @@ export default function ProductForm({
         required
         placeholder="브랜드명을 입력해주세요"
         error={errors.brandName?.message}
-        {...register("brandName", { required: "브랜드명을 입력해주세요" })}
+        {...register("brandName")}
       />
       <FormInput
         label="제품명"
         required
         placeholder="제품명을 입력해주세요"
         error={errors.prdName?.message}
-        {...register("prdName", { required: "제품명을 입력해주세요" })}
+        {...register("prdName")}
       />
       <ProductCategoryField control={control} />
       <FormInput
@@ -85,7 +85,7 @@ export default function ProductForm({
         label="설명"
         required
         placeholder="제품 설명을 입력해주세요"
-        {...register("description", { required: "제품 설명을 입력해주세요" })}
+        {...register("description")}
       />
       <ProductTagsField control={control} />
       <ProductFormFooter

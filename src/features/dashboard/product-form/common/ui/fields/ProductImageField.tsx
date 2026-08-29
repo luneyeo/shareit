@@ -25,7 +25,6 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
   const { field, fieldState } = useController({
     control,
     name: "imageUrl",
-    rules: { validate: (value) => value.length > 0 || "제품 이미지를 등록해주세요" },
   });
   const { fileError, isConverting, selectFile, reset } = useImagePreview(field.onChange);
 

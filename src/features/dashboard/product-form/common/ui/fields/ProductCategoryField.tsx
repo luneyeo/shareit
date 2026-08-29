@@ -19,7 +19,6 @@ export default function ProductCategoryField({ control }: ProductCategoryFieldPr
     <Controller
       control={control}
       name="category"
-      rules={{ required: "카테고리를 선택해주세요" }}
       render={({ field, fieldState }) => (
         <div className="flex flex-col gap-2.5">
           <Label required>카테고리</Label>
