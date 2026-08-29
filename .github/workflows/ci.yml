@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [dev]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        id: lint
+        continue-on-error: true
+        run: pnpm lint
+
+      - name: Format check
+        id: format
+        continue-on-error: true
+        run: pnpm format:check
+
+      - name: Type check
+        id: type
+        continue-on-error: true
+        run: pnpm exec tsc --noEmit
+
+      - name: Build
+        id: build
+        continue-on-error: true
+        run: pnpm build
+        env:
+          # 빌드 단계에서 Supabase 클라이언트 생성 시 형식만 필요하므로 더미 값을 주입한다.
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: dummy-anon-key-for-build
+
+      - name: Report result to PR
+        if: always()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: ci-result
+          message: |
+            ## CI 결과
+
+            | 검사 | 결과 |
+            | --- | --- |
+            | Lint | ${{ steps.lint.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
+            | Format | ${{ steps.format.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
+            | Type check | ${{ steps.type.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
+            | Build | ${{ steps.build.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
+
+            자세한 로그: [워크플로 실행 보기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+      - name: Fail if any check failed
+        if: >-
+          steps.lint.outcome != 'success' ||
+          steps.format.outcome != 'success' ||
+          steps.type.outcome != 'success' ||
+          steps.build.outcome != 'success'
+        run: exit 1
