@@ -55,7 +55,6 @@ export default function ProductForm({
       <ProductImageField control={control} />
       <FormInput
         label="브랜드명"
-        required
         placeholder="브랜드명을 입력해주세요"
         error={errors.brandName?.message}
         {...register("brandName")}
@@ -83,7 +82,6 @@ export default function ProductForm({
       />
       <FormTextarea
         label="설명"
-        required
         placeholder="제품 설명을 입력해주세요"
         {...register("description")}
       />

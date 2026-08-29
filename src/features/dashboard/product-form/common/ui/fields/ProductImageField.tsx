@@ -39,7 +39,7 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
 
   return (
     <div className="flex flex-col gap-2.5">
-      <Label required>제품 이미지</Label>
+      <Label>제품 이미지</Label>
       <input
         ref={inputRef}
         type="file"

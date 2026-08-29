@@ -19,9 +19,6 @@ export const GROUP_MESSAGE = {
  * `product-form`의 zod 스키마가 참조해 문구 중복을 방지한다.
  */
 export const PRODUCT_FORM_ERROR = {
-  BRAND_NAME: "브랜드명을 입력해주세요",
   PRD_NAME: "제품명을 입력해주세요",
   CATEGORY: "카테고리를 선택해주세요",
-  DESCRIPTION: "제품 설명을 입력해주세요",
-  IMAGE: "제품 이미지를 등록해주세요",
 } as const;
