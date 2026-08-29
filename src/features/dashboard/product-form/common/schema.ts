@@ -18,3 +18,5 @@ export const productFormSchema = z.object({
   imageUrl: z.array(z.string()).min(1, PRODUCT_FORM_ERROR.IMAGE),
   tag: z.array(z.string()),
 });
+
+export type ProductFormValues = z.infer<typeof productFormSchema>;

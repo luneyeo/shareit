@@ -2,8 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { ProductFormValues } from "../types";
-import { productFormSchema } from "../schema";
+import { productFormSchema, type ProductFormValues } from "../schema";
 
 /** 등록 폼의 빈 초기값. 수정 시에는 이 위에 기존 상품 값을 덮어씁니다. */
 export const PRODUCT_FORM_DEFAULTS: ProductFormValues = {

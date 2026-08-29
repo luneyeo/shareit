@@ -7,7 +7,7 @@ import { cn } from "@/shared/utils/cn";
 import { IMAGE_ACCEPT } from "@/shared/utils/imageFile";
 import FieldError from "@/shared/ui/form/FieldError";
 import Label from "@/shared/ui/label/Label";
-import type { ProductFormValues } from "../../types";
+import type { ProductFormValues } from "../../schema";
 import { useImagePreview } from "../../hooks/useImagePreview";
 
 type ProductImageFieldProps = {
