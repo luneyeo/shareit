@@ -41,11 +41,6 @@ jobs:
         continue-on-error: true
         run: pnpm format:check
 
-      - name: Type check
-        id: type
-        continue-on-error: true
-        run: pnpm exec tsc --noEmit
-
       - name: Build
         id: build
         continue-on-error: true
@@ -54,6 +49,12 @@ jobs:
           # 빌드 단계에서 Supabase 클라이언트 생성 시 형식만 필요하므로 더미 값을 주입한다.
           NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: dummy-anon-key-for-build
+
+      # tsc는 next build가 생성하는 next-env.d.ts(*.png 등 이미지 모듈 선언)에 의존하므로 Build 뒤에 실행한다.
+      - name: Type check
+        id: type
+        continue-on-error: true
+        run: pnpm exec tsc --noEmit
 
       - name: Report result to PR
         if: always()
