@@ -9,15 +9,19 @@ concurrency:
   group: lighthouse-${{ github.ref }}
   cancel-in-progress: true
 
+# PR가 제어하는 설치/스크립트가 실행되는 검증 job에는 쓰기 권한을 주지 않는다.
+# PR 댓글은 별도 Lighthouse Report 워크플로(workflow_run)에서 게시한다.
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # PR 코드가 토큰으로 저장소를 조작하지 못하도록 자격 증명을 남기지 않는다.
+          persist-credentials: false
 
       - uses: pnpm/action-setup@v4
         with:
@@ -82,9 +86,19 @@ jobs:
             const body = `## 🚦 Lighthouse 결과\n\n\`/\` (모바일)\n\n| 항목 | 점수 |\n| --- | --- |\n${rows}\n${linkLine}`;
             core.setOutput('body', body);
 
-      - name: Report result to PR
+      # 댓글은 여기서 게시하지 않고, 결과와 PR 번호만 아티팩트로 넘겨 Report 워크플로가 게시한다.
+      - name: Prepare PR comment
         if: always() && steps.comment-body.outputs.body != ''
-        uses: marocchino/sticky-pull-request-comment@v2
+        run: |
+          mkdir -p pr-comment
+          printf '%s' "${{ github.event.pull_request.number }}" > pr-comment/pr-number.txt
+          cat > pr-comment/body.md <<'EOF'
+          ${{ steps.comment-body.outputs.body }}
+          EOF
+
+      - name: Upload PR comment
+        if: always() && steps.comment-body.outputs.body != ''
+        uses: actions/upload-artifact@v4
         with:
-          header: lighthouse-result
-          message: ${{ steps.comment-body.outputs.body }}
+          name: lighthouse-pr-comment
+          path: pr-comment/

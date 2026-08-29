@@ -9,15 +9,19 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# PR가 제어하는 설치/스크립트가 실행되는 검증 job에는 쓰기 권한을 주지 않는다.
+# PR 댓글은 별도 CI Report 워크플로(workflow_run)에서 게시한다.
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # PR 코드가 토큰으로 저장소를 조작하지 못하도록 자격 증명을 남기지 않는다.
+          persist-credentials: false
 
       - uses: pnpm/action-setup@v4
         with:
@@ -56,22 +60,31 @@ jobs:
         continue-on-error: true
         run: pnpm exec tsc --noEmit
 
-      - name: Report result to PR
+      # 댓글은 여기서 게시하지 않고, 결과와 PR 번호만 아티팩트로 넘겨 Report 워크플로가 게시한다.
+      - name: Prepare PR comment
         if: always()
-        uses: marocchino/sticky-pull-request-comment@v2
+        run: |
+          mkdir -p pr-comment
+          printf '%s' "${{ github.event.pull_request.number }}" > pr-comment/pr-number.txt
+          cat > pr-comment/body.md <<'EOF'
+          ## CI 결과
+
+          | 검사 | 결과 |
+          | --- | --- |
+          | Lint | ${{ steps.lint.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
+          | Format | ${{ steps.format.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
+          | Type check | ${{ steps.type.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
+          | Build | ${{ steps.build.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
+
+          자세한 로그: [워크플로 실행 보기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          EOF
+
+      - name: Upload PR comment
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          header: ci-result
-          message: |
-            ## CI 결과
-
-            | 검사 | 결과 |
-            | --- | --- |
-            | Lint | ${{ steps.lint.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
-            | Format | ${{ steps.format.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
-            | Type check | ${{ steps.type.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
-            | Build | ${{ steps.build.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
-
-            자세한 로그: [워크플로 실행 보기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          name: ci-pr-comment
+          path: pr-comment/
 
       - name: Fail if any check failed
         if: >-
