@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [dev]
+
+# 같은 PR에 새 커밋이 푸시되면 진행 중이던 이전 실행을 취소한다.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# PR가 제어하는 설치/스크립트가 실행되는 검증 job에는 쓰기 권한을 주지 않는다.
+# PR 댓글은 별도 CI Report 워크플로(workflow_run)에서 게시한다.
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # PR 코드가 토큰으로 저장소를 조작하지 못하도록 자격 증명을 남기지 않는다.
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        id: lint
+        continue-on-error: true
+        run: pnpm lint
+
+      - name: Format check
+        id: format
+        continue-on-error: true
+        run: pnpm format:check
+
+      - name: Build
+        id: build
+        continue-on-error: true
+        run: pnpm build
+        env:
+          # 빌드 단계에서 Supabase 클라이언트 생성 시 형식만 필요하므로 더미 값을 주입한다.
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: dummy-anon-key-for-build
+
+      # tsc는 next build가 생성하는 next-env.d.ts(*.png 등 이미지 모듈 선언)에 의존하므로 Build 뒤에 실행한다.
+      - name: Type check
+        id: type
+        continue-on-error: true
+        run: pnpm exec tsc --noEmit
+
+      # 댓글은 여기서 게시하지 않고, 결과와 PR 번호만 아티팩트로 넘겨 Report 워크플로가 게시한다.
+      - name: Prepare PR comment
+        if: always()
+        run: |
+          mkdir -p pr-comment
+          printf '%s' "${{ github.event.pull_request.number }}" > pr-comment/pr-number.txt
+          cat > pr-comment/body.md <<'EOF'
+          ## CI 결과
+
+          | 검사 | 결과 |
+          | --- | --- |
+          | Lint | ${{ steps.lint.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
+          | Format | ${{ steps.format.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
+          | Type check | ${{ steps.type.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
+          | Build | ${{ steps.build.outcome == 'success' && '✅ 통과' || '❌ 실패' }} |
+
+          자세한 로그: [워크플로 실행 보기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          EOF
+
+      - name: Upload PR comment
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-pr-comment
+          path: pr-comment/
+
+      - name: Fail if any check failed
+        if: >-
+          steps.lint.outcome != 'success' ||
+          steps.format.outcome != 'success' ||
+          steps.type.outcome != 'success' ||
+          steps.build.outcome != 'success'
+        run: exit 1
