@@ -1,0 +1,90 @@
+name: Lighthouse CI
+
+on:
+  pull_request:
+    branches: [dev]
+
+# 같은 PR에 새 커밋이 푸시되면 진행 중이던 이전 실행을 취소한다.
+concurrency:
+  group: lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: dummy-anon-key-for-build
+
+      - name: Run Lighthouse CI
+        id: lhci
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: ./.lighthouserc.json
+          temporaryPublicStorage: true
+          uploadArtifacts: true
+        env:
+          # startServerCommand(pnpm start)가 런타임에 참조하므로 동일한 더미 값을 준다.
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: dummy-anon-key-for-build
+
+      - name: Build result comment
+        id: comment-body
+        if: always() && steps.lhci.outputs.manifest != ''
+        uses: actions/github-script@v7
+        env:
+          MANIFEST: ${{ steps.lhci.outputs.manifest }}
+          LINKS: ${{ steps.lhci.outputs.links }}
+        with:
+          script: |
+            const manifest = JSON.parse(process.env.MANIFEST || '[]');
+            const links = JSON.parse(process.env.LINKS || '{}');
+            const run = manifest.find((r) => r.isRepresentativeRun) || manifest[0];
+            const summary = run ? run.summary : {};
+
+            const labels = {
+              performance: 'Performance',
+              accessibility: 'Accessibility',
+              'best-practices': 'Best practices',
+              seo: 'SEO',
+              pwa: 'PWA',
+            };
+            const icon = (v) => (v >= 0.9 ? '🟢' : v >= 0.5 ? '🟠' : '🔴');
+
+            let rows = Object.entries(summary)
+              .map(([k, v]) => `| ${labels[k] || k} | ${icon(v)} ${Math.round(v * 100)} |`)
+              .join('\n');
+
+            const reportUrl = Object.values(links)[0];
+            const linkLine = reportUrl ? `\n[전체 리포트 보기](${reportUrl})` : '';
+
+            const body = `## 🚦 Lighthouse 결과\n\n\`/\` (모바일)\n\n| 항목 | 점수 |\n| --- | --- |\n${rows}\n${linkLine}`;
+            core.setOutput('body', body);
+
+      - name: Report result to PR
+        if: always() && steps.comment-body.outputs.body != ''
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: lighthouse-result
+          message: ${{ steps.comment-body.outputs.body }}
