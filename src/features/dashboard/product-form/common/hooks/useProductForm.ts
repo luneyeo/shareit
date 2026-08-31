@@ -13,6 +13,7 @@ export const PRODUCT_FORM_DEFAULTS: ProductFormValues = {
   purchasePlace: "",
   description: "",
   imageUrl: [],
+  imageFiles: [],
   tag: [],
 };
 

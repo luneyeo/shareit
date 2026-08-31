@@ -1,7 +1,7 @@
 /** 이미지 업로드 관련 상수와 검증 로직을 한 곳에서 관리합니다. */
 
-/** 허용하는 최대 이미지 용량 (10MB) */
-export const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
+/** 허용하는 최대 이미지 용량 (50MB) */
+export const MAX_IMAGE_SIZE = 50 * 1024 * 1024;
 
 /** 파일 선택창(`<input accept>`)에 노출할 허용 형식 */
 export const IMAGE_ACCEPT = "image/*,.heic,.heif";
@@ -32,7 +32,7 @@ export function validateImageFile(file: File): string | null {
     return "이미지 파일만 등록할 수 있어요";
   }
   if (file.size > MAX_IMAGE_SIZE) {
-    return "이미지 용량은 최대 10MB까지 등록할 수 있어요";
+    return "이미지 용량은 최대 50MB까지 등록할 수 있어요";
   }
   return null;
 }
