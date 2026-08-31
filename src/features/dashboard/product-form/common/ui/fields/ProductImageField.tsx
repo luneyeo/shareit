@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { type Control, useController } from "react-hook-form";
 import { IcClose, IcPlus } from "@/shared/assets/icons";
 import { cn } from "@/shared/utils/cn";
@@ -33,14 +33,25 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
     control,
     name: "imageFiles",
   });
+  const previews = field.value;
+  const files = filesField.value;
+
+  // 변환 대기 중 삭제가 일어나도 최신 배열에 누적하도록 ref로 최신값을 유지한다.
+  // (완료 콜백이 선택 시작 시점의 값을 캡처해 삭제된 항목을 되살리는 것을 방지)
+  const latestPreviews = useRef(previews);
+  const latestFiles = useRef(files);
+  useEffect(() => {
+    latestPreviews.current = previews;
+    latestFiles.current = files;
+  }, [previews, files]);
+
   const { fileError, isConverting, selectFile, revoke } = useImagePreview(
     ({ previewUrl, file }) => {
-      field.onChange([...field.value, previewUrl]);
-      filesField.onChange([...filesField.value, file]);
+      field.onChange([...latestPreviews.current, previewUrl]);
+      filesField.onChange([...latestFiles.current, file]);
     }
   );
 
-  const previews = field.value;
   const canAddMore = previews.length < MAX_IMAGES;
 
   const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +64,7 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
   const handleRemove = (index: number) => {
     revoke(previews[index]);
     field.onChange(previews.filter((_, i) => i !== index));
-    filesField.onChange(filesField.value.filter((_, i) => i !== index));
+    filesField.onChange(files.filter((_, i) => i !== index));
   };
 
   return (
