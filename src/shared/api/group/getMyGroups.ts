@@ -2,7 +2,7 @@ import { createClient } from "@/shared/lib/supabase/client";
 import type { Group, MyGroupSummary } from "./types";
 
 /** groups에 중첩 조회한 group_members(count) 집계 결과를 더한 형태. */
-type GroupRow = Omit<Group, "id"> & { id: number; group_members: { count: number }[] };
+type GroupRow = Group & { group_members: { count: number }[] };
 
 /**
  * userId가 멤버로 속한 그룹 목록을 역할·멤버 수와 함께 조회한다.
@@ -15,7 +15,8 @@ export async function getMyGroups(userId: string): Promise<MyGroupSummary[]> {
 
   const { data, error } = await supabase
     .from("group_members")
-    .select("role, groups(id, name, group_members(count))")
+    // groups.id는 bigint라 JSON number 정밀도 한계가 있어, PostgREST 캐스트(id::text)로 문자열로 받는다.
+    .select("role, groups(id::text, name, group_members(count))")
     .eq("user_id", userId);
 
   if (error) throw error;
@@ -27,7 +28,8 @@ export async function getMyGroups(userId: string): Promise<MyGroupSummary[]> {
       const group = row.groups as unknown as GroupRow | null;
       if (!group) return null;
       return {
-        id: String(group.id),
+        // id는 위 select의 id::text로 이미 문자열이라 변환 없이 그대로 사용한다.
+        id: group.id,
         name: group.name,
         role: row.role as MyGroupSummary["role"],
         memberCount: group.group_members[0]?.count ?? 0,

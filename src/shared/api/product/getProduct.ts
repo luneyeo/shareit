@@ -17,7 +17,7 @@ type ProductRow = {
   store: string | null;
   user_id: string;
   nickname: string | null;
-  group_id: number;
+  group_id: string;
   created_at: string;
 };
 
@@ -58,7 +58,7 @@ export async function getProduct(
     store: data.store,
     userId: data.user_id,
     recommender: data.nickname,
-    groupId: String(data.group_id),
+    groupId: data.group_id,
     created_at: data.created_at,
   };
 }

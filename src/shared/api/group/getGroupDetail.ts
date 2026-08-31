@@ -3,7 +3,7 @@ import type { GroupDetailSummary, GroupRole } from "./types";
 
 /** groups에 중첩 조회한 group_members(count) 집계 결과를 더한 형태. */
 type GroupRow = {
-  id: number;
+  id: string;
   name: string;
   created_at: string;
   invite_code: string;
@@ -22,7 +22,8 @@ export async function getGroupDetail(groupId: string, userId: string): Promise<G
 
   const { data, error } = await supabase
     .from("group_members")
-    .select("role, groups(id, name, created_at, invite_code, group_members(count))")
+    // groups.id는 bigint라 JSON number 정밀도 한계가 있어, PostgREST 캐스트(id::text)로 문자열로 받는다.
+    .select("role, groups(id::text, name, created_at, invite_code, group_members(count))")
     .eq("user_id", userId)
     .eq("group_id", groupId)
     .maybeSingle();
@@ -36,7 +37,8 @@ export async function getGroupDetail(groupId: string, userId: string): Promise<G
   if (!group) throw new Error("그룹을 찾을 수 없어요");
 
   return {
-    id: String(group.id),
+    // id는 위 select의 id::text로 이미 문자열이라 변환 없이 그대로 사용한다.
+    id: group.id,
     name: group.name,
     role: data.role as GroupRole,
     openedAt: group.created_at,

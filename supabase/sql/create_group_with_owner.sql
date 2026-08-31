@@ -15,7 +15,7 @@
 drop function if exists public.create_group_with_owner(text);
 
 create or replace function public.create_group_with_owner(group_name text)
-returns table (id bigint, name text, invite_code text)
+returns table (id text, name text, invite_code text)
 language plpgsql
 security definer
 set search_path = public
@@ -32,8 +32,10 @@ begin
   values (new_group.id, auth.uid(), 'owner')
   on conflict (group_id, user_id) do nothing;
 
+  -- id는 bigint지만 text로 반환한다. JSON number(2^53) 정밀도 한계로 큰 id가 깨지지 않도록,
+  -- 클라이언트가 문자열 그대로 받게 한다.
   return query
-    select new_group.id, new_group.name, new_group.invite_code;
+    select new_group.id::text, new_group.name, new_group.invite_code;
 end;
 $$;
 

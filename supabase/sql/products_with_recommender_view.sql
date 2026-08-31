@@ -11,11 +11,15 @@
 --
 -- 적용: Supabase SQL Editor(또는 마이그레이션)에서 1회 실행한다.
 
+-- 컬럼 타입 변경(id bigint→text)은 create or replace로 안 되므로 기존 뷰를 먼저 제거한다.
+drop view if exists public.products_with_recommender;
+
 create or replace view public.products_with_recommender
 with (security_invoker = on)
 as
 select
-  p.id,
+  -- id·group_id는 bigint지만 JSON number 정밀도 한계를 피하려 text로 노출한다.
+  p.id::text as id,
   p.brand_name,
   p.prd_name,
   p.price,
@@ -25,7 +29,7 @@ select
   p.category,
   p.store,
   p.user_id,
-  p.group_id,
+  p.group_id::text as group_id,
   p.created_at,
   u.nickname
 from public.products p

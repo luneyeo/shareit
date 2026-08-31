@@ -32,7 +32,7 @@ end $$;
 drop function if exists public.join_group_by_code(text);
 
 create or replace function public.join_group_by_code(invite_code text)
-returns table (id bigint)
+returns table (id text)
 language plpgsql
 security definer
 set search_path = public
@@ -52,7 +52,8 @@ begin
   values (target_group_id, auth.uid(), 'member')
   on conflict (group_id, user_id) do nothing;
 
-  return query select target_group_id;
+  -- id는 bigint지만 JSON number 정밀도 한계를 피하려 text로 반환한다.
+  return query select target_group_id::text;
 end;
 $$;
 
