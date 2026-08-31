@@ -1,14 +1,31 @@
--- Images 버킷에 대한 Storage 업로드(INSERT) 정책.
+-- Images 버킷 업로드에 대한 서버 측 제한.
 --
--- storage.objects에는 기본적으로 RLS가 켜져 있어, 정책이 없으면 로그인한 사용자라도
--- 업로드가 "row-level security policy" 위반으로 거부된다. 이 앱은 anon key + 세션으로
--- 요청하므로 authenticated 역할에 대해 Images 버킷 업로드를 허용한다.
--- 조회는 public 버킷의 공개 엔드포인트로 처리되므로 SELECT 정책은 두지 않는다.
+-- 클라이언트의 형식·크기 검사는 악의적 사용자가 Storage API를 직접 호출하면 우회할 수
+-- 있다. 따라서 크기·MIME은 버킷 설정으로, 사용자 범위(경로)는 storage.objects RLS로
+-- 서버에서 강제한다. (DoS 완화, CWE-400)
+--
+-- 사용자당 파일 수 상한은 여기서 강제하지 않는다. RLS에서 storage.objects를 자기참조로
+-- 세는 방식은 재귀·호환성 문제가 있어, 개수 제한이 필요해지면 트리거나 정리 작업으로 뺀다.
 --
 -- 적용: Supabase SQL Editor(또는 마이그레이션)에서 1회 실행한다.
+
+-- 1) 버킷 단위 최대 파일 크기(50MB)와 허용 MIME(이미지) 제한.
+update storage.buckets
+set
+  file_size_limit = 52428800, -- 50 MiB
+  allowed_mime_types = array['image/*']
+where id = 'Images';
+
+-- 2) 로그인 사용자가 '자신의 폴더'({uid}/...)에만 업로드하도록 제한한다. (사용자 범위 격리)
 drop policy if exists "authenticated upload to Images" on storage.objects;
 
 create policy "authenticated upload to Images"
 on storage.objects for insert
 to authenticated
-with check ( bucket_id = 'Images' );
+with check (
+  bucket_id = 'Images'
+  and (storage.foldername(name))[1] = (select auth.uid()::text)
+);
+
+-- (정리) 개수 제한을 위해 추가했던 SELECT 정책이 남아 있으면 제거한다.
+drop policy if exists "authenticated read own Images" on storage.objects;
