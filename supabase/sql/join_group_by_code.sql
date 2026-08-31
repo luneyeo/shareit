@@ -27,14 +27,18 @@ end $$;
 --    코드로 그룹을 찾는 조회 자체가 막힌다(빈 결과 → '잘못된 코드'로 오인). 코드가 곧 접근
 --    권한이므로 정의자 권한으로 RLS를 우회해 조회하되, 멤버십은 함수 내부 auth.uid()로만
 --    등록하여 위조를 막는다.
+--
+-- 반환 타입(id)을 바꾸면 create or replace가 거부되므로 기존 함수를 먼저 제거한다.
+drop function if exists public.join_group_by_code(text);
+
 create or replace function public.join_group_by_code(invite_code text)
-returns table (id uuid)
+returns table (id text)
 language plpgsql
 security definer
 set search_path = public
 as $$
 declare
-  target_group_id uuid;
+  target_group_id bigint;
 begin
   select g.id into target_group_id
   from public.groups g
@@ -48,7 +52,8 @@ begin
   values (target_group_id, auth.uid(), 'member')
   on conflict (group_id, user_id) do nothing;
 
-  return query select target_group_id;
+  -- id는 bigint지만 JSON number 정밀도 한계를 피하려 text로 반환한다.
+  return query select target_group_id::text;
 end;
 $$;
 

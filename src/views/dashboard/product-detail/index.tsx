@@ -3,7 +3,12 @@
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ActionSheet, ActionSheetItem } from "@/shared/ui/action-sheet";
+import OverlayPortal from "@/shared/ui/overlay/OverlayPortal";
+import ConfirmDialog from "@/shared/ui/dialog/ConfirmDialog";
+import { toast } from "@/shared/ui/feedback";
 import { useProductDetail } from "@/features/dashboard/product-detail/apis/useProductDetail";
+import { useDeleteProduct } from "@/features/dashboard/hooks/useDeleteProduct";
+import { PRODUCT_MESSAGE } from "@/features/dashboard/constants/messages";
 import ProductComment from "@/features/dashboard/product-detail/ui/ProductComment";
 import ProductDetailTopBar from "@/features/dashboard/product-detail/ui/ProductDetailTopBar";
 import ProductImage from "@/features/dashboard/product-detail/ui/ProductImage";
@@ -25,7 +30,9 @@ export function ProductPage() {
   const router = useRouter();
   const { dashboardId, productId } = useParams<{ dashboardId: string; productId: string }>();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { data: product, isPending, isError, refetch } = useProductDetail(dashboardId, productId);
+  const { mutateAsync: deleteProduct } = useDeleteProduct();
 
   const handleBack = () => router.replace(`/dashboard/${dashboardId}`);
   const handleMore = () => setIsSheetOpen(true);
@@ -34,6 +41,25 @@ export function ProductPage() {
   const handleEdit = () => {
     closeSheet();
     router.push(`/dashboard/${dashboardId}/product/${productId}/edit`);
+  };
+
+  const handleDeleteClick = () => {
+    closeSheet();
+    setIsDeleteOpen(true);
+  };
+  const handleDeleteCancel = () => setIsDeleteOpen(false);
+
+  const handleDeleteConfirm = async () => {
+    setIsDeleteOpen(false);
+    try {
+      await deleteProduct(productId);
+      toast.success(PRODUCT_MESSAGE.DELETE.SUCCESS);
+      // 삭제된 상품 상세엔 더 머물 수 없으므로 대시보드로 돌아간다.
+      router.replace(`/dashboard/${dashboardId}`);
+    } catch (error) {
+      console.error(error);
+      toast.error(PRODUCT_MESSAGE.DELETE.ERROR);
+    }
   };
 
   return (
@@ -79,8 +105,26 @@ export function ProductPage() {
 
           <ActionSheet isOpen={isSheetOpen} onClose={closeSheet} ariaLabel="상품 더보기 메뉴">
             <ActionSheetItem onClick={handleEdit}>수정하기</ActionSheetItem>
-            {/* TODO: 상품 삭제 API 연결 시 삭제하기 항목 추가 (삭제 확인 다이얼로그·실패 토스트 포함) */}
+            <ActionSheetItem variant="destructive" onClick={handleDeleteClick}>
+              삭제하기
+            </ActionSheetItem>
           </ActionSheet>
+
+          {isDeleteOpen && (
+            <OverlayPortal
+              ariaLabel="상품 삭제 확인"
+              onClose={handleDeleteCancel}
+              surfaceClassName="w-full max-w-xs"
+            >
+              <ConfirmDialog
+                message="정말 삭제하시겠어요?"
+                confirmText="삭제"
+                cancelText="취소"
+                onConfirm={handleDeleteConfirm}
+                onCancel={handleDeleteCancel}
+              />
+            </OverlayPortal>
+          )}
         </>
       )}
     </main>

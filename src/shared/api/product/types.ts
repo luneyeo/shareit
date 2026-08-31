@@ -13,6 +13,6 @@ export interface ProductDetail {
   userId: string;
   /** 상품을 등록한 사람(추천인)의 닉네임. products_with_recommender 뷰에서 조인해 온다. */
   recommender: string | null;
-  groupId: string[] | null;
+  groupId: string;
   created_at: string;
 }

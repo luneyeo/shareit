@@ -15,7 +15,8 @@ export async function getMyGroups(userId: string): Promise<MyGroupSummary[]> {
 
   const { data, error } = await supabase
     .from("group_members")
-    .select("role, groups(id, name, group_members(count))")
+    // groups.id는 bigint라 JSON number 정밀도 한계가 있어, PostgREST 캐스트(id::text)로 문자열로 받는다.
+    .select("role, groups(id::text, name, group_members(count))")
     .eq("user_id", userId);
 
   if (error) throw error;
@@ -27,6 +28,7 @@ export async function getMyGroups(userId: string): Promise<MyGroupSummary[]> {
       const group = row.groups as unknown as GroupRow | null;
       if (!group) return null;
       return {
+        // id는 위 select의 id::text로 이미 문자열이라 변환 없이 그대로 사용한다.
         id: group.id,
         name: group.name,
         role: row.role as MyGroupSummary["role"],

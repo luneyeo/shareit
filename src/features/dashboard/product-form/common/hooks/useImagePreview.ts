@@ -22,6 +22,10 @@ export function useImagePreview(onSelect: (selection: ImageSelection) => void) {
 
   // 언마운트 시 생성한 objectURL을 모두 해제
   useEffect(() => {
+    // StrictMode(dev)는 mount→unmount→mount로 이펙트를 두 번 실행한다. 첫 cleanup이 남긴
+    // mountedRef=false를 재마운트 때 true로 되돌리지 않으면, selectFile이 await 후 매번
+    // '언마운트됨'으로 오판해 미리보기를 버린다. 마운트마다 true로 복구한다.
+    mountedRef.current = true;
     const urls = objectUrlsRef.current;
     return () => {
       mountedRef.current = false;
