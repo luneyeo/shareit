@@ -71,7 +71,6 @@ export function DashboardPage() {
       {currentGroup ? (
         <>
           <CategoryTabs />
-          {/* TODO: 상품 조회를 비동기로 교체 시 Suspense(로딩 fallback)처리 */}
           <ProductList groupId={currentGroup.id} />
           <DashboardFab dashboardId={currentGroup.id} />
         </>

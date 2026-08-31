@@ -12,8 +12,30 @@ import ProductCard from "./ProductCard";
  * (실제 API 조회로 교체해도 이 컴포넌트가 마운트될 때만 요청이 발생하도록 유지)
  */
 export default function ProductList({ groupId }: { groupId: string }) {
-  const products = useGroupProducts(groupId);
+  const { data: products, isPending, isError, refetch } = useGroupProducts(groupId);
   const router = useRouter();
+
+  const listMinHeight = "min-h-[calc(100dvh-13rem-env(safe-area-inset-bottom))]";
+
+  if (isPending) {
+    return (
+      <div className={`flex items-center justify-center ${listMinHeight}`}>
+        <p className="typo-14-medium text-gray-500">상품을 불러오는 중이에요.</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <EmptyState
+        type="error"
+        message="상품을 불러오지 못했어요"
+        description="잠시 후 다시 시도해주세요"
+        className={listMinHeight}
+        onRetry={() => refetch()}
+      />
+    );
+  }
 
   if (products.length === 0) {
     return (
@@ -21,7 +43,7 @@ export default function ProductList({ groupId }: { groupId: string }) {
         type="product"
         message="아직 등록된 상품이 없어요"
         description="첫 상품을 등록해보세요"
-        className="min-h-[calc(100dvh-13rem-env(safe-area-inset-bottom))]"
+        className={listMinHeight}
         onAddProduct={() => router.push(`/dashboard/${groupId}/product/new`)}
       />
     );
