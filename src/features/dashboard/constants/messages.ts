@@ -22,3 +22,14 @@ export const PRODUCT_FORM_ERROR = {
   PRD_NAME: "제품명을 입력해주세요",
   CATEGORY: "카테고리를 선택해주세요",
 } as const;
+
+/**
+ * 상품 등록 흐름의 결과 알림 문구를 한곳에서 관리한다.
+ * 등록 성공/실패 토스트에서 참조해 문구 중복을 방지한다.
+ */
+export const PRODUCT_MESSAGE = {
+  CREATE: {
+    SUCCESS: "상품을 등록했어요.",
+    ERROR: "상품 등록에 실패했어요. 다시 시도해 주세요.",
+  },
+} as const;
