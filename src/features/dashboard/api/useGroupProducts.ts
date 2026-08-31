@@ -1,29 +1,25 @@
-import type { ProductDetail } from "@/features/dashboard/types";
+"use client";
 
-type ProductCardData = Pick<
-  ProductDetail,
-  "id" | "prdName" | "price" | "imageUrl" | "tag" | "userId"
->;
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/shared/constants/queryKey";
+import { getGroupProducts, type ProductCursor } from "@/shared/api/product/getGroupProducts";
 
 /**
- * 특정 그룹의 상품 목록을 반환한다.
+ * 특정 그룹의 상품 목록을 커서 기반으로 무한 조회하는 훅.
  *
- * TODO: groupId로 10개를 생성한다.
- * Supabase 연동 시 groupId로 실제 상품을 조회(useQuery)하도록 교체.
+ * groupId가 있을 때만 조회하며, 최신순 페이지를 이어 받는다. (getNextPageParam이 null이면 끝)
+ * `category`가 주어지면(전체=null이 아니면) 해당 카테고리로만 필터한다.
  *
- * TODO: 카테고리 필터 연동을 위해 상품 모델에 CATEGORIES와 호환되는 category 필드를 추가하고,
- *       category 인자를 받아 조회/필터 조건으로 전달할 것.
- *       (현재 MOCK_TAGS는 CATEGORIES와 값이 달라 필터 기준으로 쓸 수 없음 — 별도 이슈)
+ * @example
+ * const { data, isPending, isError, fetchNextPage, hasNextPage } = useGroupProducts(groupId, category);
+ * const products = data?.pages.flatMap((page) => page.items) ?? [];
  */
-export function useGroupProducts(_groupId: string): ProductCardData[] {
-  return [];
-  // return Array.from({ length: 10 }, (_, i) => ({
-  //   id: `${_groupId}-p${i + 1}`,
-  //   prdName: `상품 ${i + 1}`,
-  //   price: (i + 1) * 5000,
-  //   // next.config에 외부 이미지 도메인이 없어 목업은 이미지 없이 플레이스홀더로 렌더한다.
-  //   imageUrl: null,
-  //   tag: [MOCK_TAGS[i % MOCK_TAGS.length]],
-  //   userId: `user-${_groupId}-${i + 1}`,
-  // }));
+export function useGroupProducts(groupId: string, category: string | null = null) {
+  return useInfiniteQuery({
+    queryKey: queryKeys.products.list(groupId, category),
+    queryFn: ({ pageParam }) => getGroupProducts(groupId, category, pageParam),
+    initialPageParam: null as ProductCursor | null,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    enabled: !!groupId,
+  });
 }

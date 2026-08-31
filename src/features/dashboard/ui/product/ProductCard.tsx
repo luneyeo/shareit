@@ -13,17 +13,17 @@ type ProductCardProps = Pick<ProductDetail, "prdName" | "price" | "imageUrl" | "
  * @example
  * ```tsx
  * <ProductCard
- *   prdName="2인용 텐트"
- *   price={5000}
- *   imageUrl={["/images/tent.jpg"]}
- *   tag={["캠핑"]}
- *   userId="user-uuid"
+ *  prdName={product.prdName}
+ *  price={product.price}
+ *  imageUrl={product.imageUrl}
+ *  tag={product.tag}
+ *  userId={product.userId}
  * />
  * ```
  */
 export default function ProductCard({ prdName, price, imageUrl, tag, userId }: ProductCardProps) {
   const firstImage = imageUrl?.[0];
-  const tags = tag?.slice(0, 2);
+  const firstTag = tag?.[0];
 
   return (
     <article className="flex flex-col rounded-2xl bg-white border border-gray-200">
@@ -33,18 +33,20 @@ export default function ProductCard({ prdName, price, imageUrl, tag, userId }: P
         ) : (
           <ImagePlaceholder size="sm" />
         )}
+        {/* 대표 태그 1개를 이미지 좌측 하단에 오버레이한다. */}
+        {firstTag && (
+          <TagChip
+            label={firstTag}
+            className="absolute bottom-2 left-2 max-w-[calc(100%-1rem)] bg-white/80 py-1 shadow-sm"
+          />
+        )}
       </div>
       <div className="flex flex-col gap-2 p-2.5">
-        {tags && tags.length > 0 && (
-          <div className="flex gap-1.5">
-            {tags.map((t) => (
-              <TagChip key={t} label={t} />
-            ))}
-          </div>
-        )}
         <div className="flex flex-col justify-center tracking-tight">
-          <h3 className="typo-16-medium text-gray-800">{prdName}</h3>
-          {price !== null && <span className="typo-16-semibold">{formatPrice(price)}원</span>}
+          <h3 className="typo-16-semibold text-gray-800 truncate">{prdName}</h3>
+          <span className="typo-14-medium truncate">
+            {price !== null ? `${formatPrice(price)}원` : "가격없음"}
+          </span>
         </div>
         <Avatar seed={userId} size="sm" aria-label="등록자 프로필 아바타" />
       </div>
