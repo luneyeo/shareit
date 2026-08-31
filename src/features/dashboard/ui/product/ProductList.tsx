@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
+import { useInfiniteScroll } from "@/shared/hooks/useInfiniteScroll";
 import { useGroupProducts } from "@/features/dashboard/api/useGroupProducts";
 import ProductCard from "./ProductCard";
 
@@ -10,7 +11,7 @@ import ProductCard from "./ProductCard";
  * 특정 그룹의 상품 목록 영역입니다.
  *
  * 유효한 그룹에 대해서만 마운트되므로, 유효하지 않은 groupId로는 조회가 실행되지 않습니다.
- * (실제 API 조회로 교체해도 이 컴포넌트가 마운트될 때만 요청이 발생하도록 유지)
+ * 커서 기반 무한 스크롤로, 목록 하단이 보이면 다음 페이지를 자동으로 이어 불러옵니다.
  */
 export default function ProductList({
   groupId,
@@ -20,8 +21,18 @@ export default function ProductList({
   /** 선택된 카테고리. null이면 전체(필터 없음). */
   category: string | null;
 }) {
-  const { data: products, isPending, isError, refetch } = useGroupProducts(groupId, category);
+  const { data, isPending, isError, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useGroupProducts(groupId, category);
   const router = useRouter();
+
+  const products = data?.pages.flatMap((page) => page.items) ?? [];
+
+  // 목록 하단 sentinel이 보이면 다음 페이지를 자동으로 이어 불러온다.
+  const sentinelRef = useInfiniteScroll<HTMLDivElement>({
+    hasNextPage,
+    isFetching: isFetchingNextPage,
+    onLoadMore: fetchNextPage,
+  });
 
   const listMinHeight = "min-h-[calc(100dvh-13rem-env(safe-area-inset-bottom))]";
 
@@ -33,7 +44,9 @@ export default function ProductList({
     );
   }
 
-  if (isError) {
+  // 첫 페이지 자체를 못 불러온 경우에만 전체 에러 화면을 보여준다.
+  // (이미 불러온 페이지가 있으면 목록을 유지하고, 다음 페이지 실패는 조용히 멈춘다.)
+  if (isError && products.length === 0) {
     return (
       <EmptyState
         type="error"
@@ -93,6 +106,14 @@ export default function ProductList({
           </Link>
         ))}
       </div>
+
+      {hasNextPage && (
+        <div ref={sentinelRef} className="flex justify-center py-6">
+          {isFetchingNextPage && (
+            <p className="typo-14-medium text-gray-500">상품을 더 불러오는 중이에요.</p>
+          )}
+        </div>
+      )}
     </section>
   );
 }
