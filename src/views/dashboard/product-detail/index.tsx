@@ -32,7 +32,7 @@ export function ProductPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { data: product, isPending, isError, refetch } = useProductDetail(dashboardId, productId);
 
-  const handleBack = () => history.back();
+  const handleBack = () => router.replace(`/dashboard/${dashboardId}`);
   const handleMore = () => setIsSheetOpen(true);
   const closeSheet = () => setIsSheetOpen(false);
 
