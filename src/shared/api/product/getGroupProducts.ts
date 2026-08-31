@@ -21,17 +21,24 @@ type ProductRow = {
  * 특정 대시보드(그룹)에 속한 상품 목록을 최신순으로 조회한다.
  *
  * 카드 렌더에 필요한 컬럼만 선택하고, 결과는 도메인 타입(카멜케이스)으로 매핑한다.
+ * `category`가 주어지면(전체=null이 아니면) 해당 카테고리로만 필터한다.
  * 실패 시 에러를 throw해 호출부의 useQuery가 isError로 처리하게 한다.
  */
-export async function getGroupProducts(groupId: string): Promise<ProductListItem[]> {
+export async function getGroupProducts(
+  groupId: string,
+  category?: string | null
+): Promise<ProductListItem[]> {
   const supabase = createClient();
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("products")
     .select("id, prd_name, price, image_url, tag, user_id")
     .eq("group_id", groupId)
-    .order("created_at", { ascending: false })
-    .returns<ProductRow[]>();
+    .order("created_at", { ascending: false });
+
+  if (category) query = query.eq("category", category);
+
+  const { data, error } = await query.returns<ProductRow[]>();
 
   if (error) throw error;
 

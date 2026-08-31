@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import CategoryTabs from "@/features/dashboard/ui/CategoryTabs";
@@ -25,6 +25,8 @@ export function DashboardPage() {
   const { data: groups, isPending, isError, refetch } = useMyGroupList();
   // 현재 그룹은 URL(/dashboard/[dashboardId])의 dashboardId에서 파생한다.
   const { dashboardId } = useParams<{ dashboardId: string }>();
+  // 카테고리 필터 선택 상태. null이면 전체(필터 없음)이며, ProductList의 조회 조건으로 내려간다.
+  const [category, setCategory] = useState<string | null>(null);
   // 그룹 목록에서 현재 그룹 ID가 내가 속한 그룹인지 검증한다.
   const currentGroup = groups?.find((group) => group.id === dashboardId);
 
@@ -70,8 +72,8 @@ export function DashboardPage() {
       </div>
       {currentGroup ? (
         <>
-          <CategoryTabs />
-          <ProductList groupId={currentGroup.id} />
+          <CategoryTabs selected={category} onSelect={setCategory} />
+          <ProductList groupId={currentGroup.id} category={category} />
           <DashboardFab dashboardId={currentGroup.id} />
         </>
       ) : (

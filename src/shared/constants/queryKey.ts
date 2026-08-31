@@ -15,8 +15,9 @@ export const queryKeys = {
   products: {
     /** 상품 도메인 전체 무효화용 루트 키 */
     all: ["products"] as const,
-    /** 특정 대시보드(그룹)의 상품 목록. 대시보드별로 캐시를 분리한다. */
-    list: (groupId: string) => ["products", "list", groupId] as const,
+    /** 특정 대시보드(그룹)의 상품 목록. 대시보드·카테고리별로 캐시를 분리한다. (category=null은 전체) */
+    list: (groupId: string, category: string | null) =>
+      ["products", "list", groupId, category] as const,
     /** 특정 대시보드(그룹) 안의 개별 상품 상세. 대시보드별로 캐시를 분리한다. */
     detail: (dashboardId: string, productId: string) =>
       ["products", "detail", dashboardId, productId] as const,
