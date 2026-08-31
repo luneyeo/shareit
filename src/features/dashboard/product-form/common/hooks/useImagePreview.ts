@@ -18,11 +18,13 @@ export function useImagePreview(onSelect: (selection: ImageSelection) => void) {
   const [isConverting, setIsConverting] = useState(false);
   // 우리가 생성한 objectURL만 추적해 해제 대상으로 삼습니다.
   const objectUrlsRef = useRef<Set<string>>(new Set());
+  const mountedRef = useRef(true);
 
   // 언마운트 시 생성한 objectURL을 모두 해제
   useEffect(() => {
     const urls = objectUrlsRef.current;
     return () => {
+      mountedRef.current = false;
       urls.forEach((url) => URL.revokeObjectURL(url));
       urls.clear();
     };
@@ -42,6 +44,12 @@ export function useImagePreview(onSelect: (selection: ImageSelection) => void) {
     setIsConverting(true);
     try {
       const previewUrl = await createImagePreviewUrl(file);
+      // 대기 중 언마운트됐다면 cleanup이 이미 지나갔으므로, 지금 만든 URL은
+      // 추적 대상에 넣지 말고 즉시 해제한다. (누수 방지)
+      if (!mountedRef.current) {
+        URL.revokeObjectURL(previewUrl);
+        return;
+      }
       objectUrlsRef.current.add(previewUrl);
       onSelect({ previewUrl, file });
     } catch {
