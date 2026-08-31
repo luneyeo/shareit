@@ -21,17 +21,27 @@ export default function ProductList({
   /** 선택된 카테고리. null이면 전체(필터 없음). */
   category: string | null;
 }) {
-  const { data, isPending, isError, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useGroupProducts(groupId, category);
+  const {
+    data,
+    isPending,
+    isError,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isFetchNextPageError,
+  } = useGroupProducts(groupId, category);
   const router = useRouter();
 
   const products = data?.pages.flatMap((page) => page.items) ?? [];
 
   // 목록 하단 sentinel이 보이면 다음 페이지를 자동으로 이어 불러온다.
+  // 단, 직전 페이지 요청이 실패한 동안에는 관찰을 멈춰 실패 요청이 반복되지 않게 한다.
   const sentinelRef = useInfiniteScroll<HTMLDivElement>({
     hasNextPage,
     isFetching: isFetchingNextPage,
     onLoadMore: fetchNextPage,
+    enabled: !isFetchNextPageError,
   });
 
   const listMinHeight = "min-h-[calc(100dvh-13rem-env(safe-area-inset-bottom))]";
@@ -108,9 +118,22 @@ export default function ProductList({
       </div>
 
       {hasNextPage && (
-        <div ref={sentinelRef} className="flex justify-center py-6">
-          {isFetchingNextPage && (
-            <p className="typo-14-medium text-gray-500">상품을 더 불러오는 중이에요.</p>
+        <div ref={sentinelRef} className="flex flex-col items-center gap-2 py-6">
+          {isFetchNextPageError ? (
+            <>
+              <p className="typo-14-medium text-gray-500">상품을 더 불러오지 못했어요.</p>
+              <button
+                type="button"
+                onClick={() => fetchNextPage()}
+                className="typo-14-medium text-primary-600"
+              >
+                다시 시도
+              </button>
+            </>
+          ) : (
+            isFetchingNextPage && (
+              <p className="typo-14-medium text-gray-500">상품을 더 불러오는 중이에요.</p>
+            )
           )}
         </div>
       )}

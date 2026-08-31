@@ -7,6 +7,8 @@ interface UseInfiniteScrollParams {
   isFetching: boolean;
   /** 다음 페이지를 불러오는 함수 */
   onLoadMore: () => void;
+  /** false면 sentinel 관찰을 멈춘다. (예: 직전 페이지 요청이 실패해 자동 재요청을 막고 싶을 때) 기본 true */
+  enabled?: boolean;
   /** sentinel이 화면에 닿기 전 미리 불러올 여유 거리 (기본 "200px") */
   rootMargin?: string;
 }
@@ -18,12 +20,16 @@ interface UseInfiniteScrollParams {
  * (rootMargin만큼 앞서) 들어오는 순간 `onLoadMore`를 호출합니다. 이미 불러오는 중이거나
  * 다음 페이지가 없으면 호출하지 않습니다.
  *
+ * 직전 페이지 요청이 실패하면 `enabled: false`로 관찰을 멈춰 실패한 요청의 반복(무한 루프)을
+ * 막고, 수동 재시도 UI를 별도로 제공하세요.
+ *
  * @example
  * ```tsx
  * const sentinelRef = useInfiniteScroll<HTMLDivElement>({
  *   hasNextPage,
  *   isFetching: isFetchingNextPage,
  *   onLoadMore: fetchNextPage,
+ *   enabled: !isFetchNextPageError,
  * });
  * {hasNextPage && <div ref={sentinelRef} />}
  * ```
@@ -32,6 +38,7 @@ export function useInfiniteScroll<T extends HTMLElement>({
   hasNextPage,
   isFetching,
   onLoadMore,
+  enabled = true,
   rootMargin = "200px",
 }: UseInfiniteScrollParams) {
   const sentinelRef = useRef<T>(null);
@@ -43,7 +50,7 @@ export function useInfiniteScroll<T extends HTMLElement>({
 
   useEffect(() => {
     const el = sentinelRef.current;
-    if (!el || !hasNextPage) return;
+    if (!el || !hasNextPage || !enabled) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -53,7 +60,7 @@ export function useInfiniteScroll<T extends HTMLElement>({
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [hasNextPage, isFetching, rootMargin]);
+  }, [hasNextPage, isFetching, enabled, rootMargin]);
 
   return sentinelRef;
 }
