@@ -17,14 +17,14 @@ type ProductRow = {
   store: string | null;
   user_id: string;
   nickname: string | null;
-  group_id: string[] | null;
+  group_id: number;
   created_at: string;
 };
 
 /**
  * 특정 대시보드(그룹)에 속한 개별 상품 하나를 조회한다.
  *
- * productId로 상품을 찾되, 그 상품의 group_id 배열에 dashboardId가 포함된 경우에만
+ * productId로 상품을 찾되, 그 상품의 group_id가 dashboardId와 일치하는 경우에만
  * 반환한다. (다른 대시보드의 상품을 이 경로로 열람하지 못하도록 범위를 제한한다.)
  * 조건에 맞는 상품이 없으면 `null`을 반환해 호출부가 "미존재" 상태를 구분하게 한다.
  */
@@ -40,7 +40,7 @@ export async function getProduct(
       "id, brand_name, prd_name, price, description, image_url, tag, category, store, user_id, nickname, group_id, created_at"
     )
     .eq("id", productId)
-    .contains("group_id", [dashboardId])
+    .eq("group_id", dashboardId)
     .maybeSingle<ProductRow>();
 
   if (error) throw error;
@@ -58,7 +58,7 @@ export async function getProduct(
     store: data.store,
     userId: data.user_id,
     recommender: data.nickname,
-    groupId: data.group_id,
+    groupId: String(data.group_id),
     created_at: data.created_at,
   };
 }

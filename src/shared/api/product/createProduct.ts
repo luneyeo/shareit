@@ -22,7 +22,7 @@ export interface CreateProductParams {
  *
  * 컬럼은 스네이크케이스이므로 폼 값(카멜케이스)을 매핑하고, 선택 입력의 빈 값은
  * 컬럼이 nullable이라 null로 저장한다. `user_id`는 세션의 사용자로, `group_id`는
- * 전달된 대시보드 하나를 담은 배열로 설정한다.
+ * 전달된 대시보드로 설정한다.
  *
  * 실패 시 에러를 throw해 mutation의 onError/isError로 처리할 수 있게 한다.
  *
@@ -48,7 +48,7 @@ export async function createProduct(params: CreateProductParams): Promise<string
       description: params.description || null,
       image_url: params.imageUrl.length ? params.imageUrl : null,
       tag: params.tag.length ? params.tag : null,
-      group_id: [params.groupId],
+      group_id: params.groupId,
       user_id: userId,
     })
     .select("id")
