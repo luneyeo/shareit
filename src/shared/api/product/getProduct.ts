@@ -1,7 +1,10 @@
 import { createClient } from "@/shared/lib/supabase/client";
 import type { ProductDetail } from "./types";
 
-/** products 테이블 행. 컬럼은 스네이크케이스이므로 도메인 타입으로 매핑한다. */
+/**
+ * products_with_recommender 뷰 행. products 컬럼에 추천인 nickname이 조인되어 실려 온다.
+ * 컬럼은 스네이크케이스이므로 도메인 타입으로 매핑한다.
+ */
 type ProductRow = {
   id: string;
   brand_name: string | null;
@@ -11,7 +14,9 @@ type ProductRow = {
   image_url: string[] | null;
   tag: string[] | null;
   category: string | null;
+  store: string | null;
   user_id: string;
+  nickname: string | null;
   group_id: string[] | null;
   created_at: string;
 };
@@ -30,9 +35,9 @@ export async function getProduct(
   const supabase = createClient();
 
   const { data, error } = await supabase
-    .from("products")
+    .from("products_with_recommender")
     .select(
-      "id, brand_name, prd_name, price, description, image_url, tag, category, user_id, group_id, created_at"
+      "id, brand_name, prd_name, price, description, image_url, tag, category, store, user_id, nickname, group_id, created_at"
     )
     .eq("id", productId)
     .contains("group_id", [dashboardId])
@@ -50,7 +55,9 @@ export async function getProduct(
     imageUrl: data.image_url,
     tag: data.tag,
     category: data.category,
+    store: data.store,
     userId: data.user_id,
+    recommender: data.nickname,
     groupId: data.group_id,
     created_at: data.created_at,
   };
