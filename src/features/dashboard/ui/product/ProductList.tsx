@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
 import { useGroupProducts } from "@/features/dashboard/api/useGroupProducts";
@@ -77,14 +78,19 @@ export default function ProductList({
       </h2>
       <div className="grid grid-cols-2 gap-3">
         {products.map((product) => (
-          <ProductCard
+          <Link
             key={product.id}
-            prdName={product.prdName}
-            price={product.price}
-            imageUrl={product.imageUrl}
-            tag={product.tag}
-            userId={product.userId}
-          />
+            href={`/dashboard/${groupId}/product/${product.id}`}
+            aria-label={`${product.prdName} 상세 보기`}
+          >
+            <ProductCard
+              prdName={product.prdName}
+              price={product.price}
+              imageUrl={product.imageUrl}
+              tag={product.tag}
+              userId={product.userId}
+            />
+          </Link>
         ))}
       </div>
     </section>
