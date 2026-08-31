@@ -2,7 +2,7 @@ import { createClient } from "@/shared/lib/supabase/client";
 import type { Group, MyGroupSummary } from "./types";
 
 /** groups에 중첩 조회한 group_members(count) 집계 결과를 더한 형태. */
-type GroupRow = Group & { group_members: { count: number }[] };
+type GroupRow = Omit<Group, "id"> & { id: number; group_members: { count: number }[] };
 
 /**
  * userId가 멤버로 속한 그룹 목록을 역할·멤버 수와 함께 조회한다.
@@ -27,7 +27,7 @@ export async function getMyGroups(userId: string): Promise<MyGroupSummary[]> {
       const group = row.groups as unknown as GroupRow | null;
       if (!group) return null;
       return {
-        id: group.id,
+        id: String(group.id),
         name: group.name,
         role: row.role as MyGroupSummary["role"],
         memberCount: group.group_members[0]?.count ?? 0,

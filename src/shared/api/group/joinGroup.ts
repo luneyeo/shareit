@@ -38,6 +38,7 @@ export async function joinGroup(inviteCode: string): Promise<{ id: string }> {
   // 빈 결과 = 코드에 해당하는 그룹 없음.
   if (!data) throw new InvalidInviteCodeError();
 
-  const group = data as { id: string };
-  return { id: group.id };
+  // groups.id는 bigint라 런타임에 number로 오므로, 앱의 문자열 id 모델에 맞춰 String으로 정규화한다.
+  const group = data as { id: number };
+  return { id: String(group.id) };
 }

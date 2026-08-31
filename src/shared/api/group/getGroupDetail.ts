@@ -3,7 +3,7 @@ import type { GroupDetailSummary, GroupRole } from "./types";
 
 /** groups에 중첩 조회한 group_members(count) 집계 결과를 더한 형태. */
 type GroupRow = {
-  id: string;
+  id: number;
   name: string;
   created_at: string;
   invite_code: string;
@@ -36,7 +36,7 @@ export async function getGroupDetail(groupId: string, userId: string): Promise<G
   if (!group) throw new Error("그룹을 찾을 수 없어요");
 
   return {
-    id: group.id,
+    id: String(group.id),
     name: group.name,
     role: data.role as GroupRole,
     openedAt: group.created_at,
