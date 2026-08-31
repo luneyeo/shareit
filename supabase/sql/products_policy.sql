@@ -33,13 +33,18 @@ with check (
   and public.is_group_member(group_id)
 );
 
--- UPDATE: 등록자 본인만.
+-- UPDATE: 등록자 본인만. 변경 후에도 자신이 속한 그룹에만 머물러야 한다.
+-- (WITH CHECK에 멤버십 검사가 없으면, 직접 구성한 요청으로 group_id를 자신이 속하지 않은
+--  그룹으로 옮길 수 있다. INSERT 정책과 동일한 조건으로 막는다.)
 drop policy if exists "update own products" on public.products;
 create policy "update own products"
 on public.products for update
 to authenticated
 using (user_id = (select auth.uid()))
-with check (user_id = (select auth.uid()));
+with check (
+  user_id = (select auth.uid())
+  and public.is_group_member(group_id)
+);
 
 -- DELETE: 등록자 본인만.
 drop policy if exists "delete own products" on public.products;
