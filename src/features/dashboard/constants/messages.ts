@@ -32,4 +32,8 @@ export const PRODUCT_MESSAGE = {
     SUCCESS: "상품을 등록했어요.",
     ERROR: "상품 등록에 실패했어요. 다시 시도해 주세요.",
   },
+  UPDATE: {
+    SUCCESS: "상품을 수정했어요.",
+    ERROR: "상품 수정에 실패했어요. 다시 시도해 주세요.",
+  },
 } as const;

@@ -1,11 +1,16 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import ProductForm from "@/features/dashboard/product-form/common/ui/ProductForm";
 import ProductFormHeader from "@/features/dashboard/product-form/common/ui/ProductFormHeader";
 import type { ProductFormValues } from "@/features/dashboard/product-form/common/schema";
 import { useProductDetail } from "@/features/dashboard/product-detail/apis/useProductDetail";
+import { useUpdateProduct } from "@/features/dashboard/hooks/useUpdateProduct";
 import type { ProductDetail } from "@/features/dashboard/types";
+import { uploadProductImages } from "@/shared/api/product/uploadProductImages";
+import { PRODUCT_MESSAGE } from "@/features/dashboard/constants/messages";
+import { toast } from "@/shared/ui/feedback";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
 
 /**
@@ -39,8 +44,36 @@ function toFormValues(product: ProductDetail): Partial<ProductFormValues> {
  * export default ProductEditPage
  */
 export function ProductEditPage() {
+  const router = useRouter();
   const { dashboardId, productId } = useParams<{ dashboardId: string; productId: string }>();
   const { data: product, isPending, isError, refetch } = useProductDetail(dashboardId, productId);
+  const { mutateAsync: updateProduct } = useUpdateProduct();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async ({ imageFiles, imageUrl, ...rest }: ProductFormValues) => {
+    setIsSubmitting(true);
+    try {
+      // 새로 추가한 이미지(blob: 미리보기)만 Storage에 올리고, 기존 원격 URL은 그대로 둔다.
+      // imageUrl의 순서를 유지하며 blob: 항목을 업로드 결과로 자리 바꿔 최종 URL을 만든다.
+      const uploaded = await uploadProductImages(imageFiles);
+      let next = 0;
+      const finalImageUrl = imageUrl.flatMap((url) => {
+        if (!url.startsWith("blob:")) return [url];
+        const uploadedUrl = uploaded[next++];
+        return uploadedUrl ? [uploadedUrl] : [];
+      });
+
+      await updateProduct({ productId, ...rest, imageUrl: finalImageUrl });
+
+      toast.success(PRODUCT_MESSAGE.UPDATE.SUCCESS);
+      router.replace(`/dashboard/${dashboardId}/product/${productId}`);
+    } catch (error) {
+      console.error(error);
+      toast.error(PRODUCT_MESSAGE.UPDATE.ERROR);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -66,11 +99,11 @@ export function ProductEditPage() {
           className="min-h-dvh"
         />
       ) : (
-        // TODO: Supabase 수정 mutation 연결
         <ProductForm
           defaultValues={toFormValues(product)}
           submitLabel="수정하기"
-          onSubmit={() => {}}
+          onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
         />
       )}
     </>
