@@ -1,4 +1,4 @@
--- Images 버킷 업로드에 대한 서버 측 제한.
+-- product-images 버킷 생성 및 업로드에 대한 서버 측 제한.
 --
 -- 클라이언트의 형식·크기 검사는 악의적 사용자가 Storage API를 직접 호출하면 우회할 수
 -- 있다. 따라서 크기·MIME은 버킷 설정으로, 사용자 범위(경로)는 storage.objects RLS로
@@ -9,12 +9,17 @@
 --
 -- 적용: Supabase SQL Editor(또는 마이그레이션)에서 1회 실행한다.
 
--- 1) 버킷 단위 최대 파일 크기(50MB)와 허용 MIME(이미지) 제한.
-update storage.buckets
+-- 1) product-images 버킷을 멱등하게 생성/설정한다.
+--    버킷이 없으면 uploadProductImages의 업로드가 Storage 오류로 실패하므로, 초기화 시 함께 만든다.
+--    getPublicUrl로 공개 URL을 사용하므로 public = true. 버킷 단위로 크기(50MB)·MIME(이미지)도 제한한다.
+--    이미 있으면 공개 범위·크기·MIME 설정만 현재 값으로 맞춘다.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('product-images', 'product-images', true, 52428800, array['image/*']) -- 52428800 = 50 MiB
+on conflict (id) do update
 set
-  file_size_limit = 52428800, -- 50 MiB
-  allowed_mime_types = array['image/*']
-where id = 'product-images';
+  public = excluded.public,
+  file_size_limit = excluded.file_size_limit,
+  allowed_mime_types = excluded.allowed_mime_types;
 
 -- 2) 로그인 사용자가 '자신의 폴더'({uid}/...)에만 업로드하도록 제한한다. (사용자 범위 격리)
 drop policy if exists "authenticated upload to Images" on storage.objects;
