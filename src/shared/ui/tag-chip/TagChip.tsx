@@ -25,7 +25,8 @@ export default function TagChip({ label, className, onRemove, ...props }: TagChi
       )}
       {...props}
     >
-      #{label}
+      {/* 라벨을 별도 요소로 감싸, max-width가 걸린 칩에서 라벨만 말줄임되게 한다. */}
+      <span className="min-w-0 truncate">#{label}</span>
       {onRemove && (
         <button type="button" aria-label={`${label} 삭제`} onClick={onRemove} className="ml-1">
           <IcClose className="h-3 w-3" />
