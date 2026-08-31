@@ -11,10 +11,10 @@ export async function uploadProductImages(files: File[]): Promise<string[]> {
       const ext = file.name.split(".").pop();
       const path = `products/${crypto.randomUUID()}.${ext}`;
 
-      const { error } = await supabase.storage.from("images").upload(path, file);
+      const { error } = await supabase.storage.from("Images").upload(path, file);
       if (error) throw error;
 
-      const { data } = supabase.storage.from("images").getPublicUrl(path);
+      const { data } = supabase.storage.from("Images").getPublicUrl(path);
       return data.publicUrl;
     })
   );
