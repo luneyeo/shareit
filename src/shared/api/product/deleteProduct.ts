@@ -3,7 +3,7 @@ import { createClient } from "@/shared/lib/supabase/client";
 const BUCKET = "product-images";
 
 /**
- * 공개 URL에서 버킷 내부 객체 경로({uid}/products/{uuid}.{ext})를 뽑아낸다.
+ * 공개 URL에서 버킷 내부 객체 경로({uid}/{uuid}.{ext})를 뽑아낸다.
  * URL 형식이 예상과 다르면(마커 없음) null을 반환해 정리 대상에서 제외한다.
  */
 function toStoragePath(publicUrl: string): string | null {

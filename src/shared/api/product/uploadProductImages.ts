@@ -17,7 +17,7 @@ export async function uploadProductImages(files: File[]): Promise<string[]> {
   return Promise.all(
     files.map(async (file) => {
       const ext = file.name.split(".").pop();
-      const path = `${userId}/products/${crypto.randomUUID()}.${ext}`;
+      const path = `${userId}/${crypto.randomUUID()}.${ext}`;
 
       // 일부 브라우저는 HEIC의 type을 비워 보내, 버킷 MIME 제한(image/*)에 걸리지 않도록 보정한다.
       const contentType = file.type || (isHeicFile(file) ? "image/heic" : undefined);
