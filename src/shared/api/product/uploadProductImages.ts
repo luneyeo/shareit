@@ -22,10 +22,12 @@ export async function uploadProductImages(files: File[]): Promise<string[]> {
       // 일부 브라우저는 HEIC의 type을 비워 보내, 버킷 MIME 제한(image/*)에 걸리지 않도록 보정한다.
       const contentType = file.type || (isHeicFile(file) ? "image/heic" : undefined);
 
-      const { error } = await supabase.storage.from("Images").upload(path, file, { contentType });
+      const { error } = await supabase.storage
+        .from("product-images")
+        .upload(path, file, { contentType });
       if (error) throw error;
 
-      const { data } = supabase.storage.from("Images").getPublicUrl(path);
+      const { data } = supabase.storage.from("product-images").getPublicUrl(path);
       return data.publicUrl;
     })
   );

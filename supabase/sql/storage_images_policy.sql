@@ -14,7 +14,7 @@ update storage.buckets
 set
   file_size_limit = 52428800, -- 50 MiB
   allowed_mime_types = array['image/*']
-where id = 'Images';
+where id = 'product-images';
 
 -- 2) 로그인 사용자가 '자신의 폴더'({uid}/...)에만 업로드하도록 제한한다. (사용자 범위 격리)
 drop policy if exists "authenticated upload to Images" on storage.objects;
@@ -23,7 +23,7 @@ create policy "authenticated upload to Images"
 on storage.objects for insert
 to authenticated
 with check (
-  bucket_id = 'Images'
+  bucket_id = 'product-images'
   and (storage.foldername(name))[1] = (select auth.uid()::text)
 );
 
