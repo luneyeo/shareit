@@ -27,5 +27,18 @@ with check (
   and (storage.foldername(name))[1] = (select auth.uid()::text)
 );
 
+-- 3) 로그인 사용자가 '자신의 폴더'({uid}/...)의 객체만 삭제하도록 허용한다.
+--    상품 삭제 시 deleteProduct가 참조 없는 이미지를 함께 정리한다. 업로드와 동일한 소유 검사를
+--    쓰므로, 상품 등록자(=이미지 업로더=폴더 소유자)만 자기 이미지를 지울 수 있다.
+drop policy if exists "authenticated delete own Images" on storage.objects;
+
+create policy "authenticated delete own Images"
+on storage.objects for delete
+to authenticated
+using (
+  bucket_id = 'product-images'
+  and (storage.foldername(name))[1] = (select auth.uid()::text)
+);
+
 -- (정리) 개수 제한을 위해 추가했던 SELECT 정책이 남아 있으면 제거한다.
 drop policy if exists "authenticated read own Images" on storage.objects;
