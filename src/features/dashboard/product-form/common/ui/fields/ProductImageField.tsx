@@ -17,8 +17,8 @@ type ProductImageFieldProps = {
 /**
  * 제품 이미지 업로드 필드입니다. (현재 1장)
  *
- * TODO: 실제 Supabase Storage 업로드는 별도 이슈로 연결합니다.
- *       지금은 선택한 파일의 로컬 미리보기 URL(objectURL)만 값으로 사용합니다.
+ * 미리보기는 로컬 objectURL(`imageUrl`)로 보여주고, 원본 File은 `imageFiles`에 담아
+ * 제출 시 Storage 업로드에 사용합니다. (실제 업로드는 폼 제출 핸들러에서 수행)
  */
 export default function ProductImageField({ control }: ProductImageFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -26,7 +26,14 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
     control,
     name: "imageUrl",
   });
-  const { fileError, isConverting, selectFile, reset } = useImagePreview(field.onChange);
+  const { field: filesField } = useController({
+    control,
+    name: "imageFiles",
+  });
+  const { fileError, isConverting, selectFile, reset } = useImagePreview((selection) => {
+    field.onChange(selection ? [selection.previewUrl] : []);
+    filesField.onChange(selection ? [selection.file] : []);
+  });
 
   const preview = field.value[0];
 
