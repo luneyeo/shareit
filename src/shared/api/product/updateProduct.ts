@@ -8,8 +8,8 @@ export interface UpdateProductParams {
   category: string;
   /** 폼에서 문자열로 다루며, 저장 시 number로 변환한다. */
   price: string;
-  /** 구매처. DB의 store 컬럼에 저장한다. */
-  purchasePlace: string;
+  /** 구매처. */
+  store: string;
   description: string;
   /** 유지할 기존 URL + 새로 업로드한 URL을 합친 최종 이미지 URL 배열. */
   imageUrl: string[];
@@ -35,7 +35,7 @@ export async function updateProduct({ productId, ...params }: UpdateProductParam
       prd_name: params.prdName,
       category: params.category || null,
       price: params.price ? Number(params.price) : null,
-      store: params.purchasePlace || null,
+      store: params.store || null,
       description: params.description || null,
       image_url: params.imageUrl.length ? params.imageUrl : null,
       tag: params.tag.length ? params.tag : null,

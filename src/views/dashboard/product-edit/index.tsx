@@ -26,7 +26,7 @@ function toFormValues(product: ProductDetail): Partial<ProductFormValues> {
     prdName: product.prdName,
     category: product.category ?? "",
     price: product.price !== null ? String(product.price) : "",
-    purchasePlace: product.store ?? "",
+    store: product.store ?? "",
     description: product.description ?? "",
     imageUrl: product.imageUrl ?? [],
     tag: product.tag ?? [],

@@ -75,11 +75,7 @@ export default function ProductForm({
         placeholder="구매 가격을 입력해주세요"
         {...register("price")}
       />
-      <FormInput
-        label="구매처"
-        placeholder="구매처를 입력해주세요"
-        {...register("purchasePlace")}
-      />
+      <FormInput label="구매처" placeholder="구매처를 입력해주세요" {...register("store")} />
       <FormTextarea
         label="설명"
         placeholder="제품 설명을 입력해주세요"
