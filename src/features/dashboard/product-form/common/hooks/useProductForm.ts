@@ -10,7 +10,7 @@ export const PRODUCT_FORM_DEFAULTS: ProductFormValues = {
   prdName: "",
   category: "",
   price: "",
-  purchasePlace: "",
+  store: "",
   description: "",
   imageUrl: [],
   imageFiles: [],

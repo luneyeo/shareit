@@ -11,11 +11,6 @@ import ProductInfo from "@/features/dashboard/product-detail/ui/ProductInfo";
 import ProductMeta from "@/features/dashboard/product-detail/ui/ProductMeta";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
 
-// INFO: 추천인·구매처는 상품(ProductDetail) 필드가 아니라 별도로 주입하는 값입니다.
-// TODO: 추천인은 userId로 조회한 이름, 구매처는 상품 모델에 필드 추가 후 교체한다.
-const SAMPLE_RECOMMENDER = "여루나";
-const SAMPLE_STORE = "올리브영";
-
 /**
  * 대시보드 내 개별 상품 상세 페이지 컴포넌트
  *
@@ -32,7 +27,7 @@ export function ProductPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { data: product, isPending, isError, refetch } = useProductDetail(dashboardId, productId);
 
-  const handleBack = () => history.back();
+  const handleBack = () => router.replace(`/dashboard/${dashboardId}`);
   const handleMore = () => setIsSheetOpen(true);
   const closeSheet = () => setIsSheetOpen(false);
 
@@ -76,7 +71,7 @@ export function ProductPage() {
               price={product.price}
             />
             <hr className="border-gray-200" />
-            <ProductMeta recommender={SAMPLE_RECOMMENDER} store={SAMPLE_STORE} />
+            <ProductMeta recommender={product.recommender ?? "알 수 없음"} store={product.store} />
             <hr className="border-gray-200" />
             <ProductComment description={product.description} tag={product.tag} />
           </div>

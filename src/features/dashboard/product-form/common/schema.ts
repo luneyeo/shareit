@@ -13,7 +13,7 @@ export const productFormSchema = z.object({
   prdName: z.string().min(1, PRODUCT_FORM_ERROR.PRD_NAME),
   category: z.string().min(1, PRODUCT_FORM_ERROR.CATEGORY),
   price: z.string(),
-  purchasePlace: z.string(),
+  store: z.string(),
   description: z.string(),
   imageUrl: z.array(z.string()),
   // 업로드 전 원본 File. 제출 시 Storage에 올려 imageUrl로 대체한다. (미리보기는 imageUrl)
