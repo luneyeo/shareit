@@ -36,4 +36,8 @@ export const PRODUCT_MESSAGE = {
     SUCCESS: "상품을 수정했어요.",
     ERROR: "상품 수정에 실패했어요. 다시 시도해 주세요.",
   },
+  DELETE: {
+    SUCCESS: "상품을 삭제했어요.",
+    ERROR: "상품 삭제에 실패했어요. 다시 시도해 주세요.",
+  },
 } as const;
