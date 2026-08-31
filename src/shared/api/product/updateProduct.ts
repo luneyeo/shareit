@@ -28,7 +28,7 @@ export interface UpdateProductParams {
 export async function updateProduct({ productId, ...params }: UpdateProductParams): Promise<void> {
   const supabase = createClient();
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("products")
     .update({
       brand_name: params.brandName || null,
@@ -40,7 +40,12 @@ export async function updateProduct({ productId, ...params }: UpdateProductParam
       image_url: params.imageUrl.length ? params.imageUrl : null,
       tag: params.tag.length ? params.tag : null,
     })
-    .eq("id", productId);
+    .eq("id", productId)
+    .select("id");
 
   if (error) throw error;
+
+  // RLS로 막혔거나 대상이 없어 0행이 갱신되면 Supabase는 에러를 주지 않는다.
+  // 가짜 성공으로 넘어가지 않도록 갱신된 행이 없으면 실패로 처리한다.
+  if (!data?.length) throw new Error("상품을 수정할 권한이 없거나 대상이 존재하지 않습니다.");
 }
