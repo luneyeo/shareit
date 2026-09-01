@@ -9,10 +9,9 @@ concurrency:
   group: lighthouse-${{ github.ref }}
   cancel-in-progress: true
 
-# PR가 제어하는 설치/스크립트가 실행되는 검증 job에는 쓰기 권한을 주지 않는다.
-# PR 댓글은 별도 Lighthouse Report 워크플로(workflow_run)에서 게시한다.
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   lighthouse:
@@ -53,16 +52,22 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: dummy-anon-key-for-build
 
-      - name: Build result comment
-        id: comment-body
-        if: always() && steps.lhci.outputs.manifest != ''
+      - name: Comment Lighthouse result on PR
+        if: always() && steps.lhci.outputs.resultsPath != ''
         uses: actions/github-script@v7
         env:
-          MANIFEST: ${{ steps.lhci.outputs.manifest }}
+          RESULTS_PATH: ${{ steps.lhci.outputs.resultsPath }}
           LINKS: ${{ steps.lhci.outputs.links }}
         with:
           script: |
-            const manifest = JSON.parse(process.env.MANIFEST || '[]');
+            const fs = require('fs');
+            const path = require('path');
+            const manifestPath = path.join(process.env.RESULTS_PATH, 'manifest.json');
+            if (!fs.existsSync(manifestPath)) {
+              core.info('manifest.json이 없어 Lighthouse 댓글을 생성하지 않습니다.');
+              return;
+            }
+            const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
             const links = JSON.parse(process.env.LINKS || '{}');
             const run = manifest.find((r) => r.isRepresentativeRun) || manifest[0];
             const summary = run ? run.summary : {};
@@ -75,30 +80,26 @@ jobs:
               pwa: 'PWA',
             };
             const icon = (v) => (v >= 0.9 ? '🟢' : v >= 0.5 ? '🟠' : '🔴');
-
-            let rows = Object.entries(summary)
+            const rows = Object.entries(summary)
               .map(([k, v]) => `| ${labels[k] || k} | ${icon(v)} ${Math.round(v * 100)} |`)
               .join('\n');
-
             const reportUrl = Object.values(links)[0];
             const linkLine = reportUrl ? `\n[전체 리포트 보기](${reportUrl})` : '';
 
-            const body = `## 🚦 Lighthouse 결과\n\n\`/\` (모바일)\n\n| 항목 | 점수 |\n| --- | --- |\n${rows}\n${linkLine}`;
-            core.setOutput('body', body);
+            const marker = '<!-- lighthouse-result -->';
+            const body = `${marker}\n## 🚦 Lighthouse 결과\n\n\`/\` (모바일)\n\n| 항목 | 점수 |\n| --- | --- |\n${rows}\n${linkLine}`;
 
-      # 댓글은 여기서 게시하지 않고, 결과와 PR 번호만 아티팩트로 넘겨 Report 워크플로가 게시한다.
-      - name: Prepare PR comment
-        if: always() && steps.comment-body.outputs.body != ''
-        run: |
-          mkdir -p pr-comment
-          printf '%s' "${{ github.event.pull_request.number }}" > pr-comment/pr-number.txt
-          cat > pr-comment/body.md <<'EOF'
-          ${{ steps.comment-body.outputs.body }}
-          EOF
-
-      - name: Upload PR comment
-        if: always() && steps.comment-body.outputs.body != ''
-        uses: actions/upload-artifact@v4
-        with:
-          name: lighthouse-pr-comment
-          path: pr-comment/
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number,
+              per_page: 100,
+            });
+            const existing = comments.find((c) => c.body?.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
