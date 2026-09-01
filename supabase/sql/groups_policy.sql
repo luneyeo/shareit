@@ -57,11 +57,12 @@ using (owner_id = (select auth.uid()));
 -- 2) group_members
 alter table public.group_members enable row level security;
 
--- 본인 멤버십만 등록 가능. (다른 유저 명의로 입장 위조 방지)
+-- 직접 INSERT는 허용하지 않는다. (정책을 두지 않아 클라이언트의 직접 삽입을 전면 차단)
+-- user_id = auth.uid()만 만족하면 임의의 group_id로 직접 입장할 수 있어, join_group_by_code의
+-- 초대 코드 검증을 우회하기 때문이다. 멤버십 생성은 코드를 검증하는 security definer RPC
+-- (join_group_by_code / create_group_with_owner) 내부에서만 이뤄지며, 이 함수들은 RLS를
+-- 우회하므로 INSERT 정책 없이도 동작한다. (기존 배포에 남아 있을 정책을 제거한다.)
 drop policy if exists "insert own membership" on public.group_members;
-create policy "insert own membership"
-on public.group_members for insert to authenticated
-with check (user_id = (select auth.uid()));
 
 -- 자신이 속한 그룹의 멤버 행을 볼 수 있다. (멤버 수 집계·멤버 목록에 필요)
 drop policy if exists "select group memberships" on public.group_members;
