@@ -57,8 +57,8 @@ export default function ProductImage({ imageUrl, prdName }: ProductImageProps) {
               {images.map((src, index) => (
                 <span
                   key={src}
-                  className={`h-1.5 rounded-full bg-white transition-all ${
-                    index === selectedIndex ? "w-4 opacity-100" : "w-1.5 opacity-50"
+                  className={`h-1.5 rounded-full bg-white shadow-[0_0px_4px_rgba(0,0,0,0.4)] transition-all ${
+                    index === selectedIndex ? "w-4 opacity-100" : "w-1.5 opacity-70"
                   }`}
                 />
               ))}
