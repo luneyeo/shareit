@@ -27,10 +27,26 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Read PR number
+      # 아티팩트의 PR 번호는 포크가 위조할 수 있으므로, head SHA로 조회한 실제 PR과 일치하는지 검증한다.
+      - name: Resolve and verify PR number
         id: pr
         if: steps.download.outcome == 'success'
-        run: echo "number=$(cat pr-comment/pr-number.txt)" >> "$GITHUB_OUTPUT"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const claimed = fs.readFileSync('pr-comment/pr-number.txt', 'utf8').trim();
+            const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.payload.workflow_run.head_sha,
+            });
+            const match = prs.find((pr) => String(pr.number) === claimed);
+            if (!match) {
+              core.setFailed(`아티팩트의 PR 번호(${claimed})가 head SHA의 실제 PR과 일치하지 않습니다.`);
+              return;
+            }
+            core.setOutput('number', String(match.number));
 
       - name: Read comment body
         id: body
