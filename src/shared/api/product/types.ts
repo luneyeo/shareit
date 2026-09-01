@@ -8,7 +8,11 @@ export interface ProductDetail {
   imageUrl: string[] | null;
   tag: string[] | null;
   category: string | null;
+  /** 구매처. */
+  store: string | null;
   userId: string;
-  groupId: string[] | null;
+  /** 상품을 등록한 사람(추천인)의 닉네임. products_with_recommender 뷰에서 조인해 온다. */
+  recommender: string | null;
+  groupId: string;
   created_at: string;
 }

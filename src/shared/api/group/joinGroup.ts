@@ -38,6 +38,7 @@ export async function joinGroup(inviteCode: string): Promise<{ id: string }> {
   // 빈 결과 = 코드에 해당하는 그룹 없음.
   if (!data) throw new InvalidInviteCodeError();
 
+  // groups.id는 bigint지만 RPC가 id::text로 반환하므로(JSON number 정밀도 손실 방지) 문자열로 받는다.
   const group = data as { id: string };
   return { id: group.id };
 }

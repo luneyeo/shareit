@@ -24,6 +24,7 @@ export async function createGroup(name: string): Promise<CreatedGroup> {
   if (error) throw error;
 
   // DB 제네릭 타입이 없어 rpc 결과가 unknown이므로 반환 행 형태를 명시한다.
+  // groups.id는 bigint지만 RPC가 id::text로 반환하므로(JSON number 정밀도 손실 방지) 문자열로 받는다.
   const group = data as { id: string; name: string; invite_code: string };
 
   return { id: group.id, name: group.name, inviteCode: group.invite_code };

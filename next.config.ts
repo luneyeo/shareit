@@ -9,11 +9,29 @@ const svgrOptions = {
   },
 };
 
+// Supabase Storage 공개 이미지를 next/image로 렌더하려면 해당 호스트를 허용해야 한다.
+// 프로젝트(ref)가 바뀌어도 자동으로 맞도록 NEXT_PUBLIC_SUPABASE_URL에서 호스트를 도출한다.
+const supabaseHostname = process.env.NEXT_PUBLIC_SUPABASE_URL
+  ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
+  : undefined;
+
 const nextConfig: NextConfig = {
   // DSN은 비밀값이 아니지만 NEXT_PUBLIC_ 접두사를 쓰지 않으므로,
   // 클라이언트(instrumentation-client.ts)에서 참조할 수 있도록 빌드 시 주입한다.
   env: {
     SENTRY_DSN: process.env.SENTRY_DSN,
+  },
+  images: {
+    // 공개 버킷(product-images) 경로만 허용한다.
+    remotePatterns: supabaseHostname
+      ? [
+          {
+            protocol: "https",
+            hostname: supabaseHostname,
+            pathname: "/storage/v1/object/public/**",
+          },
+        ]
+      : [],
   },
   turbopack: {
     rules: {

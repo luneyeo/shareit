@@ -25,7 +25,7 @@ export default function DashboardFab({ dashboardId }: DashboardFabProps) {
       aria-label="상품 등록"
       onClick={() => router.push(`/dashboard/${dashboardId}/product/new`)}
       className={cn(
-        "fixed bottom-[calc(3.75rem+env(safe-area-inset-bottom)+1rem)] right-5 z-footer",
+        "fixed bottom-[calc(3.75rem+env(safe-area-inset-bottom)+2rem)] right-5 z-footer",
         "flex size-14 items-center justify-center rounded-full",
         "bg-primary-600 text-white shadow-[0_4px_12px_rgba(0,0,0,0.16)]"
       )}

@@ -1,16 +1,22 @@
 "use client";
 
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { GROUP_MESSAGE } from "@/features/dashboard/constants/messages";
 import { useGroupDialog } from "@/features/dashboard/hooks/useGroupDialog";
+import { useDeleteGroup } from "@/features/mypage/group-detail/hooks/useDeleteGroup";
 import { useGroupDetail } from "@/features/mypage/group-detail/hooks/useGroupDetail";
+import { useLeaveGroup } from "@/features/mypage/group-detail/hooks/useLeaveGroup";
 import {
   GroupDetailHero,
   GroupManageSection,
+  GroupRemoveDialog,
   GroupStatsCard,
 } from "@/features/mypage/group-detail/ui";
 import BackHeader from "@/shared/ui/back-header/BackHeader";
 import Divider from "@/shared/ui/divider/Divider";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
+import { toast } from "@/shared/ui/feedback";
 
 /**
  * 마이페이지 하위 "그룹 상세" 페이지 컴포넌트
@@ -26,13 +32,30 @@ export function GroupDetailPage() {
   const router = useRouter();
   const { data: group, isPending, isError, refetch } = useGroupDetail(groupId);
   const { openEditName, dialogElement } = useGroupDialog();
+  const { mutateAsync: deleteGroup } = useDeleteGroup();
+  const { mutateAsync: leaveGroup } = useLeaveGroup();
+  const [isRemoveOpen, setIsRemoveOpen] = useState(false);
 
   const handleGoToDashboard = () => {
     router.push(`/dashboard/${groupId}`);
   };
 
-  const handleRemove = () => {
-    // TODO: 방장이면 그룹 삭제, 멤버이면 그룹 나가기 뮤테이션 연결
+  const handleConfirmRemove = async () => {
+    setIsRemoveOpen(false);
+    if (!group) return;
+
+    // 방장은 그룹 삭제, 멤버는 그룹 나가기. 이후 성공 토스트·목록 이동 흐름은 동일하다.
+    const isOwner = group.role === "owner";
+    const message = isOwner ? GROUP_MESSAGE.DELETE : GROUP_MESSAGE.LEAVE;
+
+    try {
+      await (isOwner ? deleteGroup(groupId) : leaveGroup(groupId));
+      toast.success(message.SUCCESS);
+      router.replace("/mypage/groups");
+    } catch (error) {
+      console.error(error);
+      toast.error(message.ERROR);
+    }
   };
 
   return (
@@ -62,8 +85,8 @@ export function GroupDetailPage() {
             />
             <GroupStatsCard
               memberCount={group.memberCount}
-              postCount={group.postCount}
-              savedCount={group.likedCount}
+              productCount={group.productCount}
+              // TODO: 저장(좋아요) 기능 구현 후 savedCount 전달
             />
           </div>
 
@@ -73,8 +96,16 @@ export function GroupDetailPage() {
             role={group.role}
             inviteCode={group.inviteCode}
             onEditName={() => openEditName(group.id, group.name)}
-            onRemove={handleRemove}
+            onRemove={() => setIsRemoveOpen(true)}
           />
+
+          {isRemoveOpen && (
+            <GroupRemoveDialog
+              role={group.role}
+              onConfirm={handleConfirmRemove}
+              onCancel={() => setIsRemoveOpen(false)}
+            />
+          )}
         </>
       )}
 
