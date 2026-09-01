@@ -6,6 +6,7 @@ import { GROUP_MESSAGE } from "@/features/dashboard/constants/messages";
 import { useGroupDialog } from "@/features/dashboard/hooks/useGroupDialog";
 import { useDeleteGroup } from "@/features/mypage/group-detail/hooks/useDeleteGroup";
 import { useGroupDetail } from "@/features/mypage/group-detail/hooks/useGroupDetail";
+import { useLeaveGroup } from "@/features/mypage/group-detail/hooks/useLeaveGroup";
 import {
   GroupDetailHero,
   GroupManageSection,
@@ -32,6 +33,7 @@ export function GroupDetailPage() {
   const { data: group, isPending, isError, refetch } = useGroupDetail(groupId);
   const { openEditName, dialogElement } = useGroupDialog();
   const { mutateAsync: deleteGroup } = useDeleteGroup();
+  const { mutateAsync: leaveGroup } = useLeaveGroup();
   const [isRemoveOpen, setIsRemoveOpen] = useState(false);
 
   const handleGoToDashboard = () => {
@@ -40,17 +42,19 @@ export function GroupDetailPage() {
 
   const handleConfirmRemove = async () => {
     setIsRemoveOpen(false);
+    if (!group) return;
 
-    // TODO: 멤버(그룹 나가기) 뮤테이션 연결
-    if (group?.role !== "owner") return;
+    // 방장은 그룹 삭제, 멤버는 그룹 나가기. 이후 성공 토스트·목록 이동 흐름은 동일하다.
+    const isOwner = group.role === "owner";
+    const message = isOwner ? GROUP_MESSAGE.DELETE : GROUP_MESSAGE.LEAVE;
 
     try {
-      await deleteGroup(groupId);
-      toast.success(GROUP_MESSAGE.DELETE.SUCCESS);
+      await (isOwner ? deleteGroup(groupId) : leaveGroup(groupId));
+      toast.success(message.SUCCESS);
       router.replace("/mypage/groups");
     } catch (error) {
       console.error(error);
-      toast.error(GROUP_MESSAGE.DELETE.ERROR);
+      toast.error(message.ERROR);
     }
   };
 
