@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import Button from "@/shared/ui/button/Button";
+import type { ButtonTheme } from "@/shared/ui/button/types";
 import { IcClose } from "@/shared/assets/icons";
 
 interface DialogBaseProps {
@@ -11,6 +12,8 @@ interface DialogBaseProps {
   title?: string;
   /** 확인 버튼 문구 */
   confirmText?: string;
+  /** 확인 버튼 색상 테마. 삭제 등 파괴적 동작은 `danger`를 사용합니다. */
+  confirmTheme?: ButtonTheme;
   /** 취소 버튼 문구 */
   cancelText?: string;
   /** 확인 버튼 클릭 시 호출됩니다. */
@@ -46,6 +49,7 @@ export default function DialogBase({
   children,
   title,
   confirmText = "확인",
+  confirmTheme = "primary",
   cancelText = "취소",
   onConfirm,
   confirmDisabled = false,
@@ -77,7 +81,7 @@ export default function DialogBase({
           </Button>
         )}
         <Button
-          theme="primary"
+          theme={confirmTheme}
           size="md"
           className="flex-1"
           type={asForm ? "submit" : "button"}

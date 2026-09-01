@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useGroupDialog } from "@/features/dashboard/hooks/useGroupDialog";
 import { useGroupDetail } from "@/features/mypage/group-detail/hooks/useGroupDetail";
 import {
   GroupDetailHero,
   GroupManageSection,
+  GroupRemoveDialog,
   GroupStatsCard,
 } from "@/features/mypage/group-detail/ui";
 import BackHeader from "@/shared/ui/back-header/BackHeader";
@@ -26,13 +28,15 @@ export function GroupDetailPage() {
   const router = useRouter();
   const { data: group, isPending, isError, refetch } = useGroupDetail(groupId);
   const { openEditName, dialogElement } = useGroupDialog();
+  const [isRemoveOpen, setIsRemoveOpen] = useState(false);
 
   const handleGoToDashboard = () => {
     router.push(`/dashboard/${groupId}`);
   };
 
-  const handleRemove = () => {
+  const handleConfirmRemove = () => {
     // TODO: 방장이면 그룹 삭제, 멤버이면 그룹 나가기 뮤테이션 연결
+    setIsRemoveOpen(false);
   };
 
   return (
@@ -73,8 +77,16 @@ export function GroupDetailPage() {
             role={group.role}
             inviteCode={group.inviteCode}
             onEditName={() => openEditName(group.id, group.name)}
-            onRemove={handleRemove}
+            onRemove={() => setIsRemoveOpen(true)}
           />
+
+          {isRemoveOpen && (
+            <GroupRemoveDialog
+              role={group.role}
+              onConfirm={handleConfirmRemove}
+              onCancel={() => setIsRemoveOpen(false)}
+            />
+          )}
         </>
       )}
 
