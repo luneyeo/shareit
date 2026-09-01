@@ -5,6 +5,7 @@ import { type Control, useController } from "react-hook-form";
 import { IcClose, IcPlus } from "@/shared/assets/icons";
 import { cn } from "@/shared/utils/cn";
 import { IMAGE_ACCEPT } from "@/shared/utils/imageFile";
+import { toast } from "@/shared/ui/feedback";
 import FieldError from "@/shared/ui/form/FieldError";
 import Label from "@/shared/ui/label/Label";
 import type { ProductFormValues } from "../../schema";
@@ -45,20 +46,24 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
     latestFiles.current = files;
   }, [previews, files]);
 
-  const { fileError, isConverting, selectFile, revoke } = useImagePreview(
-    ({ previewUrl, file }) => {
-      field.onChange([...latestPreviews.current, previewUrl]);
-      filesField.onChange([...latestFiles.current, file]);
-    }
-  );
+  const { fileError, isConverting, selectFiles, revoke } = useImagePreview((selections) => {
+    field.onChange([...latestPreviews.current, ...selections.map((s) => s.previewUrl)]);
+    filesField.onChange([...latestFiles.current, ...selections.map((s) => s.file)]);
+  });
 
   const canAddMore = previews.length < MAX_IMAGES;
 
   const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const selected = Array.from(e.target.files ?? []);
     // 같은 파일을 다시 선택해도 onChange가 발생하도록 input 값을 비웁니다.
     e.target.value = "";
-    selectFile(file);
+    // 이미 등록된 장수를 포함해 최대 MAX_IMAGES장까지만 받도록 남은 자리에 맞춰 자른다.
+    const remaining = MAX_IMAGES - previews.length;
+    if (selected.length > remaining) {
+      toast.warning(`이미지는 최대 ${MAX_IMAGES}장까지 등록할 수 있어요`);
+    }
+    if (remaining <= 0) return;
+    selectFiles(selected.slice(0, remaining));
   };
 
   const handleRemove = (index: number) => {
@@ -74,6 +79,7 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
         ref={inputRef}
         type="file"
         accept={IMAGE_ACCEPT}
+        multiple
         className="hidden"
         onChange={handleSelect}
       />
