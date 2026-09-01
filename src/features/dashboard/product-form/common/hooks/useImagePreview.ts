@@ -55,18 +55,25 @@ export function useImagePreview(onSelect: (selections: ImageSelection[]) => void
     // HEIC 변환이 필요할 수 있어 objectURL 생성을 비동기로 처리합니다.
     setIsConverting(true);
     try {
-      const previewUrls = await Promise.all(validFiles.map(createImagePreviewUrl));
-      // 대기 중 언마운트됐다면 cleanup이 이미 지나갔으므로, 지금 만든 URL은
-      // 추적 대상에 넣지 말고 즉시 해제한다. (누수 방지)
-      if (!mountedRef.current) {
-        previewUrls.forEach((url) => URL.revokeObjectURL(url));
+      // 일부만 실패해도 성공한 쪽은 이미 objectURL을 만들어 반환하므로, allSettled로
+      // 성공분을 붙잡아 반드시 해제할 수 있게 한다. (Promise.all이면 누수)
+      const results = await Promise.allSettled(validFiles.map(createImagePreviewUrl));
+      const selections = results.flatMap((result, i) =>
+        result.status === "fulfilled" ? [{ previewUrl: result.value, file: validFiles[i] }] : []
+      );
+
+      // 하나라도 실패했거나 대기 중 언마운트됐다면, 성공해 만들어진 URL을 모두 해제하고
+      // 아무것도 추가하지 않는다. (추적 대상에 못 들어가 삭제·정리에서 누락되는 누수 방지)
+      const hasFailure = results.some((result) => result.status === "rejected");
+      if (hasFailure || !mountedRef.current) {
+        selections.forEach(({ previewUrl }) => URL.revokeObjectURL(previewUrl));
+        if (hasFailure) setFileError("이미지를 불러오지 못했어요. 다시 시도해주세요");
         return;
       }
-      previewUrls.forEach((url) => objectUrlsRef.current.add(url));
+
+      selections.forEach(({ previewUrl }) => objectUrlsRef.current.add(previewUrl));
       // 여러 장을 한 번에 넘겨, 호출부가 상태를 1회만 갱신하도록 한다. (누적 경쟁 방지)
-      onSelect(previewUrls.map((previewUrl, i) => ({ previewUrl, file: validFiles[i] })));
-    } catch {
-      setFileError("이미지를 불러오지 못했어요. 다시 시도해주세요");
+      onSelect(selections);
     } finally {
       setIsConverting(false);
     }
