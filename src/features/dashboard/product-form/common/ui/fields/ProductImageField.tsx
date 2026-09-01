@@ -67,9 +67,13 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
   };
 
   const handleRemove = (index: number) => {
-    revoke(previews[index]);
+    const removed = previews[index];
+    revoke(removed);
     field.onChange(previews.filter((_, i) => i !== index));
-    filesField.onChange(files.filter((_, i) => i !== index));
+    if (removed.startsWith("blob:")) {
+      const fileIndex = previews.slice(0, index).filter((url) => url.startsWith("blob:")).length;
+      filesField.onChange(files.filter((_, i) => i !== fileIndex));
+    }
   };
 
   return (
