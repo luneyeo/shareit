@@ -26,11 +26,23 @@ begin
 end;
 $$;
 
--- nickname이 실제로 설정/변경될 때만 발동한다.
+-- nickname이 실제로 설정/변경될 때만 발동한다. INSERT와 UPDATE를 분리한다.
+-- 하나로 묶으면 update of nickname은 값이 같아도(SET에 nickname이 있기만 하면) 발동해,
+-- 기존 유저 upsert의 UPDATE 경로에서 불필요하게 auth.users를 갱신한다. UPDATE는 WHEN으로
+-- 실제 변경만 거른다. (INSERT엔 OLD가 없어 하나의 트리거에 WHEN을 걸 수 없으므로 분리한다.)
 drop trigger if exists trg_sync_display_name on public.users;
-create trigger trg_sync_display_name
-after insert or update of nickname on public.users
+
+drop trigger if exists trg_sync_display_name_insert on public.users;
+create trigger trg_sync_display_name_insert
+after insert on public.users
 for each row
+execute function public.sync_display_name();
+
+drop trigger if exists trg_sync_display_name_update on public.users;
+create trigger trg_sync_display_name_update
+after update of nickname on public.users
+for each row
+when (old.nickname is distinct from new.nickname)
 execute function public.sync_display_name();
 
 -- 트리거 도입 이전에 만들어진 기존 유저의 display_name을 현재 nickname으로 1회 보정한다.
