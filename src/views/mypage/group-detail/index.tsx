@@ -62,7 +62,7 @@ export function GroupDetailPage() {
             />
             <GroupStatsCard
               memberCount={group.memberCount}
-              postCount={group.postCount}
+              productCount={group.productCount}
               savedCount={group.likedCount}
             />
           </div>

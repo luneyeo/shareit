@@ -1,6 +1,6 @@
 type GroupStatsCardProps = {
   memberCount: number;
-  postCount: number;
+  productCount: number;
   savedCount: number;
 };
 
@@ -11,18 +11,18 @@ type GroupStatsCardProps = {
  * ```tsx
  * <GroupStatsCard
  *   memberCount={memberCount}
- *   postCount={postCount}
+ *   productCount={productCount}
  *   savedCount={savedCount}
  * />
  */
 export default function GroupStatsCard({
   memberCount,
-  postCount,
+  productCount,
   savedCount,
 }: GroupStatsCardProps) {
   const stats = [
     { label: "멤버", value: memberCount },
-    { label: "공유 글", value: postCount },
+    { label: "공유 글", value: productCount },
     { label: "저장", value: savedCount },
   ];
 

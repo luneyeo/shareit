@@ -7,6 +7,7 @@ type GroupRow = {
   name: string;
   created_at: string;
   invite_code: string;
+  product_count: number;
   group_members: { count: number }[];
 };
 
@@ -14,7 +15,8 @@ type GroupRow = {
  * userId가 속한 특정 그룹의 상세 정보를 역할·개설일·멤버 수와 함께 조회한다.
  *
  * group_members에서 (user_id, group_id) 멤버십 행을 찾고, 그 행의 role과 연결된
- * groups(id, name, created_at), 그리고 그룹별 전체 멤버 수(group_members(count))를 가져온다.
+ * groups(id, name, created_at), 그룹별 전체 멤버 수(group_members(count)),
+ * 그리고 그룹에 공유된 상품 수(groups.product_count)를 가져온다.
  * 멤버십 행이 없으면(속하지 않은/존재하지 않는 그룹) 에러를 throw한다.
  */
 export async function getGroupDetail(groupId: string, userId: string): Promise<GroupDetailSummary> {
@@ -23,7 +25,9 @@ export async function getGroupDetail(groupId: string, userId: string): Promise<G
   const { data, error } = await supabase
     .from("group_members")
     // groups.id는 bigint라 JSON number 정밀도 한계가 있어, PostgREST 캐스트(id::text)로 문자열로 받는다.
-    .select("role, groups(id::text, name, created_at, invite_code, group_members(count))")
+    .select(
+      "role, groups(id::text, name, created_at, invite_code, product_count, group_members(count))"
+    )
     .eq("user_id", userId)
     .eq("group_id", groupId)
     .maybeSingle();
@@ -43,6 +47,7 @@ export async function getGroupDetail(groupId: string, userId: string): Promise<G
     role: data.role as GroupRole,
     openedAt: group.created_at,
     memberCount: group.group_members[0]?.count ?? 0,
+    productCount: group.product_count,
     inviteCode: group.invite_code,
   };
 }

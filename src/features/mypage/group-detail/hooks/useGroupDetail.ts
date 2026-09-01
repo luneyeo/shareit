@@ -21,7 +21,7 @@ export function useGroupDetail(groupId: string) {
     queryKey: queryKeys.groups.detail(groupId, userId),
     queryFn: () => getGroupDetail(groupId, userId!),
     enabled: !!userId && !!groupId,
-    // TODO: 공유 글·좋아요 수 컬럼 추가 후 실제 값으로 대체 (현재는 0 고정)
-    select: (data): GroupDetail => ({ ...data, postCount: 0, likedCount: 0 }),
+    // TODO: 좋아요 수 컬럼 추가 후 실제 값으로 대체 (현재는 0 고정)
+    select: (data): GroupDetail => ({ ...data, likedCount: 0 }),
   });
 }
