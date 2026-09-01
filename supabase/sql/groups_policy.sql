@@ -46,6 +46,14 @@ on public.groups for update to authenticated
 using (owner_id = (select auth.uid()))
 with check (owner_id = (select auth.uid()));
 
+-- owner만 그룹 삭제 가능.
+-- (정책 없으면 delete가 오류 없이 0행 처리되어 프론트가 "권한 없음"으로 실패 처리한다.)
+-- group_members·products는 group_id FK의 ON DELETE CASCADE로 함께 정리된다.
+drop policy if exists "delete own group" on public.groups;
+create policy "delete own group"
+on public.groups for delete to authenticated
+using (owner_id = (select auth.uid()));
+
 -- 2) group_members
 alter table public.group_members enable row level security;
 
@@ -60,3 +68,18 @@ drop policy if exists "select group memberships" on public.group_members;
 create policy "select group memberships"
 on public.group_members for select to authenticated
 using (public.is_group_member(group_id));
+
+-- 본인 멤버십만 삭제 가능. (그룹 나가기)
+-- (정책 없으면 delete가 오류 없이 0행 처리되어 프론트가 "나갈 수 없음"으로 실패 처리한다.)
+-- 단, 방장은 나가기로 자기 멤버십만 지우면 groups.owner_id가 남아 상태가 불일치하므로 제외한다.
+-- (방장은 그룹 삭제로만 정리 가능. 삭제 시 group_members는 CASCADE로 함께 제거된다.)
+drop policy if exists "delete own membership" on public.group_members;
+create policy "delete own membership"
+on public.group_members for delete to authenticated
+using (
+  user_id = (select auth.uid())
+  and not exists (
+    select 1 from public.groups g
+    where g.id = group_id and g.owner_id = (select auth.uid())
+  )
+);

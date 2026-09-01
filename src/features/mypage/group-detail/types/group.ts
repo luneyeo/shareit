@@ -11,8 +11,6 @@ export interface GroupDetail {
   memberCount: number;
   /** 그룹 입장 코드. */
   inviteCode: string;
-  /** 그룹에 공유된 글 수. */
-  postCount: number;
-  /** 그룹에서 좋아요한 수. */
-  likedCount: number;
+  /** 그룹에 공유된 상품 수. */
+  productCount: number;
 }

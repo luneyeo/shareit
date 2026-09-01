@@ -12,6 +12,14 @@ export const GROUP_MESSAGE = {
   JOIN: {
     ERROR: "입장에 실패했어요. 다시 시도해 주세요.",
   },
+  DELETE: {
+    SUCCESS: "그룹을 삭제했어요.",
+    ERROR: "그룹 삭제에 실패했어요. 다시 시도해 주세요.",
+  },
+  LEAVE: {
+    SUCCESS: "그룹에서 나갔어요.",
+    ERROR: "그룹 나가기에 실패했어요. 다시 시도해 주세요.",
+  },
 } as const;
 
 /**
