@@ -53,7 +53,10 @@ export default function ProductImage({ imageUrl, prdName }: ProductImageProps) {
           </div>
 
           {images.length > 1 && (
-            <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+            <div
+              aria-hidden
+              className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-1.5"
+            >
               {images.map((src, index) => (
                 <span
                   key={src}
