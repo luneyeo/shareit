@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { GROUP_MESSAGE } from "@/features/dashboard/constants/messages";
 import { useGroupDialog } from "@/features/dashboard/hooks/useGroupDialog";
+import { useDeleteGroup } from "@/features/mypage/group-detail/hooks/useDeleteGroup";
 import { useGroupDetail } from "@/features/mypage/group-detail/hooks/useGroupDetail";
 import {
   GroupDetailHero,
@@ -13,6 +15,7 @@ import {
 import BackHeader from "@/shared/ui/back-header/BackHeader";
 import Divider from "@/shared/ui/divider/Divider";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
+import { toast } from "@/shared/ui/feedback";
 
 /**
  * 마이페이지 하위 "그룹 상세" 페이지 컴포넌트
@@ -28,15 +31,27 @@ export function GroupDetailPage() {
   const router = useRouter();
   const { data: group, isPending, isError, refetch } = useGroupDetail(groupId);
   const { openEditName, dialogElement } = useGroupDialog();
+  const { mutateAsync: deleteGroup } = useDeleteGroup();
   const [isRemoveOpen, setIsRemoveOpen] = useState(false);
 
   const handleGoToDashboard = () => {
     router.push(`/dashboard/${groupId}`);
   };
 
-  const handleConfirmRemove = () => {
-    // TODO: 방장이면 그룹 삭제, 멤버이면 그룹 나가기 뮤테이션 연결
+  const handleConfirmRemove = async () => {
     setIsRemoveOpen(false);
+
+    // TODO: 멤버(그룹 나가기) 뮤테이션 연결
+    if (group?.role !== "owner") return;
+
+    try {
+      await deleteGroup(groupId);
+      toast.success(GROUP_MESSAGE.DELETE.SUCCESS);
+      router.replace("/mypage/groups");
+    } catch (error) {
+      console.error(error);
+      toast.error(GROUP_MESSAGE.DELETE.ERROR);
+    }
   };
 
   return (
