@@ -63,7 +63,7 @@ export function GroupDetailPage() {
             <GroupStatsCard
               memberCount={group.memberCount}
               productCount={group.productCount}
-              savedCount={group.likedCount}
+              // TODO: 저장(좋아요) 기능 구현 후 savedCount 전달
             />
           </div>
 

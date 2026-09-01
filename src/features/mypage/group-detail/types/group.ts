@@ -13,6 +13,4 @@ export interface GroupDetail {
   inviteCode: string;
   /** 그룹에 공유된 상품 수. */
   productCount: number;
-  /** 그룹에서 좋아요한 수. */
-  likedCount: number;
 }

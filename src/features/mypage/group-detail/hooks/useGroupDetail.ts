@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import type { GroupDetail } from "@/features/mypage/group-detail/types/group";
 import { getGroupDetail } from "@/shared/api/group/getGroupDetail";
 import { queryKeys } from "@/shared/constants/queryKey";
 import { useAuthStore } from "@/shared/store/authStore";
@@ -21,7 +20,5 @@ export function useGroupDetail(groupId: string) {
     queryKey: queryKeys.groups.detail(groupId, userId),
     queryFn: () => getGroupDetail(groupId, userId!),
     enabled: !!userId && !!groupId,
-    // TODO: 좋아요 수 컬럼 추가 후 실제 값으로 대체 (현재는 0 고정)
-    select: (data): GroupDetail => ({ ...data, likedCount: 0 }),
   });
 }
