@@ -68,3 +68,10 @@ drop policy if exists "select group memberships" on public.group_members;
 create policy "select group memberships"
 on public.group_members for select to authenticated
 using (public.is_group_member(group_id));
+
+-- 본인 멤버십만 삭제 가능. (그룹 나가기)
+-- (정책 없으면 delete가 오류 없이 0행 처리되어 프론트가 "나갈 수 없음"으로 실패 처리한다.)
+drop policy if exists "delete own membership" on public.group_members;
+create policy "delete own membership"
+on public.group_members for delete to authenticated
+using (user_id = (select auth.uid()));
