@@ -43,11 +43,9 @@ export function GroupListPage() {
           onJoinGroup={openJoin}
         />
       ) : (
-        // 필터 탭과 총 개수는 로컬 상태·파생값으로 구동되므로 로딩과 무관하게 항상 노출하고,
-        // (로딩 중엔 groups가 비어 total이 0), 목록만 로딩 중 스켈레톤으로 대체한다.
         <div className="flex flex-col gap-4 px-5 py-4">
           <GroupFilterTabs filters={filters} value={filter} onChange={setFilter} />
-          <p className="typo-14-medium text-gray-500">총 {total}개 그룹</p>
+          <p className="typo-14-medium text-gray-500">총 {isPending ? "–" : total}개 그룹</p>
           {isPending ? (
             <GroupListSkeleton />
           ) : (
