@@ -44,9 +44,16 @@ export default function ProductImage({ imageUrl, prdName }: ProductImageProps) {
         <>
           <div ref={emblaRef} className="h-full overflow-hidden">
             <div className="flex h-full">
-              {images.map((src) => (
+              {images.map((src, index) => (
                 <div key={src} className="relative h-full min-w-0 flex-[0_0_100%]">
-                  <Image src={src} alt={prdName} fill className="object-cover" />
+                  <Image
+                    src={src}
+                    alt={prdName}
+                    fill
+                    className="object-cover"
+                    priority={index === 0}
+                    sizes="(max-width: 480px) 100vw, 480px"
+                  />
                 </div>
               ))}
             </div>
