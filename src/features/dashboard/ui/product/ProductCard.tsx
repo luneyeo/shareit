@@ -33,7 +33,7 @@ export default function ProductCard({ prdName, price, imageUrl, tag, userId }: P
             src={firstImage}
             alt={prdName}
             fill
-            sizes="(max-width: 480px) 50vw, 216px"
+            sizes="(max-width: 480px) calc(50vw - 24px), 216px"
             className="object-cover"
           />
         ) : (
