@@ -11,23 +11,31 @@ const SKELETON_COUNT = 6;
  */
 export default function ProductListSkeleton() {
   return (
-    <div className="grid grid-cols-2 gap-3 p-4.5" aria-hidden="true">
-      {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
-        <article key={index} className="flex flex-col rounded-2xl border border-gray-200 bg-white">
-          <Skeleton className="h-40 w-full rounded-t-xl" />
-          <div className="flex flex-col gap-2 p-2.5">
-            <div className="flex flex-col">
-              <div className="flex h-6 items-center">
-                <Skeleton shape="text" className="w-3/4" />
+    <>
+      <p role="status" className="sr-only">
+        상품 목록을 불러오는 중이에요
+      </p>
+      <div className="grid grid-cols-2 gap-3 p-4.5" aria-hidden="true">
+        {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+          <article
+            key={index}
+            className="flex flex-col rounded-2xl border border-gray-200 bg-white"
+          >
+            <Skeleton className="h-40 w-full rounded-t-xl" />
+            <div className="flex flex-col gap-2 p-2.5">
+              <div className="flex flex-col">
+                <div className="flex h-6 items-center">
+                  <Skeleton shape="text" className="w-3/4" />
+                </div>
+                <div className="flex h-6 items-center">
+                  <Skeleton shape="text" className="w-1/2" />
+                </div>
               </div>
-              <div className="flex h-6 items-center">
-                <Skeleton shape="text" className="w-1/2" />
-              </div>
+              <Skeleton shape="circle" className="size-5.5" />
             </div>
-            <Skeleton shape="circle" className="size-5.5" />
-          </div>
-        </article>
-      ))}
-    </div>
+          </article>
+        ))}
+      </div>
+    </>
   );
 }
