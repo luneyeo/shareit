@@ -16,9 +16,13 @@ export default function ProductListSkeleton() {
         <article key={index} className="flex flex-col rounded-2xl border border-gray-200 bg-white">
           <Skeleton className="h-40 w-full rounded-t-xl" />
           <div className="flex flex-col gap-2 p-2.5">
-            <div className="flex flex-col gap-1.5">
-              <Skeleton shape="text" className="w-3/4" />
-              <Skeleton shape="text" className="w-1/2" />
+            <div className="flex flex-col">
+              <div className="flex h-6 items-center">
+                <Skeleton shape="text" className="w-3/4" />
+              </div>
+              <div className="flex h-6 items-center">
+                <Skeleton shape="text" className="w-1/2" />
+              </div>
             </div>
             <Skeleton shape="circle" className="size-5.5" />
           </div>

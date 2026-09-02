@@ -4,8 +4,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
 import { useInfiniteScroll } from "@/shared/hooks/useInfiniteScroll";
+import { useDelayedLoading } from "@/shared/hooks/useDelayedLoading";
 import { useGroupProducts } from "@/features/dashboard/api/useGroupProducts";
 import ProductCard from "./ProductCard";
+import ProductListSkeleton from "./ProductListSkeleton";
 
 /**
  * 특정 그룹의 상품 목록 영역입니다.
@@ -46,12 +48,10 @@ export default function ProductList({
 
   const listMinHeight = "min-h-[calc(100dvh-13rem-env(safe-area-inset-bottom))]";
 
+  const showSkeleton = useDelayedLoading(isPending);
+
   if (isPending) {
-    return (
-      <div className={`flex items-center justify-center ${listMinHeight}`}>
-        <p className="typo-14-medium text-gray-500">상품을 불러오는 중이에요.</p>
-      </div>
-    );
+    return showSkeleton ? <ProductListSkeleton /> : null;
   }
 
   // 첫 페이지 자체를 못 불러온 경우에만 전체 에러 화면을 보여준다.
