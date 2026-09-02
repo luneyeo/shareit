@@ -29,7 +29,13 @@ export default function ProductCard({ prdName, price, imageUrl, tag, userId }: P
     <article className="flex flex-col rounded-2xl bg-white border border-gray-200">
       <div className="relative w-full h-40 overflow-hidden rounded-t-xl bg-gray-200">
         {firstImage ? (
-          <Image src={firstImage} alt={prdName} fill className="object-cover" />
+          <Image
+            src={firstImage}
+            alt={prdName}
+            fill
+            sizes="(max-width: 480px) 50vw, 216px"
+            className="object-cover"
+          />
         ) : (
           <ImagePlaceholder size="sm" />
         )}
