@@ -1,4 +1,4 @@
-import { createClient } from "@/shared/lib/supabase/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import type { ProductDetail } from "./types";
 
 /**
@@ -27,13 +27,14 @@ type ProductRow = {
  * productId로 상품을 찾되, 그 상품의 group_id가 dashboardId와 일치하는 경우에만
  * 반환한다. (다른 대시보드의 상품을 이 경로로 열람하지 못하도록 범위를 제한한다.)
  * 조건에 맞는 상품이 없으면 `null`을 반환해 호출부가 "미존재" 상태를 구분하게 한다.
+ *
+ * Supabase 클라이언트를 인자로 받아 브라우저(클라이언트 훅)·서버(프리페치) 양쪽에서 재사용한다.
  */
 export async function getProduct(
+  supabase: SupabaseClient,
   dashboardId: string,
   productId: string
 ): Promise<ProductDetail | null> {
-  const supabase = createClient();
-
   const { data, error } = await supabase
     .from("products_with_recommender")
     .select(
