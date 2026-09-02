@@ -9,6 +9,7 @@ import { useGroupDetail } from "@/features/mypage/group-detail/hooks/useGroupDet
 import { useLeaveGroup } from "@/features/mypage/group-detail/hooks/useLeaveGroup";
 import {
   GroupDetailHero,
+  GroupDetailSkeleton,
   GroupManageSection,
   GroupRemoveDialog,
   GroupStatsCard,
@@ -63,9 +64,7 @@ export function GroupDetailPage() {
       <BackHeader title="그룹 상세" />
 
       {isPending ? (
-        <div className="flex flex-1 items-center justify-center px-5 py-16">
-          <p className="typo-14-medium text-gray-500">그룹을 불러오는 중이에요.</p>
-        </div>
+        <GroupDetailSkeleton />
       ) : isError ? (
         <EmptyState
           type="error"

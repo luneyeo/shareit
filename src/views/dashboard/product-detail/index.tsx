@@ -10,6 +10,7 @@ import { useProductDetail } from "@/features/dashboard/product-detail/apis/usePr
 import { useDeleteProduct } from "@/features/dashboard/hooks/useDeleteProduct";
 import { PRODUCT_MESSAGE } from "@/features/dashboard/constants/messages";
 import ProductComment from "@/features/dashboard/product-detail/ui/ProductComment";
+import ProductDetailSkeleton from "@/features/dashboard/product-detail/ui/ProductDetailSkeleton";
 import ProductDetailTopBar from "@/features/dashboard/product-detail/ui/ProductDetailTopBar";
 import ProductImage from "@/features/dashboard/product-detail/ui/ProductImage";
 import ProductInfo from "@/features/dashboard/product-detail/ui/ProductInfo";
@@ -68,9 +69,7 @@ export function ProductPage() {
       <ProductDetailTopBar onBack={handleBack} onMore={product ? handleMore : undefined} />
 
       {isPending ? (
-        <div className="flex min-h-dvh items-center justify-center px-5 py-16">
-          <p className="typo-14-medium text-gray-500">상품을 불러오는 중이에요.</p>
-        </div>
+        <ProductDetailSkeleton />
       ) : isError ? (
         <EmptyState
           type="error"

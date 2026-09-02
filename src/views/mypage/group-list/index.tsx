@@ -2,7 +2,7 @@
 
 import { useGroupDialog } from "@/features/dashboard/hooks/useGroupDialog";
 import { useGroupFilter } from "@/features/mypage/group-list/hooks/useGroupFilter";
-import { GroupFilterTabs, GroupListItem } from "@/features/mypage/group-list/ui";
+import { GroupFilterTabs, GroupListItem, GroupListSkeleton } from "@/features/mypage/group-list/ui";
 import BackHeader from "@/shared/ui/back-header/BackHeader";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
 
@@ -25,11 +25,7 @@ export function GroupListPage() {
     <div className="flex min-h-dvh flex-col">
       <BackHeader title="전체 그룹" />
 
-      {isPending ? (
-        <div className="flex flex-1 flex-col items-center justify-center px-5 py-16 text-center">
-          <p className="typo-14-medium text-gray-500">그룹을 불러오는 중이에요.</p>
-        </div>
-      ) : isError ? (
+      {isError ? (
         <EmptyState
           type="error"
           message="그룹을 불러오지 못했어요"
@@ -49,14 +45,18 @@ export function GroupListPage() {
       ) : (
         <div className="flex flex-col gap-4 px-5 py-4">
           <GroupFilterTabs filters={filters} value={filter} onChange={setFilter} />
-          <p className="typo-14-medium text-gray-500">총 {total}개 그룹</p>
-          <ul className="flex flex-col gap-3">
-            {groups.map((group) => (
-              <li key={group.id}>
-                <GroupListItem group={group} />
-              </li>
-            ))}
-          </ul>
+          <p className="typo-14-medium text-gray-500">총 {isPending ? "–" : total}개 그룹</p>
+          {isPending ? (
+            <GroupListSkeleton />
+          ) : (
+            <ul className="flex flex-col gap-3">
+              {groups.map((group) => (
+                <li key={group.id}>
+                  <GroupListItem group={group} />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
 
