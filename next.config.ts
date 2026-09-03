@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
     SENTRY_DSN: process.env.SENTRY_DSN,
   },
   images: {
+    formats: ["image/avif", "image/webp"],
     // 공개 버킷(product-images) 경로만 허용한다.
     remotePatterns: supabaseHostname
       ? [

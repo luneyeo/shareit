@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/shared/constants/queryKey";
 import { getProduct } from "@/shared/api/product/getProduct";
+import { createClient } from "@/shared/lib/supabase/client";
 
 /**
  * 특정 대시보드(그룹) 안의 개별 상품 상세를 조회하는 훅.
@@ -16,7 +17,7 @@ import { getProduct } from "@/shared/api/product/getProduct";
 export function useProductDetail(dashboardId: string, productId: string) {
   return useQuery({
     queryKey: queryKeys.products.detail(dashboardId, productId),
-    queryFn: () => getProduct(dashboardId, productId),
+    queryFn: () => getProduct(createClient(), dashboardId, productId),
     enabled: !!dashboardId && !!productId,
   });
 }

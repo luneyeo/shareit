@@ -51,14 +51,14 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
     filesField.onChange([...latestFiles.current, ...selections.map((s) => s.file)]);
   });
 
-  const canAddMore = previews.length < MAX_IMAGES;
+  const remaining = MAX_IMAGES - previews.length;
+  const canAddMore = remaining > 0;
 
   const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(e.target.files ?? []);
     // 같은 파일을 다시 선택해도 onChange가 발생하도록 input 값을 비웁니다.
     e.target.value = "";
     // 이미 등록된 장수를 포함해 최대 MAX_IMAGES장까지만 받도록 남은 자리에 맞춰 자른다.
-    const remaining = MAX_IMAGES - previews.length;
     if (selected.length > remaining) {
       toast.warning(`이미지는 최대 ${MAX_IMAGES}장까지 등록할 수 있어요`);
     }
@@ -83,7 +83,9 @@ export default function ProductImageField({ control }: ProductImageFieldProps) {
         ref={inputRef}
         type="file"
         accept={IMAGE_ACCEPT}
-        multiple
+        // 남은 자리가 1개면 선택창에서 아예 1장만 고르도록 단일 선택으로 강제한다.
+        // (2장 이상 남았을 땐 OS 선택창 개수 제한이 불가해 선택 후 잘라내기로 처리)
+        multiple={remaining > 1}
         className="hidden"
         onChange={handleSelect}
       />
