@@ -1,6 +1,6 @@
 # Shareit!(쉐어릿)
 
-<!-- 이미지 영역 -->
+<img width="1600" height="903" alt="Image" src="https://github.com/user-attachments/assets/f1d3c138-01b5-49c8-a1e3-94d61d97189f" />
 
 - 배포 URL : [🔗 쉐어릿](https://shareit-puce.vercel.app/)
 
