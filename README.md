@@ -58,54 +58,50 @@
 
 큰 틀에서 `app`, `features`, `shared`, `views` 네 영역으로 구분합니다.
 
-```
-src/
-├── app/       # 라우팅 전용
-│   ├── (public)/   # 비로그인 접근 (랜딩, 인증)
-│   └── (private)/  # 로그인 필요
-├── views/     # 페이지 조합용 (features·shared를 조합해 한 페이지 구성)
-├── features/  # 도메인별 기능 단위 (UI·API·타입)
-└── shared/    # 공통 리소스 (UI 컴포넌트, 유틸, 훅, 스타일 등)
-```
-
 - `app` — 라우팅 전용 영역으로, 경로와 레이아웃만 담당합니다.
 - `views` — 페이지 조합용 영역으로, `features`와 `shared`를 조합해 하나의 페이지를 구성합니다.
 - `features` — 도메인별 기능 단위로 UI·API·타입을 관리합니다.
 - `shared` — 여러 곳에서 재사용하는 공통 리소스를 모아둡니다.
 
+```
+src/
+├── app/                # 라우팅 전용
+│   ├── (public)/           # 비로그인 접근
+│   │   ├── (auth)/             # 인증 (Kakao 로그인)
+│   │   └── (landing)/          # 랜딩
+│   ├── (private)/          # 로그인 필요
+│   │   ├── (tab)/              # 탭 네비게이션 (대시보드·마이페이지)
+│   │   └── (action)/           # 상세·폼 등 단일 액션 화면
+│   └── api/                # Route Handlers
+│
+├── views/              # 페이지 조합용 (features·shared를 조합해 한 페이지 구성)
+│   ├── auth/
+│   ├── landing/
+│   ├── dashboard/          # 목록·상세·상품 폼
+│   └── mypage/             # 그룹 목록·상세
+│
+├── features/           # 도메인별 기능 단위 (ui·hooks·api·types)
+│   ├── auth/
+│   ├── landing/
+│   ├── dashboard/          # 그룹·상품 (product-detail, product-form)
+│   │   ├── ui/                 # 도메인 UI 컴포넌트
+│   │   ├── hooks/              # React Query 훅
+│   │   ├── api/
+│   │   └── types.ts
+│   └── mypage/             # group-list, group-detail
+│
+└── shared/             # 공통 리소스
+    ├── ui/                 # 공통 컴포넌트 (button, dialog, dropdown 등)
+    ├── api/                # 도메인 API 함수 (group, product, auth)
+    ├── hooks/              # 공통 훅
+    ├── lib/                # 외부 라이브러리 래퍼 (supabase)
+    ├── store/              # 전역 상태 (Zustand)
+    ├── providers/          # 컨텍스트 프로바이더
+    ├── constants/          # 상수 (queryKey, category 등)
+    ├── utils/              # 유틸 함수
+    ├── styles/             # 전역 스타일
+    ├── types/              # 전역 타입
+    └── assets/             # 폰트·아이콘·로티
+```
+
 <br>
-
-<!-- ---
-
-## 🚀 시작하기
-
-### 설치
-
-```bash
-# 저장소 복제
-git clone https://github.com/luneyeo/shareit.git
-cd project-name
-
-# 의존성 설치
-pnpm install
-```
-
-### 실행
-
-```bash
-# 개발 서버 실행
-pnpm dev
-```
-
-실행 후 `http://localhost:3000` 에서 확인할 수 있습니다.
-
-## 🗺️ 로드맵
-
-- [ ] 핵심 기능 완성
-- [ ] 테스트 커버리지 확보
-- [ ] 문서화 보강
-- [ ] 정식 릴리스 (v1.0.0)
-
-> 자세한 계획은 [Issues](https://github.com/luneyeo/shareit/issues)를 참고하세요.
-
---- -->
