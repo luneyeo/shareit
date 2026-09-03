@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { createImagePreviewUrl } from "@/shared/utils/createImagePreviewUrl";
-import { validateImageFile } from "@/shared/utils/imageFile";
+import { convertHeicToJpeg, validateImageFile } from "@/shared/utils/imageFile";
 
-/** 선택된 이미지의 미리보기 URL과 업로드에 쓸 원본 File. */
+/** 선택된 이미지의 미리보기 URL과 업로드에 쓸 File. (HEIC는 JPEG로 변환된 File) */
 export type ImageSelection = { previewUrl: string; file: File };
 
 /**
  * 이미지 파일 선택 → 검증 → 미리보기 URL 생성까지의 상태와 동작을 관리합니다.
- * 한 번에 여러 장을 받아 배치로 처리하며, 선택 결과(미리보기 URL + 원본 File) 배열을
- * `onSelect`로 호출부에 넘겨 호출부가 기존 목록에 누적합니다. 원본 File은 제출 시
- * Storage 업로드에 사용됩니다.
+ * 한 번에 여러 장을 받아 배치로 처리하며, 선택 결과(미리보기 URL + File) 배열을
+ * `onSelect`로 호출부에 넘겨 호출부가 기존 목록에 누적합니다. 이 File은 제출 시
+ * Storage 업로드에 그대로 사용되며, 미리보기와 업로드가 동일한 File을 공유합니다.
  *
  * 직접 생성한 objectURL은 `revoke`(개별 삭제)·언마운트 시 `URL.revokeObjectURL`로
  * 해제해 메모리 누수를 막습니다. (defaultValues로 들어온 원격 URL 등은 추적하지 않습니다.)
@@ -55,11 +54,17 @@ export function useImagePreview(onSelect: (selections: ImageSelection[]) => void
     // HEIC 변환이 필요할 수 있어 objectURL 생성을 비동기로 처리합니다.
     setIsConverting(true);
     try {
-      // 일부만 실패해도 성공한 쪽은 이미 objectURL을 만들어 반환하므로, allSettled로
-      // 성공분을 붙잡아 반드시 해제할 수 있게 한다. (Promise.all이면 누수)
-      const results = await Promise.allSettled(validFiles.map(createImagePreviewUrl));
-      const selections = results.flatMap((result, i) =>
-        result.status === "fulfilled" ? [{ previewUrl: result.value, file: validFiles[i] }] : []
+      // HEIC는 JPEG File로 변환해 미리보기와 업로드가 같은 File을 쓰게 한다. 일부만 실패해도
+      // 성공한 쪽은 이미 objectURL을 만들어 반환하므로, allSettled로 성공분을 붙잡아 반드시
+      // 해제할 수 있게 한다. (Promise.all이면 누수)
+      const results = await Promise.allSettled(
+        validFiles.map(async (file) => {
+          const converted = await convertHeicToJpeg(file);
+          return { previewUrl: URL.createObjectURL(converted), file: converted };
+        })
+      );
+      const selections = results.flatMap((result) =>
+        result.status === "fulfilled" ? [result.value] : []
       );
 
       // 하나라도 실패했거나 대기 중 언마운트됐다면, 성공해 만들어진 URL을 모두 해제하고
