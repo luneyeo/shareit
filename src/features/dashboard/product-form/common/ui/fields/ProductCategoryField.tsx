@@ -35,7 +35,7 @@ export default function ProductCategoryField({ control }: ProductCategoryFieldPr
               <IcChevronDown className="h-6 w-6 text-gray-400" />
             </DropdownTrigger>
             <DropdownSelectMenu
-              className="left-0 top-full mt-2 w-full p-2"
+              className="scrollbar-none left-0 top-full mt-2 max-h-60 w-full overflow-y-auto p-2"
               options={CATEGORIES.map((category) => ({ value: category, label: category }))}
               selectedValue={field.value || undefined}
               onSelect={field.onChange}
