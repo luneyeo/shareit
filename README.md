@@ -43,7 +43,7 @@
 
 ![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=flat-square&logo=supabase&logoColor=white)
 
-> 테이블 스키마는 [테이블 정의서](./docs/database-schema.md)에서 확인할 수 있습니다.
+> 테이블 스키마는 [테이블 정의서](https://github.com/luneyeo/shareit/wiki/%5BBE%5D-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%A0%95%EC%9D%98%EC%84%9C)에서 확인할 수 있습니다.
 
 **패키지 매니저 · 배포 · CI/CD**
 
