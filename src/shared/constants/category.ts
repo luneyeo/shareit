@@ -1,1 +1,8 @@
-export const CATEGORIES = ["뷰티", "라이프 스타일", "예술"] as const;
+export const CATEGORIES = [
+  "뷰티",
+  "패션",
+  "홈/인테리어",
+  "음식/카페",
+  "웰니스/헬스",
+  "여행",
+] as const;
