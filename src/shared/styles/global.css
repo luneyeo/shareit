@@ -9,6 +9,13 @@
   --font-sans: var(--font-pretendard), sans-serif;
 }
 
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 body {
   font-family: var(--font-pretendard), sans-serif;
   color: var(--color-gray-900);
