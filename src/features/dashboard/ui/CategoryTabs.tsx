@@ -23,7 +23,10 @@ type CategoryTabsProps = {
  */
 export default function CategoryTabs({ selected, onSelect }: CategoryTabsProps) {
   return (
-    <nav className="flex border-b border-gray-200" aria-label="카테고리">
+    <nav
+      className="scrollbar-none flex max-w-120 overflow-x-auto border-b border-gray-200"
+      aria-label="카테고리"
+    >
       {TABS.map(({ label, value }) => {
         const isActive = selected === value;
 
