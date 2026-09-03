@@ -43,6 +43,8 @@
 
 ![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=flat-square&logo=supabase&logoColor=white)
 
+> 테이블 스키마는 [테이블 정의서](./docs/database-schema.md)에서 확인할 수 있습니다.
+
 **패키지 매니저 · 배포 · CI/CD**
 
 ![pnpm](https://img.shields.io/badge/pnpm-F69220?style=flat-square&logo=pnpm&logoColor=white)
