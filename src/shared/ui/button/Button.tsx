@@ -75,8 +75,7 @@ export default function Button({
           <Spinner size="sm" />
         </span>
       )}
-      {/* 로딩 중에도 원래 내용의 자리를 유지해 버튼 크기가 흔들리지 않도록 invisible 처리합니다. */}
-      <span className={cn("inline-flex items-center gap-1", loading && "invisible")}>
+      <span className={cn("inline-flex items-center gap-1", loading && "opacity-0")}>
         {icon && <span>{icon}</span>}
         {children}
       </span>
