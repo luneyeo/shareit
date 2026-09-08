@@ -84,11 +84,7 @@ export function GroupDetailPage() {
               openedAt={group.openedAt}
               onGoToDashboard={handleGoToDashboard}
             />
-            <GroupStatsCard
-              memberCount={group.memberCount}
-              productCount={group.productCount}
-              // TODO: 저장(좋아요) 기능 구현 후 savedCount 전달
-            />
+            <GroupStatsCard memberCount={group.memberCount} productCount={group.productCount} />
           </div>
 
           <Divider className="h-2" />

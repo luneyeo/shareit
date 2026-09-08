@@ -1,8 +1,6 @@
 type GroupStatsCardProps = {
   memberCount: number;
   productCount: number;
-  // TODO: 저장(좋아요) 기능 구현 후 활성화
-  // savedCount: number;
 };
 
 /**
@@ -19,8 +17,6 @@ export default function GroupStatsCard({ memberCount, productCount }: GroupStats
   const stats = [
     { label: "멤버", value: memberCount },
     { label: "공유 글", value: productCount },
-    // TODO: 저장(좋아요) 기능 구현 후 활성화
-    // { label: "저장", value: savedCount },
   ];
 
   return (
