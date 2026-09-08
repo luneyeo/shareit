@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { MyGroup } from "@/features/mypage/group-list/types/group";
 import { IcChevronLeft } from "@/shared/assets/icons";
 import OwnerBadge from "@/shared/ui/owner-badge/OwnerBadge";
+import LinkLoadingOverlay from "@/shared/ui/overlay/loading/LinkLoadingOverlay";
 
 type GroupListItemProps = {
   group: MyGroup;
@@ -37,6 +38,7 @@ export default function GroupListItem({ group }: GroupListItemProps) {
         </span>
       </div>
       <IcChevronLeft className="h-5 w-5 shrink-0 rotate-180" aria-hidden />
+      <LinkLoadingOverlay />
     </Link>
   );
 }

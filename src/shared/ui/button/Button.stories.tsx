@@ -17,6 +17,9 @@ const meta: Meta<typeof Button> = {
     disabled: {
       control: "boolean",
     },
+    loading: {
+      control: "boolean",
+    },
   },
 };
 
@@ -54,5 +57,14 @@ export const Disabled: Story = {
     size: "md",
     children: "버튼",
     disabled: true,
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    theme: "primary",
+    size: "md",
+    children: "등록하기",
+    loading: true,
   },
 };

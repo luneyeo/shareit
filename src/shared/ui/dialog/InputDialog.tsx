@@ -18,6 +18,8 @@ interface InputDialogProps {
   confirmText?: string;
   /** 취소 버튼 문구 */
   cancelText?: string;
+  /** `true`면 확인 버튼에 스피너를 표시하고 취소·닫기·Enter 제출을 막습니다. (비동기 처리 중) */
+  confirmLoading?: boolean;
   /** 확인 버튼 클릭 시 호출됩니다. */
   onConfirm: () => void;
   /** 취소 버튼 클릭 시 호출됩니다. */
@@ -58,6 +60,7 @@ export default function InputDialog({
   error,
   confirmText = "확인",
   cancelText = "취소",
+  confirmLoading = false,
   onConfirm,
   onCancel,
   onClose,
@@ -70,6 +73,7 @@ export default function InputDialog({
       cancelText={cancelText}
       onConfirm={onConfirm}
       confirmDisabled={value.trim() === ""}
+      confirmLoading={confirmLoading}
       onCancel={onCancel}
       onClose={onClose}
     >
