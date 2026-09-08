@@ -58,6 +58,13 @@ export function useGroupDialog() {
   const joinGroup = useJoinGroup();
   const updateGroupName = useUpdateGroupName();
 
+  // 다이얼로그 종류별 확인 버튼 로딩(스피너) 상태
+  const confirmLoadingByType: Record<GroupDialogType, boolean> = {
+    create: createGroup.isPending,
+    join: joinGroup.isPending,
+    edit: updateGroupName.isPending,
+  };
+
   const [dialog, setDialog] = useState<GroupDialogState | null>(null);
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
@@ -159,12 +166,15 @@ export function useGroupDialog() {
     confirmJoin();
   };
 
+  // 입력 단계에서 해당 mutation이 진행 중이면 배경 클릭·Escape로 닫히지 않도록 막는다.
+  const isConfirmLoading = dialog?.step === "input" ? confirmLoadingByType[dialog.type] : false;
+
   const dialogElement: ReactNode = dialog ? (
     <OverlayPortal
       ariaLabel={
         dialog.step === "done" ? "그룹이 생성됐어요" : GROUP_DIALOG_CONFIG[dialog.type].title
       }
-      onClose={closeDialog}
+      onClose={isConfirmLoading ? undefined : closeDialog}
       surfaceClassName="w-full max-w-xs"
     >
       {dialog.step === "input" ? (
@@ -173,6 +183,7 @@ export function useGroupDialog() {
           value={value}
           onChange={handleChange}
           error={error}
+          confirmLoading={confirmLoadingByType[dialog.type]}
           onConfirm={handleConfirm}
           onCancel={closeDialog}
         />

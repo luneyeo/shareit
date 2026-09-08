@@ -100,8 +100,6 @@ export function ProductPage() {
             <hr className="border-gray-200" />
             <ProductComment description={product.description} tag={product.tag} />
           </div>
-          {/* TODO: 좋아요 및 저장하기 기능 추가 시 ProductDetailFooter 컴포넌트 추가 */}
-
           <ActionSheet isOpen={isSheetOpen} onClose={closeSheet} ariaLabel="상품 더보기 메뉴">
             <ActionSheetItem onClick={handleEdit}>수정하기</ActionSheetItem>
             <ActionSheetItem variant="destructive" onClick={handleDeleteClick}>

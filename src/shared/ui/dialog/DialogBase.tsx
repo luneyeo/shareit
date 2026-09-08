@@ -20,6 +20,8 @@ interface DialogBaseProps {
   onConfirm: () => void;
   /** `true`면 확인 버튼을 비활성화하고, `asForm`일 때 Enter 제출도 막습니다. */
   confirmDisabled?: boolean;
+  /** `true`면 확인 버튼에 스피너를 표시하고, 취소·닫기·Enter 제출을 막습니다. (비동기 처리 중) */
+  confirmLoading?: boolean;
   /** 취소 버튼 클릭 시 호출됩니다. */
   onCancel: () => void;
   /** 헤더의 닫기(X) 버튼 클릭 시 호출됩니다. 미전달 시 `onCancel`이 사용됩니다. */
@@ -53,6 +55,7 @@ export default function DialogBase({
   cancelText = "취소",
   onConfirm,
   confirmDisabled = false,
+  confirmLoading = false,
   onCancel,
   onClose,
   hideCancel = false,
@@ -66,8 +69,9 @@ export default function DialogBase({
           <button
             type="button"
             aria-label="닫기"
-            className="text-gray-400 transition-colors hover:text-gray-800"
+            className="text-gray-400 transition-colors hover:text-gray-800 disabled:pointer-events-none disabled:opacity-50"
             onClick={onClose ?? onCancel}
+            disabled={confirmLoading}
           >
             <IcClose />
           </button>
@@ -76,7 +80,13 @@ export default function DialogBase({
       {children}
       <div className="flex gap-2">
         {!hideCancel && (
-          <Button theme="secondary" size="md" className="flex-1" onClick={onCancel}>
+          <Button
+            theme="secondary"
+            size="md"
+            className="flex-1"
+            onClick={onCancel}
+            disabled={confirmLoading}
+          >
             {cancelText}
           </Button>
         )}
@@ -86,6 +96,7 @@ export default function DialogBase({
           className="flex-1"
           type={asForm ? "submit" : "button"}
           disabled={confirmDisabled}
+          loading={confirmLoading}
           onClick={asForm ? undefined : onConfirm}
         >
           {confirmText}
@@ -101,7 +112,7 @@ export default function DialogBase({
       className={className}
       onSubmit={(event) => {
         event.preventDefault();
-        if (confirmDisabled) return;
+        if (confirmDisabled || confirmLoading) return;
         onConfirm();
       }}
     >

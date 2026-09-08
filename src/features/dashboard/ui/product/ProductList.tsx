@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
+import LinkLoadingOverlay from "@/shared/ui/overlay/loading/LinkLoadingOverlay";
 import { useInfiniteScroll } from "@/shared/hooks/useInfiniteScroll";
 import { useDelayedLoading } from "@/shared/hooks/useDelayedLoading";
 import { useGroupProducts } from "@/features/dashboard/api/useGroupProducts";
@@ -113,6 +114,7 @@ export default function ProductList({
               tag={product.tag}
               userId={product.userId}
             />
+            <LinkLoadingOverlay />
           </Link>
         ))}
       </div>
