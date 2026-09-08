@@ -12,6 +12,7 @@ import { uploadProductImages } from "@/shared/api/product/uploadProductImages";
 import { PRODUCT_MESSAGE } from "@/features/dashboard/constants/messages";
 import { toast } from "@/shared/ui/feedback";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
+import LoadingOverlay from "@/shared/ui/overlay/LoadingOverlay";
 
 /**
  * 조회한 상품을 수정 폼의 초기값으로 변환한다.
@@ -106,6 +107,8 @@ export function ProductEditPage() {
           isSubmitting={isSubmitting}
         />
       )}
+
+      {isSubmitting && <LoadingOverlay label="수정 중" />}
     </>
   );
 }

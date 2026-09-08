@@ -9,6 +9,7 @@ import { uploadProductImages } from "@/shared/api/product/uploadProductImages";
 import { useCreateProduct } from "@/features/dashboard/hooks/useCreateProduct";
 import { PRODUCT_MESSAGE } from "@/features/dashboard/constants/messages";
 import { toast } from "@/shared/ui/feedback";
+import LoadingOverlay from "@/shared/ui/overlay/LoadingOverlay";
 
 /**
  * 대시보드 내 상품 등록 페이지 컴포넌트
@@ -49,6 +50,7 @@ export function ProductNewPage() {
     <>
       <ProductFormHeader title="제품 등록" />
       <ProductForm submitLabel="등록하기" onSubmit={handleSubmit} isSubmitting={isSubmitting} />
+      {isSubmitting && <LoadingOverlay label="등록 중" />}
     </>
   );
 }
