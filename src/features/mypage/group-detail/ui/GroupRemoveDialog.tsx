@@ -46,7 +46,11 @@ export default function GroupRemoveDialog({
   const copy = isOwner ? COPY.owner : COPY.member;
 
   return (
-    <OverlayPortal ariaLabel={copy.title} onClose={onCancel} surfaceClassName="w-full max-w-xs">
+    <OverlayPortal
+      ariaLabel={copy.title}
+      onClose={loading ? undefined : onCancel}
+      surfaceClassName="w-full max-w-xs"
+    >
       <DialogBase
         confirmText={copy.confirmText}
         confirmTheme={isOwner ? "danger" : "primary"}

@@ -166,12 +166,15 @@ export function useGroupDialog() {
     confirmJoin();
   };
 
+  // 입력 단계에서 해당 mutation이 진행 중이면 배경 클릭·Escape로 닫히지 않도록 막는다.
+  const isConfirmLoading = dialog?.step === "input" ? confirmLoadingByType[dialog.type] : false;
+
   const dialogElement: ReactNode = dialog ? (
     <OverlayPortal
       ariaLabel={
         dialog.step === "done" ? "그룹이 생성됐어요" : GROUP_DIALOG_CONFIG[dialog.type].title
       }
-      onClose={closeDialog}
+      onClose={isConfirmLoading ? undefined : closeDialog}
       surfaceClassName="w-full max-w-xs"
     >
       {dialog.step === "input" ? (
