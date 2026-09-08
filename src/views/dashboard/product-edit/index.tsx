@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useParams, useRouter } from "next/navigation";
 import ProductForm from "@/features/dashboard/product-form/common/ui/ProductForm";
 import ProductFormHeader from "@/features/dashboard/product-form/common/ui/ProductFormHeader";
@@ -50,6 +50,9 @@ export function ProductEditPage() {
   const { data: product, isPending, isError, refetch } = useProductDetail(dashboardId, productId);
   const { mutateAsync: updateProduct } = useUpdateProduct();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // 이동 후 상세 페이지가 준비될 때까지 오버레이를 유지하기 위한 전환 상태
+  const [isNavigating, startTransition] = useTransition();
+  const isLoading = isSubmitting || isNavigating;
 
   const handleSubmit = async ({ imageFiles, imageUrl, ...rest }: ProductFormValues) => {
     setIsSubmitting(true);
@@ -66,12 +69,14 @@ export function ProductEditPage() {
 
       await updateProduct({ productId, ...rest, imageUrl: finalImageUrl });
 
+      // 성공: 상세 페이지가 준비될 때까지 오버레이를 유지하도록 이동을 전환으로 감싼다.
       toast.success(PRODUCT_MESSAGE.UPDATE.SUCCESS);
-      router.replace(`/dashboard/${dashboardId}/product/${productId}`);
+      startTransition(() => {
+        router.replace(`/dashboard/${dashboardId}/product/${productId}`);
+      });
     } catch (error) {
       console.error(error);
       toast.error(PRODUCT_MESSAGE.UPDATE.ERROR);
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -104,11 +109,11 @@ export function ProductEditPage() {
           defaultValues={toFormValues(product)}
           submitLabel="수정하기"
           onSubmit={handleSubmit}
-          isSubmitting={isSubmitting}
+          isSubmitting={isLoading}
         />
       )}
 
-      {isSubmitting && <LoadingOverlay label="수정 중" />}
+      {isLoading && <LoadingOverlay label="수정 중" />}
     </>
   );
 }
