@@ -57,17 +57,16 @@
 
 ## 🎬 페이지별 기능
 
-<!-- TODO: 각 기능 GIF 추가 후 주석 해제
-| 페이지        | 기능 설명                             | 미리보기          |
-| ------------- | ------------------------------------- | ----------------- |
-| 랜딩          | 서비스 소개 및 시작하기               | <img src="" width="240" /> |
-| 로그인        | Kakao 소셜 로그인                     | <img src="" width="240" /> |
-| 대시보드      | 그룹 내 공유 상품 목록·카테고리 탐색  | <img src="" width="240" /> |
-| 상품 상세     | 상품 정보·이미지 캐러셀 조회          | <img src="" width="240" /> |
-| 상품 등록·수정 | 상품 폼 작성 및 이미지 업로드         | <img src="" width="240" /> |
-| 그룹 관리     | 그룹 생성·입장(입장 코드)             | <img src="" width="240" /> |
-| 마이페이지    | 내 그룹 목록·그룹 상세(통계·관리)     | <img src="" width="240" /> |
--->
+| 페이지         | 기능 설명                            | 미리보기                                                                                                                           |
+| -------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| 랜딩           | 서비스 소개 및 시작하기              | <img width="420" height="240" alt="Image" src="https://github.com/user-attachments/assets/85c07832-f467-4b3a-beb7-3aa8f3003d06" /> |
+| 로그인         | Kakao 소셜 로그인                    | <img width="420" height="240" alt="Image" src="https://github.com/user-attachments/assets/e1b63604-1066-4164-9a04-14520f3b081f" /> |
+| 대시보드       | 그룹 내 공유 상품 목록·카테고리 탐색 | <img width="420" height="240" alt="Image" src="https://github.com/user-attachments/assets/537612ce-6337-4a12-b4a5-a83a8ca7575b" /> |
+| 상품 상세      | 상품 정보·이미지 캐러셀 조회         | <img width="420" height="240" alt="Image" src="https://github.com/user-attachments/assets/a124e5b0-78de-4007-b6ca-c1d0a1df3a32" /> |
+| 상품 등록      | 상품 폼 작성 및 이미지 업로드        | <img width="414" height="240" alt="Image" src="https://github.com/user-attachments/assets/4d71ff69-8b64-4dfe-a2a9-b0b3a82ebf19" /> |
+| 상품 수정·삭제 | 기존 상품 정보 수정 및 삭제          | <img width="414" height="240" alt="Image" src="https://github.com/user-attachments/assets/a42fd744-a49d-4c72-9fff-86dc54b91f21" /> |
+| 그룹 관리      | 그룹 생성·입장(입장 코드)            | <img width="414" height="240" alt="Image" src="https://github.com/user-attachments/assets/d362c486-6936-4b01-bd85-a21a6a07635c" /> |
+| 마이페이지     | 내 그룹 목록·그룹 상세(통계·관리)    | <img width="420" height="240" alt="Image" src="https://github.com/user-attachments/assets/72028654-5177-4fce-af67-d6c2a639befc" /> |
 
 <br>
 
