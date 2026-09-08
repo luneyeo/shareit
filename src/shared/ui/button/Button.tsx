@@ -1,6 +1,7 @@
 "use client";
 import { cva } from "class-variance-authority";
 import { cn } from "@/shared/utils/cn";
+import Spinner from "@/shared/ui/spinner/Spinner";
 import type { ButtonProps } from "./types";
 
 const buttonVariants = cva(
@@ -32,6 +33,7 @@ const buttonVariants = cva(
  * - `theme`: 버튼 색상 스타일 (`primary` | `secondary` | `danger`)
  * - `size`: 버튼 높이 및 폰트 크기 (`lg` | `md` | `sm`)
  * - `icon`: 텍스트 왼쪽에 표시할 아이콘 (ReactNode)
+ * - `loading`: 로딩 중이면 아이콘 자리에 스피너를 표시하고 버튼을 비활성화합니다.
  * - `width`: size variant에 포함되지 않으므로 `className`으로 직접 지정합니다.
  *
  * @example
@@ -41,6 +43,9 @@ const buttonVariants = cva(
  *
  * // 아이콘 포함
  * <Button theme="secondary" size="sm" icon={<ShareIcon />} className="w-[120px]">공유하기</Button>
+ *
+ * // 로딩 중 (제출 등 비동기 동작)
+ * <Button theme="primary" size="lg" className="w-full" loading={isPending}>등록하기</Button>
  *
  * // 비활성화
  * <Button theme="primary" size="lg" className="w-full" disabled>등록하기</Button>
@@ -52,13 +57,29 @@ export default function Button({
   theme,
   size,
   className,
+  loading = false,
+  disabled,
   type = "button",
   ...props
 }: ButtonProps) {
   return (
-    <button type={type} className={cn(buttonVariants({ theme, size }), className)} {...props}>
-      {icon && <span>{icon}</span>}
-      {children}
+    <button
+      type={type}
+      className={cn(buttonVariants({ theme, size }), className)}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
+      {...props}
+    >
+      {loading && (
+        <span className="absolute inset-0 flex items-center justify-center">
+          <Spinner size="sm" />
+        </span>
+      )}
+      {/* 로딩 중에도 원래 내용의 자리를 유지해 버튼 크기가 흔들리지 않도록 invisible 처리합니다. */}
+      <span className={cn("inline-flex items-center gap-1", loading && "invisible")}>
+        {icon && <span>{icon}</span>}
+        {children}
+      </span>
     </button>
   );
 }
