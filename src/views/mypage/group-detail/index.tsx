@@ -33,8 +33,9 @@ export function GroupDetailPage() {
   const router = useRouter();
   const { data: group, isPending, isError, refetch } = useGroupDetail(groupId);
   const { openEditName, dialogElement } = useGroupDialog();
-  const { mutateAsync: deleteGroup } = useDeleteGroup();
-  const { mutateAsync: leaveGroup } = useLeaveGroup();
+  const deleteGroup = useDeleteGroup();
+  const leaveGroup = useLeaveGroup();
+  const isRemoving = deleteGroup.isPending || leaveGroup.isPending;
   const [isRemoveOpen, setIsRemoveOpen] = useState(false);
 
   const handleGoToDashboard = () => {
@@ -42,20 +43,21 @@ export function GroupDetailPage() {
   };
 
   const handleConfirmRemove = async () => {
-    setIsRemoveOpen(false);
     if (!group) return;
 
     // 방장은 그룹 삭제, 멤버는 그룹 나가기. 이후 성공 토스트·목록 이동 흐름은 동일하다.
     const isOwner = group.role === "owner";
     const message = isOwner ? GROUP_MESSAGE.DELETE : GROUP_MESSAGE.LEAVE;
 
+    // 처리 중에는 다이얼로그를 유지해 확인 버튼 스피너를 노출하고, 성공 시 목록으로 이동한다.
     try {
-      await (isOwner ? deleteGroup(groupId) : leaveGroup(groupId));
+      await (isOwner ? deleteGroup.mutateAsync(groupId) : leaveGroup.mutateAsync(groupId));
       toast.success(message.SUCCESS);
       router.replace("/mypage/groups");
     } catch (error) {
       console.error(error);
       toast.error(message.ERROR);
+      setIsRemoveOpen(false);
     }
   };
 
@@ -101,6 +103,7 @@ export function GroupDetailPage() {
           {isRemoveOpen && (
             <GroupRemoveDialog
               role={group.role}
+              loading={isRemoving}
               onConfirm={handleConfirmRemove}
               onCancel={() => setIsRemoveOpen(false)}
             />

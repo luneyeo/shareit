@@ -58,6 +58,13 @@ export function useGroupDialog() {
   const joinGroup = useJoinGroup();
   const updateGroupName = useUpdateGroupName();
 
+  // 다이얼로그 종류별 확인 버튼 로딩(스피너) 상태
+  const confirmLoadingByType: Record<GroupDialogType, boolean> = {
+    create: createGroup.isPending,
+    join: joinGroup.isPending,
+    edit: updateGroupName.isPending,
+  };
+
   const [dialog, setDialog] = useState<GroupDialogState | null>(null);
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
@@ -173,6 +180,7 @@ export function useGroupDialog() {
           value={value}
           onChange={handleChange}
           error={error}
+          confirmLoading={confirmLoadingByType[dialog.type]}
           onConfirm={handleConfirm}
           onCancel={closeDialog}
         />

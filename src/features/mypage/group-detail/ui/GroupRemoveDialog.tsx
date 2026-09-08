@@ -8,6 +8,8 @@ type GroupRemoveDialogProps = {
   onConfirm: () => void;
   /** 취소 또는 배경 클릭 시 호출됩니다. */
   onCancel: () => void;
+  /** 삭제/나가기 처리 중이면 확인 버튼에 스피너를 표시하고 취소를 막습니다. (기본값: false) */
+  loading?: boolean;
 };
 
 const COPY = {
@@ -34,7 +36,12 @@ const COPY = {
  *   <GroupRemoveDialog role={role} onConfirm={remove} onCancel={close} />
  * )}
  */
-export default function GroupRemoveDialog({ role, onConfirm, onCancel }: GroupRemoveDialogProps) {
+export default function GroupRemoveDialog({
+  role,
+  onConfirm,
+  onCancel,
+  loading = false,
+}: GroupRemoveDialogProps) {
   const isOwner = role === "owner";
   const copy = isOwner ? COPY.owner : COPY.member;
 
@@ -43,6 +50,7 @@ export default function GroupRemoveDialog({ role, onConfirm, onCancel }: GroupRe
       <DialogBase
         confirmText={copy.confirmText}
         confirmTheme={isOwner ? "danger" : "primary"}
+        confirmLoading={loading}
         onConfirm={onConfirm}
         onCancel={onCancel}
       >
