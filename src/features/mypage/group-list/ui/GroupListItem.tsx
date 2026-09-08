@@ -1,10 +1,8 @@
-"use client";
-
-import Link, { useLinkStatus } from "next/link";
+import Link from "next/link";
 import type { MyGroup } from "@/features/mypage/group-list/types/group";
 import { IcChevronLeft } from "@/shared/assets/icons";
 import OwnerBadge from "@/shared/ui/owner-badge/OwnerBadge";
-import LoadingOverlay from "@/shared/ui/overlay/LoadingOverlay";
+import LinkLoadingOverlay from "@/shared/ui/overlay/loading/LinkLoadingOverlay";
 
 type GroupListItemProps = {
   group: MyGroup;
@@ -15,16 +13,6 @@ const roleLabel: Record<MyGroup["role"], string> = {
   owner: "내가 만든 그룹",
   member: "참여 중",
 };
-
-/**
- * 상위 `Link`의 이동 대기 상태를 구독해, 이동 중일 때 전체화면 로딩 오버레이를 띄웁니다.
- * `useLinkStatus`는 `Link`의 자손에서만 동작하므로 반드시 `Link` 내부에 배치합니다.
- * (prefetch가 끝난 경로는 즉시 이동해 pending이 뜨지 않을 수 있습니다.)
- */
-function GroupNavigationOverlay() {
-  const { pending } = useLinkStatus();
-  return pending ? <LoadingOverlay label="이동 중" /> : null;
-}
 
 /**
  * 전체 그룹 목록의 그룹 카드 한 개입니다. 그룹 상세 페이지로 이동하는 링크입니다.
@@ -50,7 +38,7 @@ export default function GroupListItem({ group }: GroupListItemProps) {
         </span>
       </div>
       <IcChevronLeft className="h-5 w-5 shrink-0 rotate-180" aria-hidden />
-      <GroupNavigationOverlay />
+      <LinkLoadingOverlay />
     </Link>
   );
 }

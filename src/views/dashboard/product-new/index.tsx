@@ -9,7 +9,7 @@ import { uploadProductImages } from "@/shared/api/product/uploadProductImages";
 import { useCreateProduct } from "@/features/dashboard/hooks/useCreateProduct";
 import { PRODUCT_MESSAGE } from "@/features/dashboard/constants/messages";
 import { toast } from "@/shared/ui/feedback";
-import LoadingOverlay from "@/shared/ui/overlay/LoadingOverlay";
+import LoadingOverlay from "@/shared/ui/overlay/loading/LoadingOverlay";
 
 /**
  * 대시보드 내 상품 등록 페이지 컴포넌트
