@@ -46,6 +46,7 @@ export function ProductNewPage() {
       // 업로드·등록 어느 단계에서 실패해도 사용자에겐 동일하게 안내한다.
       console.error(error);
       toast.error(PRODUCT_MESSAGE.CREATE.ERROR);
+    } finally {
       setIsSubmitting(false);
     }
   };

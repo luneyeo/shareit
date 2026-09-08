@@ -77,6 +77,7 @@ export function ProductEditPage() {
     } catch (error) {
       console.error(error);
       toast.error(PRODUCT_MESSAGE.UPDATE.ERROR);
+    } finally {
       setIsSubmitting(false);
     }
   };
