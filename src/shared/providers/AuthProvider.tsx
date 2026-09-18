@@ -20,6 +20,7 @@ export function AuthProvider({
   children: React.ReactNode;
 }) {
   const setUser = useAuthStore((state) => state.setUser);
+  const clearUser = useAuthStore((state) => state.clearUser);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -30,16 +31,18 @@ export function AuthProvider({
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-
-      // 로그아웃 시 이전 사용자의 쿼리 캐시가 남지 않도록 전부 제거한다.
+      // 로그아웃 시 상태를 초기화하고, 이전 사용자의 쿼리 캐시가 남지 않도록 전부 제거한다.
       if (event === "SIGNED_OUT") {
+        clearUser();
         queryClient.clear();
+        return;
       }
+
+      setUser(session?.user ?? null);
     });
 
     return () => subscription.unsubscribe();
-  }, [initialUser, setUser, queryClient]);
+  }, [initialUser, setUser, clearUser, queryClient]);
 
   return <>{children}</>;
 }
