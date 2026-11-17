@@ -52,7 +52,7 @@ export default function ActionSheet({
       onClose={onClose}
       ariaLabel={ariaLabel}
       className="items-end"
-      surfaceClassName="flex w-full max-w-120 flex-col gap-2 bg-transparent"
+      surfaceClassName="flex w-full max-w-120 flex-col gap-2 bg-transparent p-0"
     >
       <OverlaySurface className="divide-y divide-gray-200 overflow-hidden">
         {children}

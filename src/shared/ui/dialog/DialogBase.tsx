@@ -105,7 +105,7 @@ export default function DialogBase({
     </>
   );
 
-  const className = "flex flex-col gap-4 p-6";
+  const className = "flex flex-col gap-4 p-2";
 
   return asForm ? (
     <form

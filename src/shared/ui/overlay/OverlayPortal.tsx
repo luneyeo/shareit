@@ -70,7 +70,7 @@ export default function OverlayPortal({
   return createPortal(
     <div
       className={cn(
-        "fixed inset-0 z-overlay flex items-center justify-center bg-black/50 p-4",
+        "fixed inset-0 z-overlay flex items-center justify-center bg-black/50",
         className
       )}
       onClick={handleBackdropClick}
@@ -82,7 +82,7 @@ export default function OverlayPortal({
         aria-label={ariaLabelledby ? undefined : ariaLabel}
         aria-labelledby={ariaLabelledby}
         tabIndex={-1}
-        className={cn("outline-none", surfaceClassName)}
+        className={cn("outline-none p-4", surfaceClassName)}
       >
         {children}
       </OverlaySurface>
