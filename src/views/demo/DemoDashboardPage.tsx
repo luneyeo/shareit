@@ -15,8 +15,9 @@ export function DemoDashboardPage() {
   const router = useRouter();
   const [category, setCategory] = useState<string | null>(null);
 
-  const groupId = searchParams.get("group") ?? DEMO_GROUPS[0].id;
-  const currentGroup = DEMO_GROUPS.find((g) => g.id === groupId) ?? DEMO_GROUPS[0];
+  const rawGroupId = searchParams.get("group");
+  const currentGroup = DEMO_GROUPS.find((g) => g.id === rawGroupId) ?? DEMO_GROUPS[0];
+  const groupId = currentGroup.id;
   const allProducts = DEMO_PRODUCTS[groupId] ?? [];
   const products = category ? allProducts.filter((p) => p.category === category) : allProducts;
 
