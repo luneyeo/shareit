@@ -13,7 +13,9 @@ export function DemoProductPage() {
   const { productId } = useParams<{ productId: string }>();
   const router = useRouter();
 
-  const product = DEMO_PRODUCTS_BY_ID[productId];
+  const product = Object.hasOwn(DEMO_PRODUCTS_BY_ID, productId)
+    ? DEMO_PRODUCTS_BY_ID[productId]
+    : undefined;
 
   return (
     <main>
