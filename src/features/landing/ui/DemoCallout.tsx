@@ -12,7 +12,14 @@ import { useScrolledToBottom } from "@/shared/hooks/useScrolledToBottom";
  */
 export default function DemoCallout() {
   const { sentinelRef, reached } = useScrolledToBottom();
-  const [dismissed, setDismissed] = useState(false);
+  const [dismissed, setDismissed] = useState(
+    () => sessionStorage.getItem("demo-callout-dismissed") === "true"
+  );
+
+  const dismiss = () => {
+    sessionStorage.setItem("demo-callout-dismissed", "true");
+    setDismissed(true);
+  };
 
   const isOpen = reached && !dismissed;
 
@@ -28,7 +35,7 @@ export default function DemoCallout() {
             "animate-[slide-up_0.25s_ease-out]"
           )}
           ariaLabel="데모 체험 안내"
-          onClose={() => setDismissed(true)}
+          onClose={dismiss}
         >
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -40,7 +47,7 @@ export default function DemoCallout() {
             <button
               type="button"
               aria-label="닫기"
-              onClick={() => setDismissed(true)}
+              onClick={dismiss}
               className="shrink-0 typo-20-medium text-gray-400"
             >
               ✕
