@@ -54,10 +54,6 @@ export default function CtaBanner() {
           </div>
         </form>
 
-        <p className="mt-3 typo-13-medium text-gray-500">
-          입력한 코드는 로그인 후에도 그대로 이어져요
-        </p>
-
         <div className="mt-5 flex w-full items-center gap-3">
           <span className="h-px flex-1 bg-gray-300" />
           <span className="typo-13-medium text-gray-400">또는</span>

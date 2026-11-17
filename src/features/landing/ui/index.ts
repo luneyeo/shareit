@@ -4,4 +4,5 @@ export { default as WhyShareit } from "./WhyShareit";
 export { default as RealShares } from "./RealShares";
 export { default as Reviews } from "./Reviews";
 export { default as CtaBanner } from "./CtaBanner";
+export { default as DemoCallout } from "./DemoCallout";
 export { default as LandingFooter } from "./LandingFooter";

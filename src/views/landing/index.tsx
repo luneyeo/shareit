@@ -1,5 +1,6 @@
 import {
   CtaBanner,
+  DemoCallout,
   Hero,
   HowItWorks,
   LandingFooter,
@@ -9,10 +10,6 @@ import {
 
 /**
  * 서비스 소개 및 진입점을 담당하는 랜딩 페이지 컴포넌트
- *
- * @example
- * import { LandingPage } from '@/views/landing'
- * export default LandingPage
  */
 export function LandingPage() {
   return (
@@ -21,9 +18,8 @@ export function LandingPage() {
       <HowItWorks />
       <WhyShareit />
       <RealShares />
-      {/* INFO: 실제 리뷰가 생기면 활용 */}
-      {/* <Reviews /> */}
       <CtaBanner />
+      <DemoCallout />
       <LandingFooter />
     </main>
   );

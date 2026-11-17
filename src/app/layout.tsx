@@ -42,8 +42,9 @@ export default async function RootLayout({
 }>) {
   const supabase = await createClient();
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
+  const user = session?.user ?? null;
 
   return (
     <html lang="ko" className={`${pretendard.variable} h-full antialiased`}>
@@ -55,7 +56,7 @@ export default async function RootLayout({
         <div className="mx-auto flex h-dvh w-full max-w-120 flex-col overflow-hidden bg-background transform-gpu">
           <QueryProvider>
             <AuthProvider initialUser={user}>
-              <div className="flex-1 overflow-y-auto">{children}</div>
+              <div className="flex-1 overflow-y-auto scrollbar-none">{children}</div>
             </AuthProvider>
           </QueryProvider>
         </div>
