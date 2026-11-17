@@ -12,13 +12,22 @@ import { useScrolledToBottom } from "@/shared/hooks/useScrolledToBottom";
  */
 export default function DemoCallout() {
   const { sentinelRef, reached } = useScrolledToBottom();
-  const [dismissed, setDismissed] = useState(
-    () =>
-      typeof window !== "undefined" && sessionStorage.getItem("demo-callout-dismissed") === "true"
-  );
+  const [dismissed, setDismissed] = useState(() => {
+    try {
+      return (
+        typeof window !== "undefined" && sessionStorage.getItem("demo-callout-dismissed") === "true"
+      );
+    } catch {
+      return false;
+    }
+  });
 
   const dismiss = () => {
-    sessionStorage.setItem("demo-callout-dismissed", "true");
+    try {
+      sessionStorage.setItem("demo-callout-dismissed", "true");
+    } catch {
+      // 저장소 접근 실패해도 닫기는 계속 진행
+    }
     setDismissed(true);
   };
 
