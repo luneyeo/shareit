@@ -13,7 +13,8 @@ import { useScrolledToBottom } from "@/shared/hooks/useScrolledToBottom";
 export default function DemoCallout() {
   const { sentinelRef, reached } = useScrolledToBottom();
   const [dismissed, setDismissed] = useState(
-    () => sessionStorage.getItem("demo-callout-dismissed") === "true"
+    () =>
+      typeof window !== "undefined" && sessionStorage.getItem("demo-callout-dismissed") === "true"
   );
 
   const dismiss = () => {
