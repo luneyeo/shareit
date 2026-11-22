@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { IcChevronDown } from "@/shared/assets/icons";
+import { IcChevronDown, IcSettings } from "@/shared/assets/icons";
 import { DropdownProvider, DropdownTrigger, DropdownSelectMenu } from "@/shared/ui/dropdown";
 import CategoryTabs from "@/features/dashboard/ui/CategoryTabs";
 import ProductCard from "@/features/dashboard/ui/product/ProductCard";
@@ -29,7 +29,7 @@ export function DemoDashboardPage() {
 
   return (
     <>
-      <div className="flex items-center px-4.5 py-6">
+      <div className="flex items-center justify-between px-4.5 py-6">
         <DropdownProvider>
           <DropdownTrigger className="flex items-center gap-2">
             <h1 className="typo-20-bold">{currentGroup.name}</h1>
@@ -46,6 +46,11 @@ export function DemoDashboardPage() {
             onSelect={handleGroupSelect}
           />
         </DropdownProvider>
+        {groupId === "demo-group-1" && (
+          <Link href={`/demo/groups/${groupId}`} aria-label="그룹 설정" className="shrink-0">
+            <IcSettings className="h-5 w-5 text-gray-700" />
+          </Link>
+        )}
       </div>
 
       <CategoryTabs selected={category} onSelect={setCategory} />
