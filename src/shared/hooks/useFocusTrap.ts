@@ -51,7 +51,10 @@ export function useFocusTrap<T extends HTMLElement>({ active, onEscape }: UseFoc
       }
       if (event.key !== "Tab") return;
 
-      const items = Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
+      // 선택자에 일치해도 포커스를 받을 수 없는 hidden input은 이동 대상에서 제외한다.
+      const items = Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+        (el) => !(el instanceof HTMLInputElement && el.type === "hidden")
+      );
       // 포커스 가능한 요소가 없으면 컨테이너 밖으로 나가지 않도록 이동을 막는다.
       if (items.length === 0) {
         event.preventDefault();
