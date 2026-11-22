@@ -3,12 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { IcChevronDown } from "@/shared/assets/icons";
+import { IcChevronDown, IcSettings } from "@/shared/assets/icons";
 import { DropdownProvider, DropdownTrigger, DropdownSelectMenu } from "@/shared/ui/dropdown";
 import CategoryTabs from "@/features/dashboard/ui/CategoryTabs";
 import ProductCard from "@/features/dashboard/ui/product/ProductCard";
 import EmptyState from "@/shared/ui/empty-state/EmptyState";
 import { DEMO_GROUPS, DEMO_PRODUCTS } from "@/shared/mock/demoData";
+import { toast } from "@/shared/ui/feedback";
 
 export function DemoDashboardPage() {
   const searchParams = useSearchParams();
@@ -28,7 +29,7 @@ export function DemoDashboardPage() {
 
   return (
     <>
-      <div className="flex items-center px-4.5 py-6">
+      <div className="flex items-center justify-between px-4.5 py-6">
         <DropdownProvider>
           <DropdownTrigger className="flex items-center gap-2">
             <h1 className="typo-20-bold">{currentGroup.name}</h1>
@@ -45,15 +46,23 @@ export function DemoDashboardPage() {
             onSelect={handleGroupSelect}
           />
         </DropdownProvider>
+        {groupId === "demo-group-1" && (
+          <Link href={`/demo/groups/${groupId}`} aria-label="그룹 설정" className="shrink-0">
+            <IcSettings className="h-5 w-5 text-gray-700" />
+          </Link>
+        )}
       </div>
 
       <CategoryTabs selected={category} onSelect={setCategory} />
 
       {products.length === 0 ? (
         <EmptyState
-          type="notice"
+          type="product"
           message="이 카테고리에 등록된 상품이 없어요"
           description="다른 카테고리를 선택해 보세요"
+          onAddProduct={() => {
+            toast.warning("데모에서는 상품을 등록할 수 없어요");
+          }}
           className="min-h-[calc(100dvh-13rem-env(safe-area-inset-bottom))]"
         />
       ) : (

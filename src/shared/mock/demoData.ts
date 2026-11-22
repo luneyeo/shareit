@@ -1,4 +1,4 @@
-import type { MyGroupSummary } from "@/shared/api/group/types";
+import type { GroupDetailSummary, MyGroupSummary } from "@/shared/api/group/types";
 import type { ProductListItem } from "@/shared/api/product/getGroupProducts";
 
 export const DEMO_GROUPS: MyGroupSummary[] = [
@@ -277,6 +277,16 @@ const GROUP2_PRODUCTS: DemoProduct[] = [
 export const DEMO_PRODUCTS: Record<string, DemoProduct[]> = {
   "demo-group-1": GROUP1_PRODUCTS,
   "demo-group-2": GROUP2_PRODUCTS,
+};
+
+/** 데모 그룹 상세(관리) 화면용 데이터. 방장인 demo-group-1만 제공한다. */
+export const DEMO_GROUP_DETAILS: Record<string, GroupDetailSummary> = {
+  "demo-group-1": {
+    ...DEMO_GROUPS[0],
+    openedAt: "2026-03-14T00:00:00.000Z",
+    productCount: GROUP1_PRODUCTS.length,
+    inviteCode: "DEMO1234",
+  },
 };
 
 /** id로 데모 상품을 빠르게 조회하기 위한 플랫 맵 */
