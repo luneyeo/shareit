@@ -13,7 +13,7 @@ interface UseFocusTrapParams {
 /**
  * 다이얼로그·모달 영역의 포커스 접근성을 관리하는 훅입니다.
  *
- * - 활성화되면 컨테이너 내부의 첫 포커스 대상(없으면 컨테이너 자신)으로 포커스를 이동
+ * - 활성화되면 컨테이너 자신으로 포커스를 이동
  * - `Tab`·`Shift+Tab` 포커스를 컨테이너 내부에 가둠(포커스 트랩)
  * - `Escape` 키 입력 시 `onEscape` 실행
  * - 비활성화(언마운트) 시 직전에 포커스돼 있던 요소로 복귀
@@ -41,8 +41,8 @@ export function useFocusTrap<T extends HTMLElement>({ active, onEscape }: UseFoc
     if (!container) return;
 
     const previouslyFocused = document.activeElement as HTMLElement | null;
-    const focusables = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
-    (focusables[0] ?? container).focus();
+    // 첫 버튼(닫기 등)에 포커스 링이 보이지 않도록 컨테이너 자체로 포커스를 이동한다.
+    container.focus();
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -60,10 +60,11 @@ export function useFocusTrap<T extends HTMLElement>({ active, onEscape }: UseFoc
 
       const first = items[0];
       const last = items[items.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
+      const active = document.activeElement;
+      if (event.shiftKey && (active === first || active === container)) {
         event.preventDefault();
         last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
+      } else if (!event.shiftKey && active === last) {
         event.preventDefault();
         first.focus();
       }
