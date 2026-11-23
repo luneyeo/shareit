@@ -27,6 +27,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Shareit!",
     locale: "ko_KR",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Shareit!" }],
   },
 };
 
