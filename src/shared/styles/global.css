@@ -1,8 +1,15 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 @import "tailwindcss";
 @import "./colors.css";
 @import "./fonts.css";
 @import "./z-index.css";
 @import "./Input.css";
+
+:root {
+  --font-pretendard:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic";
+}
 
 @theme inline {
   --color-background: #ffffff;

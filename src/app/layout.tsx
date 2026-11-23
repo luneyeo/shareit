@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
 import "@/shared/styles/global.css";
 import { QueryProvider } from "@/shared/providers/QueryProvider";
 import { AuthProvider } from "@/shared/providers/AuthProvider";
@@ -7,13 +6,6 @@ import { createClient } from "@/shared/lib/supabase/server";
 import { Toaster } from "@/shared/ui/feedback";
 import { Analytics } from "@vercel/analytics/next";
 import { getSiteUrl } from "@/shared/constants/site";
-
-const pretendard = localFont({
-  src: "../shared/assets/font/PretendardVariable.woff2",
-  variable: "--font-pretendard",
-  display: "swap",
-  weight: "45 920",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -27,6 +19,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Shareit!",
     locale: "ko_KR",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Shareit!" }],
   },
 };
 
@@ -47,7 +40,7 @@ export default async function RootLayout({
   const user = session?.user ?? null;
 
   return (
-    <html lang="ko" className={`${pretendard.variable} h-full antialiased`}>
+    <html lang="ko" className="h-full antialiased">
       <body className="min-h-dvh bg-[#0F1B20]">
         {/*
          * 데스크탑·태블릿에서도 모바일 폭(480px)으로 중앙 고정. transform-gpu로 내부 fixed(탭바·오버레이)를 프레임 안에 가둔다.
