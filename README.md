@@ -91,7 +91,7 @@
 
 프로젝트의 설계와 컨벤션은 [Wiki](https://github.com/luneyeo/shareit/wiki)에서 확인할 수 있습니다.
 
-- [테이블 정의서](https://github.com/luneyeo/shareit/wiki/%5BBE%5D%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%A0%95%EC%9D%98%EC%84%9C)
+- [테이블 정의서](https://github.com/luneyeo/shareit/wiki/%5BBE%5D-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%A0%95%EC%9D%98%EC%84%9C)
 - [폴더와 레이어 구조](https://github.com/luneyeo/shareit/wiki/%5BFE%5D-%ED%8F%B4%EB%8D%94%EC%99%80-%EB%A0%88%EC%9D%B4%EC%96%B4-%EA%B5%AC%EC%A1%B0)
 - [코드 컨벤션](https://github.com/luneyeo/shareit/wiki/%5BFE%5D-%EC%BD%94%EB%93%9C-%EC%BB%A8%EB%B2%A4%EC%85%98)
 - [커밋 컨벤션](https://github.com/luneyeo/shareit/wiki/%5BFE%5D-%EC%BB%A4%EB%B0%8B-%EC%BB%A8%EB%B2%A4%EC%85%98)
