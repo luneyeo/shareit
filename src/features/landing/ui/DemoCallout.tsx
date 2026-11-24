@@ -1,17 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/shared/utils/cn";
+import { getSessionUserId } from "@/shared/api/auth/getSessionUserId";
 import OverlayPortal from "@/shared/ui/overlay/OverlayPortal";
 import { useScrolledToBottom } from "@/shared/hooks/useScrolledToBottom";
 
 /**
  * 랜딩 페이지 맨 아래까지 스크롤하면 슬라이드업 팝업으로 데모 모드 진입을 안내합니다.
- * 닫으면 세션 내에서 재노출되지 않습니다.
+ * 닫으면 세션 내에서 재노출되지 않으며, 로그인한 사용자에게는 노출하지 않습니다.
  */
 export default function DemoCallout() {
   const { sentinelRef, reached } = useScrolledToBottom();
+  // 세션 확인이 끝나 비로그인으로 판명된 경우에만 true. 확인 전 노출로 깜빡이지 않도록 false로 시작한다.
+  const [isGuest, setIsGuest] = useState(false);
   const [dismissed, setDismissed] = useState(() => {
     try {
       return (
@@ -22,6 +25,10 @@ export default function DemoCallout() {
     }
   });
 
+  useEffect(() => {
+    getSessionUserId().then((userId) => setIsGuest(!userId));
+  }, []);
+
   const dismiss = () => {
     try {
       sessionStorage.setItem("demo-callout-dismissed", "true");
@@ -31,7 +38,7 @@ export default function DemoCallout() {
     setDismissed(true);
   };
 
-  const isOpen = reached && !dismissed;
+  const isOpen = isGuest && reached && !dismissed;
 
   return (
     <>
