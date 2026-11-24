@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "@/shared/styles/global.css";
 import { QueryProvider } from "@/shared/providers/QueryProvider";
-import { AuthProvider } from "@/shared/providers/AuthProvider";
-import { createClient } from "@/shared/lib/supabase/server";
 import { Toaster } from "@/shared/ui/feedback";
 import { Analytics } from "@vercel/analytics/next";
 import { getSiteUrl } from "@/shared/constants/site";
@@ -30,17 +28,12 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default async function RootLayout({
+// NOTE: 여기서 cookies() 등 요청 시점 API를 쓰면 모든 페이지가 동적 렌더링된다. 세션 조회는 (private) 레이아웃에서 한다.
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const user = session?.user ?? null;
-
   return (
     <html lang="ko" className="h-full antialiased">
       <body className="min-h-dvh bg-[#0F1B20]">
@@ -50,9 +43,7 @@ export default async function RootLayout({
          */}
         <div className="mx-auto flex h-dvh w-full max-w-120 flex-col overflow-hidden bg-background transform-gpu">
           <QueryProvider>
-            <AuthProvider initialUser={user}>
-              <div className="flex-1 overflow-y-auto scrollbar-none">{children}</div>
-            </AuthProvider>
+            <div className="flex-1 overflow-y-auto scrollbar-none">{children}</div>
           </QueryProvider>
         </div>
         <Toaster />
