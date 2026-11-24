@@ -21,9 +21,11 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Shareit!" }],
   },
+  verification: {
+    google: "QEfcAyhkCvlGFRRzAyd_M9YLc3ISI69OGAQ3EGsbqEA",
+  },
 };
 
-// safe-area-inset-*(env())이 실제 값을 갖도록 노치 영역까지 뷰포트를 확장합니다.
 export const viewport: Viewport = {
   viewportFit: "cover",
 };
@@ -53,7 +55,6 @@ export default async function RootLayout({
             </AuthProvider>
           </QueryProvider>
         </div>
-        {/* Toaster는 프레임(transform-gpu) 밖 body 직속에 둔다. 프레임 안에 있으면 stacking context에 갇혀 오버레이(body에 포탈로 렌더) 아래로 깔린다. */}
         <Toaster />
         <Analytics />
       </body>
