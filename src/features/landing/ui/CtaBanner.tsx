@@ -2,6 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { AUTH_MESSAGE } from "@/features/auth/constants/messages";
+import { useJoinGroup } from "@/features/dashboard/hooks/useJoinGroup";
+import { getSessionUserId } from "@/shared/api/auth/getSessionUserId";
+import { InvalidInviteCodeError } from "@/shared/api/group/joinGroup";
+import { toast } from "@/shared/ui/feedback";
 import { SectionHeading } from "@/shared/ui/section";
 
 /**
@@ -11,9 +16,13 @@ import { SectionHeading } from "@/shared/ui/section";
  * 코드가 콜백(`/api/auth`)까지 이어져 해당 그룹 대시보드로 바로 입장합니다.
  * (코드 유효성은 로그인 후 콜백에서 검증) 코드 없이 하단 버튼으로 이동하면 로그인 후
  * 그룹 입장·생성을 진행할 수 있습니다.
+ *
+ * 이미 로그인한 상태면 `/auth`가 대시보드로 리다이렉트되어 콜백을 거치지 않으므로,
+ * 이 화면에서 바로 입장하고 실패는 토스트로 안내합니다.
  */
 export default function CtaBanner() {
   const router = useRouter();
+  const { mutate: joinGroup, isPending } = useJoinGroup();
   const [code, setCode] = useState("");
 
   // 코드가 있으면 invite로 실어 /auth로 이동한다. 유효성은 로그인 후 콜백에서 검증한다.
@@ -22,9 +31,29 @@ export default function CtaBanner() {
     router.push(trimmed ? `/auth?invite=${encodeURIComponent(trimmed)}` : "/auth");
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    goToAuth(code);
+    const inviteCode = code.trim();
+    // 세션 조회에 실패한 경우도 로그인을 거치도록 /auth로 보낸다.
+    const userId = inviteCode ? (await getSessionUserId()).userId : null;
+
+    if (!userId) {
+      goToAuth(inviteCode);
+      return;
+    }
+
+    joinGroup(
+      { inviteCode, userId },
+      {
+        onSuccess: ({ id }) => router.push(`/dashboard/${id}`),
+        onError: (error) =>
+          toast.error(
+            error instanceof InvalidInviteCodeError
+              ? AUTH_MESSAGE.INVITE.JOIN.INVALID
+              : AUTH_MESSAGE.INVITE.JOIN.ERROR
+          ),
+      }
+    );
   };
 
   return (
@@ -47,7 +76,8 @@ export default function CtaBanner() {
             />
             <button
               type="submit"
-              className="shrink-0 rounded-full bg-primary-600 px-6 py-2.5 typo-16-bold text-white"
+              disabled={isPending}
+              className="shrink-0 rounded-full bg-primary-600 px-6 py-2.5 typo-16-bold text-white disabled:opacity-60"
             >
               다음
             </button>

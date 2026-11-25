@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/shared/lib/supabase/client";
 import { useAuthStore } from "@/shared/store/authStore";
@@ -21,7 +20,6 @@ export function AuthProvider({
 }) {
   const setUser = useAuthStore((state) => state.setUser);
   const clearUser = useAuthStore((state) => state.clearUser);
-  const queryClient = useQueryClient();
 
   useEffect(() => {
     // 서버가 내려준 사용자 정보로 store를 초기화한다.
@@ -31,10 +29,9 @@ export function AuthProvider({
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      // 로그아웃 시 상태를 초기화하고, 이전 사용자의 쿼리 캐시가 남지 않도록 전부 제거한다.
+      // 로그아웃 시 상태를 초기화한다. (쿼리 캐시는 루트의 AuthCacheCleaner가 제거)
       if (event === "SIGNED_OUT") {
         clearUser();
-        queryClient.clear();
         return;
       }
 
@@ -42,7 +39,7 @@ export function AuthProvider({
     });
 
     return () => subscription.unsubscribe();
-  }, [initialUser, setUser, clearUser, queryClient]);
+  }, [initialUser, setUser, clearUser]);
 
   return <>{children}</>;
 }

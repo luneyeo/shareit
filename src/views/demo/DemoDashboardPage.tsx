@@ -11,12 +11,32 @@ import EmptyState from "@/shared/ui/empty-state/EmptyState";
 import { DEMO_GROUPS, DEMO_PRODUCTS } from "@/shared/mock/demoData";
 import { toast } from "@/shared/ui/feedback";
 
+/**
+ * 데모 대시보드 페이지 컴포넌트
+ *
+ * URL의 `group` 파라미터로 보여줄 그룹을 정한다.
+ * (useSearchParams를 쓰므로 Suspense 경계 안에서 렌더한다.)
+ */
 export function DemoDashboardPage() {
   const searchParams = useSearchParams();
+
+  return <DemoDashboardView rawGroupId={searchParams.get("group")} />;
+}
+
+interface DemoDashboardViewProps {
+  /** URL에서 읽은 그룹 id. 없거나 유효하지 않으면 첫 번째 그룹을 보여준다. */
+  rawGroupId: string | null;
+}
+
+/**
+ * 데모 대시보드 화면 본문.
+ *
+ * 정적 HTML에도 담기도록 URL을 직접 읽지 않으며, Suspense fallback으로도 사용한다.
+ */
+export function DemoDashboardView({ rawGroupId }: DemoDashboardViewProps) {
   const router = useRouter();
   const [category, setCategory] = useState<string | null>(null);
 
-  const rawGroupId = searchParams.get("group");
   const currentGroup = DEMO_GROUPS.find((g) => g.id === rawGroupId) ?? DEMO_GROUPS[0];
   const groupId = currentGroup.id;
   const allProducts = DEMO_PRODUCTS[groupId] ?? [];
