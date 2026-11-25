@@ -34,7 +34,8 @@ export default function CtaBanner() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const inviteCode = code.trim();
-    const userId = inviteCode ? await getSessionUserId() : null;
+    // 세션 조회에 실패한 경우도 로그인을 거치도록 /auth로 보낸다.
+    const userId = inviteCode ? (await getSessionUserId()).userId : null;
 
     if (!userId) {
       goToAuth(inviteCode);

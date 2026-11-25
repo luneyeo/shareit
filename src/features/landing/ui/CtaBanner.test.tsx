@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { AuthError } from "@supabase/supabase-js";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AUTH_MESSAGE } from "@/features/auth/constants/messages";
 import { getSessionUserId } from "@/shared/api/auth/getSessionUserId";
@@ -33,7 +34,7 @@ describe("CtaBanner 초대 코드 제출", () => {
   beforeEach(() => jest.clearAllMocks());
 
   it("로그인 상태에서 무효한 코드면 토스트로 안내하고 이동하지 않는다", async () => {
-    mockGetSessionUserId.mockResolvedValue("user-1");
+    mockGetSessionUserId.mockResolvedValue({ userId: "user-1", error: null });
     mockJoinGroup.mockRejectedValue(new InvalidInviteCodeError());
 
     submitCode("BADCODE");
@@ -43,7 +44,7 @@ describe("CtaBanner 초대 코드 제출", () => {
   });
 
   it("로그인 상태에서 시스템 오류면 오류 토스트로 안내한다", async () => {
-    mockGetSessionUserId.mockResolvedValue("user-1");
+    mockGetSessionUserId.mockResolvedValue({ userId: "user-1", error: null });
     mockJoinGroup.mockRejectedValue(new Error("network"));
 
     submitCode("GOOD");
@@ -53,7 +54,7 @@ describe("CtaBanner 초대 코드 제출", () => {
   });
 
   it("로그인 상태에서 유효한 코드면 해당 그룹 대시보드로 이동한다", async () => {
-    mockGetSessionUserId.mockResolvedValue("user-1");
+    mockGetSessionUserId.mockResolvedValue({ userId: "user-1", error: null });
     mockJoinGroup.mockResolvedValue({ id: "42" });
 
     submitCode(" GOOD ");
@@ -63,11 +64,24 @@ describe("CtaBanner 초대 코드 제출", () => {
   });
 
   it("비로그인 상태면 코드를 실어 /auth로 이동한다", async () => {
-    mockGetSessionUserId.mockResolvedValue(null);
+    mockGetSessionUserId.mockResolvedValue({ userId: null, error: null });
 
     submitCode("GOOD");
 
     await waitFor(() => expect(mockPush).toHaveBeenCalledWith("/auth?invite=GOOD"));
+    expect(mockJoinGroup).not.toHaveBeenCalled();
+  });
+
+  it("세션 조회에 실패하면 토스트 없이 코드를 실어 /auth로 이동한다", async () => {
+    mockGetSessionUserId.mockResolvedValue({
+      userId: null,
+      error: new AuthError("refresh failed"),
+    });
+
+    submitCode("GOOD");
+
+    await waitFor(() => expect(mockPush).toHaveBeenCalledWith("/auth?invite=GOOD"));
+    expect(toast.error).not.toHaveBeenCalled();
     expect(mockJoinGroup).not.toHaveBeenCalled();
   });
 });

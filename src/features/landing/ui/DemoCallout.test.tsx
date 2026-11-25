@@ -1,4 +1,5 @@
 import { act, render, screen } from "@testing-library/react";
+import { AuthError } from "@supabase/supabase-js";
 import { getSessionUserId } from "@/shared/api/auth/getSessionUserId";
 import DemoCallout from "./DemoCallout";
 
@@ -13,7 +14,7 @@ describe("DemoCallout 노출 (맨 아래까지 스크롤한 상태)", () => {
   beforeEach(() => sessionStorage.clear());
 
   it("비로그인 상태면 데모 안내를 보여준다", async () => {
-    mockGetSessionUserId.mockResolvedValue(null);
+    mockGetSessionUserId.mockResolvedValue({ userId: null, error: null });
 
     render(<DemoCallout />);
 
@@ -21,7 +22,20 @@ describe("DemoCallout 노출 (맨 아래까지 스크롤한 상태)", () => {
   });
 
   it("로그인 상태면 데모 안내를 보여주지 않는다", async () => {
-    mockGetSessionUserId.mockResolvedValue("user-1");
+    mockGetSessionUserId.mockResolvedValue({ userId: "user-1", error: null });
+
+    await act(async () => {
+      render(<DemoCallout />);
+    });
+
+    expect(screen.queryByText("데모 체험하기")).not.toBeInTheDocument();
+  });
+
+  it("세션 조회에 실패하면 보여주지 않는다", async () => {
+    mockGetSessionUserId.mockResolvedValue({
+      userId: null,
+      error: new AuthError("refresh failed"),
+    });
 
     await act(async () => {
       render(<DemoCallout />);

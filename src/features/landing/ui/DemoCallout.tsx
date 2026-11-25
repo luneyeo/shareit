@@ -26,7 +26,7 @@ export default function DemoCallout() {
   });
 
   useEffect(() => {
-    getSessionUserId().then((userId) => setIsGuest(!userId));
+    getSessionUserId().then(({ userId, error }) => setIsGuest(!userId && !error));
   }, []);
 
   const dismiss = () => {
