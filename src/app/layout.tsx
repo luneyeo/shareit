@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "@/shared/styles/global.css";
+import { AuthCacheCleaner } from "@/shared/providers/AuthCacheCleaner";
 import { QueryProvider } from "@/shared/providers/QueryProvider";
 import { Toaster } from "@/shared/ui/feedback";
 import { Analytics } from "@vercel/analytics/next";
@@ -43,6 +44,7 @@ export default function RootLayout({
          */}
         <div className="mx-auto flex h-dvh w-full max-w-120 flex-col overflow-hidden bg-background transform-gpu">
           <QueryProvider>
+            <AuthCacheCleaner />
             <div className="flex-1 overflow-y-auto scrollbar-none">{children}</div>
           </QueryProvider>
         </div>
